@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.StationMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Station">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <select id="queryStationListWithSelected" parameterType="int" resultType="com.youyicn.model.Station">
+    SELECT s.id, s.name,
+    (CASE WHEN (SELECT es.sid FROM osce_exam_station es WHERE es.eid= #{id} AND es.sid = s.id) THEN 1 ELSE 0 END) AS selected
+    FROM osce_station s
+  </select>
+  
+  
+  <select id="selectByEntity" parameterType="com.youyicn.model.Station" resultMap="BaseResultMap">
+  	SELECT s.*, count(q.id) count FROM osce_station s
+  	LEFT JOIN osce_question q
+  	ON s.id = q.station_id WHERE 1=1
+  	<if test="id != null">
+  		AND s.id = #{id}
+  	</if>
+  	<if test="name!=null and name!=''">
+  		AND s.name LIKE CONCAT('%', #{name}, '%')
+  	</if>
+  	<if test="takeTime != null">
+  		AND s.takeTime = #{takeTime}
+  	</if>
+  	GROUP BY s.id
+  </select>
+  <select id="getQuestion" parameterType="int" resultType="com.youyicn.model.Question">
+      SELECT id, title, content, file_path FROM osce_question WHERE station_id=#{id}
+   </select>
+   <select id="listStationByExamId" parameterType="int" resultMap="BaseResultMap">
+   		SELECT s.* FROM osce_station s
+		LEFT JOIN osce_exam_compose ec
+		ON  s.id = ec.station_id
+		LEFT JOIN osce_exam e
+		ON ec.exam_id = e.id
+		WHERE e.id = #{examId}
+   </select>
+</mapper>

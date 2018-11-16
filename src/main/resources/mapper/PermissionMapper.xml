@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Permission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="system_id" jdbcType="INTEGER" property="systemId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+<select id="queryAll" resultType="com.youyicn.model.Permission">
+      	SELECT id, name, url, pid
+		FROM permission
+		WHERE system_id=3
+		ORDER BY sort
+  </select>
+
+    <select id="loadUserPermissions" parameterType="java.util.HashMap" resultType="com.youyicn.model.Permission">
+        SELECT distinct(cp.id),cp.name,cp.url,cp.pid, cp.type, cp.sort
+        FROM permission cp 
+        LEFT JOIN role_permission crp
+        ON cp.id = crp.pid
+        LEFT JOIN cycle_user_role cur
+        ON crp.rid =cur.rid
+        WHERE system_id = 3
+        AND cur.uid=#{id}
+        <if test="type != null">
+            AND cp.type= #{type}
+        </if>
+        ORDER BY cp.sort
+    </select>
+
+    <select id="queryPermissionsListWithSelected" parameterType="int" resultType="com.youyicn.model.Permission">
+        SELECT p.id,p.name,p.pid,p.url,p.type,
+		(CASE WHEN EXISTS(SELECT 1
+		FROM role_permission rp WHERE rp.pid=p.id AND rp.rid=#{rid})
+		THEN 'true' ELSE 'false' END) AS checked
+		FROM permission p
+		WHERE system_id = 3
+        AND p.id!=1
+        ORDER BY p.sort
+    </select>
+</mapper>

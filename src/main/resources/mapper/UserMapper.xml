@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userNum" jdbcType="VARCHAR" property="usernum" />
+    <result column="hospitalId" jdbcType="VARCHAR" property="hospitalid" />
+    <result column="loginName" jdbcType="VARCHAR" property="loginname" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="identity_id" jdbcType="INTEGER" property="identityId" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="qualification_id" jdbcType="INTEGER" property="qualificationId" />
+    <result column="dept" jdbcType="VARCHAR" property="dept" />
+    <result column="nation" jdbcType="INTEGER" property="nation" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="birth_time" jdbcType="TIMESTAMP" property="birthTime" />
+    <result column="education" jdbcType="INTEGER" property="education" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="is_admin" jdbcType="TINYINT" property="isAdmin" />
+    <result column="user_type_id" jdbcType="INTEGER" property="userTypeId" />
+    <result column="is_login" jdbcType="TINYINT" property="isLogin" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="usb_key" jdbcType="TINYINT" property="usbKey" />
+    <result column="module_manager" jdbcType="VARCHAR" property="moduleManager" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="baseName" jdbcType="VARCHAR" property="baseName" />
+    <result column="roomName" jdbcType="VARCHAR" property="roomName" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="gradSchool" jdbcType="VARCHAR" property="gradschool" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="degree" jdbcType="VARCHAR" property="degree" />
+    <result column="xuewei" jdbcType="VARCHAR" property="xuewei" />
+    <result column="certificationNum" jdbcType="VARCHAR" property="certificationnum" />
+    <result column="cellPhone" jdbcType="VARCHAR" property="cellphone" />
+    <result column="staff" jdbcType="VARCHAR" property="staff" />
+    <result column="trainTime" jdbcType="TINYINT" property="traintime" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="isAt" jdbcType="INTEGER" property="isat" />
+  </resultMap>
+</mapper>

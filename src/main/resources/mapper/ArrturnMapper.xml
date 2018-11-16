@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ArrturnMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Arrturn">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="hospitalId" jdbcType="VARCHAR" property="hospitalId" />
+    <result column="loginName" jdbcType="VARCHAR" property="loginName" />
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="roomName" jdbcType="VARCHAR" property="roomName" />
+    <result column="teacherNum1" jdbcType="VARCHAR" property="teacherNum1" />
+    <result column="teacherName1" jdbcType="VARCHAR" property="teacherName1" />
+    <result column="teacherNum2" jdbcType="VARCHAR" property="teacherNum2" />
+    <result column="teacherName2" jdbcType="VARCHAR" property="teacherName2" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="baseName" jdbcType="VARCHAR" property="baseName" />
+    <result column="checkStatus" jdbcType="VARCHAR" property="checkStatusv" />
+    <result column="trainTime" jdbcType="VARCHAR" property="trainTime" />
+    <result column="batch" jdbcType="VARCHAR" property="batch" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Role">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="roleId" jdbcType="INTEGER" property="roleid" />
+    <result column="roleName" jdbcType="VARCHAR" property="roleName" />
+    <result column="roleNum" jdbcType="VARCHAR" property="roleNum" />
+    <result column="roleDes" jdbcType="VARCHAR" property="roleDes" />
+  </resultMap>
+   <select id="queryRoleListWithSelected" parameterType="int" resultType="com.youyicn.model.Role">
+    SELECT r.roleId, r.roleName,
+    (CASE WHEN (SELECT ur.rid FROM cycle_user_role ur WHERE ur.uid= #{id} AND ur.rid = r.roleId) THEN 1 ELSE 0 END) AS selected
+    FROM cycle_role r
+  </select>
+  <select id="queryRoleListByUserId" parameterType="int" resultType="com.youyicn.model.Role">
+   	SELECT r.* FROM cycle_role r
+	LEFT JOIN cycle_user_role ur ON r.roleId=ur.rid
+	LEFT JOIN `user` u ON ur.uid=u.id
+	WHERE u.id=#{userId} ORDER BY r.roleId
+  </select>
+</mapper>

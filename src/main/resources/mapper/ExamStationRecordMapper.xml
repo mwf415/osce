@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ExamStationRecordMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.ExamStationRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="real_name" jdbcType="CHAR" property="realName" />
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="exam_title" jdbcType="CHAR" property="examTitle" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="question_title" jdbcType="CHAR" property="questionTitle" />
+    <result column="station_id" jdbcType="INTEGER" property="stationId" />
+    <result column="station_name" jdbcType="CHAR" property="stationName" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="exam_data" jdbcType="LONGVARCHAR" property="examData" />
+  </resultMap>
+</mapper>

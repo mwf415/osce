@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ToolGroupMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.ToolGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  
+ 
+    
+  <!-- 该方法是查询每个分组的设备数量 -->
+    <select id="selectByEntity" parameterType="com.youyicn.model.ToolGroup" resultType="com.youyicn.model.ToolGroupVo">        
+		SELECT gr.id id ,gr.name name ,COUNT(too.id) toolsNum
+		FROM osce_tool_group gr LEFT JOIN osce_tool too ON gr.id=too.tool_grop_id
+		GROUP BY gr.id
+    </select>  
+    
+    <select id="getAll"  resultType="com.youyicn.model.ToolGroup">        
+		SELECT id,name FROM osce_tool_group 
+		GROUP BY id
+    </select>  
+</mapper>

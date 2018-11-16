@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ExamMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Exam">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="user_ids" jdbcType="VARCHAR" property="userIds" />
+    <result column="user_names" jdbcType="VARCHAR" property="userNames" />
+    <result column="base_name" jdbcType="CHAR" property="baseName" />
+    <result column="room_name" jdbcType="CHAR" property="roomName" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="CHAR" property="createBy" />
+  </resultMap>
+  <select id="selectPageByCondition" parameterType="map" resultType="com.youyicn.model.Exam">
+  	SELECT id, title, base_name baseName, room_name roomName, start_time startTime, end_time endTime, 
+  	create_time createTime, create_by createBy FROM osce_exam WHERE 1=1
+  	<if test="exam.title!=null and exam.title!=''">
+  		AND title LIKE CONCAT('%',#{exam.title}, '%')
+  	</if>
+ 	<if test="exam.baseName!=null and exam.baseName!=''">
+  		AND baseName=#{exam.baseName}
+  	</if>
+  	<if test="exam.roomName!=null and exam.roomName!=''">
+  		AND roomName=#{exam.roomName}
+  	</if>
+  	<if test="exam.startTime!=null">
+  		AND startTime &gt; #{exam.startTime}
+  	</if>
+	<if test="exam.endTime!=null">
+  		AND startTime &lt; #{exam.endTime}
+  	</if>
+  	LIMIT #{start}, #{length}
+  </select>
+</mapper>

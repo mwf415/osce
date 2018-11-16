@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ExamComposeMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.ExamCompose">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="exam_title" jdbcType="VARCHAR" property="examTitle" />
+    <result column="station_id" jdbcType="INTEGER" property="stationId" />
+    <result column="station_name" jdbcType="VARCHAR" property="stationName" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="teacher_names" jdbcType="VARCHAR" property="teacherNames" />
+  </resultMap>
+  
+  <select id="listExamComposePageByCondition" parameterType="map" resultMap="BaseResultMap">
+  	SELECT ec.* FROM osce_exam_compose ec 
+	WHERE ec.teacher_names LIKE CONCAT('%',#{teacherName},'%') 
+	AND EXISTS(SELECT exam_id userNum FROM osce_exam_user WHERE state=0 AND exam_id=ec.exam_id)
+	LIMIT #{start}, #{length}
+  </select>
+  
+  
+  <select id="listExamComposeByCondition" parameterType="map" resultMap="BaseResultMap">
+  	SELECT ec.* FROM osce_exam_compose ec 
+	WHERE ec.teacher_names LIKE CONCAT('%',#{teacherName},'%')  
+	AND ec.exam_id = #{examId}
+	
+  </select>
+  
+
+    <select id="listGetAllComposeWithOutScore" parameterType="map" resultMap="BaseResultMap">
+  	SELECT ec.* FROM osce_exam_compose ec
+	WHERE ec.teacher_names LIKE CONCAT('%',#{teacherName},'%')
+	AND EXISTS(SELECT exam_id userNum FROM osce_exam_user WHERE state=0 AND exam_id=ec.exam_id)
+  </select>
+
+    <select id="countStationByExamId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT count(id)  FROM osce_exam_compose where exam_id = #{examId}
+  </select>
+</mapper>

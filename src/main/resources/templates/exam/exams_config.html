@@ -1,0 +1,1043 @@
+<#include "/common/header.html"/>
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href="/plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+<!-- ================== END PAGE LEVEL STYLE ================== -->
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="/js/apps.min.js"></script>
+<script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/xlsx.core.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+<style type="text/css">
+	#exam_users label {
+	    margin: 3px 5px 3px 0px;
+	    border: solid 1px #eee;
+	    padding: 5px;
+	    background: #fff;
+	    display: inline-block;
+	}
+	
+	#exam_users label a {
+	    text-decoration: none;
+	    margin-left: 5px;
+	}
+</style>
+<!-- begin #content -->
+<div id="content" class="content">
+	<!-- begin breadcrumb -->
+	<ol class="breadcrumb pull-right">
+		<li>
+			<a href="usersPage">主页</a>
+		</li>
+	</ol>
+	<!-- end breadcrumb -->
+	<!-- begin page-header -->
+	<h1 class="page-header">
+		安排考试
+		<small></small>
+	</h1>
+	<!-- end page-header -->
+
+	<!-- begin row -->
+	<div class="row">
+		<!-- begin col-12 -->
+		<div class="col-md-12">
+			<!-- begin panel -->
+			<div class="panel panel-inverse">
+				<div class="panel-heading">
+					<h4 class="panel-title">安排考试</h4>
+				</div>
+				<div class="panel-body">
+					<h4 class="m-t-0">试卷</h4>
+					<table class="table table-bordered">
+						<tr>
+							<td class="col-md-1">试卷名称</td>
+							<td>${exam.title}</td>
+						</tr>
+						<tr>
+							<td>开始时间</td>
+							<td>${exam.startTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+						</tr>
+						<tr>
+							<td>结束时间</td>
+							<td>${exam.endTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+						</tr
+						<tr>
+							<td>考生</td>
+							<td>${exam.userNames!}</td>
+						</tr>
+					</table>
+					<h4 class="m-t-20">考站</h4>
+					<a class="btn btn-inverse m-b-5" onclick="addStation();">添加考站</a> 
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>考站</th>
+								<th>题目</th>
+								<th>老师</th>
+								<th>地点</th>
+								<th class="col-md-4">操作</th>
+							</tr>
+						</thead>
+						<tbody id="tb">
+						<#if examComposes?? && examComposes?size gt 0>
+							<#list examComposes as ec>
+							<tr>
+								<td>
+								<select class="form-control stationId">
+									<#if stations?? && stations?size gt 0> 
+									<#list stations as station>
+										<option value='${station.id}' <#if ec.stationId==station.id>selected</#if>>${station.name}</option>
+									</#list>
+									</#if>
+								</select>
+								</td>
+								<td><a onclick="questionDetail(${ec.questionId})" questionId="${ec.questionId}">${ec.questionTitle}</a></td>
+								<td>${ec.teacherNames}</td>
+								<td><input type="text" class="address" value="${ec.address}"/></td>
+								<td><a class="btn btn-inverse" onclick="showQuestionConfig(this);">选择题目</a>&nbsp;<a class="btn btn-inverse" onclick="showTeacherConfig(this);">选择老师</a>&nbsp;<a class="btn btn-danger" onclick="deleteStation(this);">删除</a></td>
+							</tr>
+							</#list>
+						</#if>
+						</tbody>
+					</table>
+					<h4 class="m-t-20">考生</h4>
+					<div>
+						<div id="exam_users" class="m-b-10">
+						</div>
+						<div>
+							<button class="btn btn-inverse" onclick="$('#student_select_modal').modal();">选择考生</button>
+							<div style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+						        <button class="btn btn-inverse">导入考生</button>
+						        <input type="file" id="import_student_file" style="position:absolute;top:0;left:0;font-size:34px; opacity:0" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+						    </div>
+						    <span id="import_student_filename">未上传文件</span>
+						    <button class="btn btn-danger m-l-5" onclick="clear_student();">清空考生</button>
+						    <a class="btn btn-inverse" href="/file/download?fileName=导入考生模版.xlsx">考生模版</a><span>注：<i class="ion-close text-danger"></i>代表本地考生，<i class="ion-close text-warning"></i>代表外来考生</span>
+						</div>
+					</div>
+				<div align="center" class="m-t-20">
+	                <a href="/examsPage" class="btn btn-default">返回</a>
+	                <#if exam.userIds?? && exam.userIds!=''>
+	                <#else>
+	                <a class="btn btn-success" id="submitConfigBtn">提交</a>
+	                </#if>
+                </div>
+				</div>
+			</div>
+			<!-- end panel -->
+		</div>
+		<!-- end col-12 -->
+	</div>
+	<!-- end row -->
+</div>
+<!-- end #content -->
+
+<!--选择考生开始-->
+<div class="modal fade" id="student_select_modal" tabindex="-1" role="dialog" aria-labelledby="configExamLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="configTeacherLabel">选择考生</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-inline" id="studentSearchForm">
+					<div class="form-group">
+						<label class="control-label">专业基地:</label>
+						<select class="arrturnBase form-control">
+							<option value=''>全部</option>
+							<#if bases?? && bases?size gt 0> <#list bases as base>
+							<option value='${base.value}'>${base.value}</option>
+							</#list> </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">科室:</label>
+						<select id="questionRoom-search" class="arrturnRoom form-control">
+							<option value='' selected>全部</option>
+							<#if rooms?? && rooms?size gt 0> 
+								<#list rooms as room>
+								<option value='${room.value}'>${room.value}</option>
+								</#list>
+							 </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">出科时间:</label>
+						<div class="input-group date form_datetime">
+							<input class="form-control" type="text" id="outTime" name="outTime" placeholder="请选择出科时间" readonly>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-remove"></span>
+							</span>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+                        <label>姓名:</label>
+                        <input type="text" class="realName form-control" placeholder="姓名"/>
+                    </div>
+					<button type="button" onclick="studentSearch();" class="btn btn-info">查询</button>
+				</form>
+				<table id="student-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>用户名</th>
+							<th>真实姓名</th>
+							<th>基地</th>
+							<th>科室</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th><input type="button" onclick="select_all_student(this);" class="select_all_student btn btn-default" value="全部选择"/></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" onclick="saveStudent();" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--选择考生开始-->
+
+<!--配置考题开始-->
+<div class="modal fade" id="questionConfig" tabindex="-1" role="dialog" aria-labelledby="configExamLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content modal-lg">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="configTeacherLabel">选择考题</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-inline" id="questionSearchForm">
+					<div class="form-group">
+						<label class="control-label">专业基地:</label>
+						<select id="questionBase-search" class="arrturnBase form-control">
+							<option value='' selected>全部</option>
+							<#if bases?? && bases?size gt 0> <#list bases as base>
+							<option value='${base.value}'>${base.value}</option>
+							</#list> </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">科室:</label>
+						<select id="questionRoom-search" class="arrturnRoom form-control">
+							<option value='' selected>全部</option>
+							<#if rooms?? && rooms?size gt 0> 
+								<#list rooms as room>
+								<option value='${room.value}'>${room.value}</option>
+								</#list>
+							 </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">题目:</label>
+						<input type="text" class="form-control" id="questionTitle-search" />
+					</div>
+					<button type="button" onclick="questionSearch();" class="btn btn-info">查询</button>
+				</form>
+				<table id="question-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" class="checkall" />
+							</th>
+							<th>标题</th>
+							<th>描述</th>
+							<th>考核时长</th>
+							<th>分值</th>
+							<th>基地</th>
+							<th>专业</th>
+							<th>题目</th>
+							<th>答案</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" onclick="saveQuestion();" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--配置考题开始-->
+
+<!--考题详情开始-->
+<div class="modal fade" id="questionDetail" tabindex="-1" role="dialog" aria-labelledby="configExamLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="configTeacherLabel">考题详情</h4>
+			</div>
+			<div class="modal-body">
+				<table id="question-detail" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>标题</th>
+							<th>描述</th>
+							<th>考核时长</th>
+							<th>分值</th>
+							<th>基地</th>
+							<th>科室</th>
+							<th>题目</th>
+							<th>答案</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--考题详情开始-->
+
+<!--添加老师弹框-->
+<div class="modal fade" id="configTeacher" tabindex="-1" role="dialog" aria-labelledby="configExamLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content modal-lg">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="configTeacherLabel">选择老师</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-inline" id="teacherSearchForm">
+					<div class="form-group">
+						<label class="control-label">专业基地:</label>
+						<select id="baseName-search" class="arrturnBase form-control">
+							<option value=''>全部</option>
+							<#if bases?? && bases?size gt 0> 
+								<#list bases as base>
+								<option value='${base.value}'>${base.value}</option>
+								</#list>
+							 </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">科室:</label>
+						<select id="questionRoom-search" class="arrturnRoom form-control">
+							<option value='' selected>全部</option>
+							<#if rooms?? && rooms?size gt 0> 
+								<#list rooms as room>
+								<option value='${room.value}'>${room.value}</option>
+								</#list>
+							 </#if>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>姓名:</label>
+						<input type="text" class="form-control realName"/>
+					</div>
+					<button type="button" onclick="teacherSearch();" class="btn btn-info">查询</button>
+				</form>
+				<table id="teacher-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" class="checkall" />
+							</th>
+							<th>用户名</th>
+							<th>真实姓名</th>
+							<th>基地</th>
+							<th>科室</th>
+							<th>性别</th>
+							<th>职位</th>
+							<th>电话</th>
+							<th>出生日期</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" onclick="saveTeacher();" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--/添加老师弹框-->
+<script>
+	var studentMap = new Map();
+	var examUserIds = '${exam.userIds!}';
+	if(examUserIds!=null && examUserIds!=''){
+		var examUserIdsArr = examUserIds.split(',');
+		for(var i in examUserIdsArr){
+			studentMap.set(examUserIdsArr[i].split('-')[0], true);
+		}
+	}
+	$(".checkall").click(function () {
+	    var check = $(this).prop("checked");
+	    $(this).parents('table').find(".checkchild").prop("checked", check);
+	});
+	var	studentTable, teacherTable, questionTable;
+	$(function(){
+		studentTable = $('#student-datatable').DataTable( {
+		"dom": 'rtlip',
+		"ordering": false,
+	    "searching" : false,
+	    "sPaginationType": "full_numbers",
+	    "pageLength": 25,
+	    "serverSide": true,//开启服务器模式，使用服务器端处理配置datatable
+	    "processing": true,//开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
+	    "language": {
+	        "Processing": "正在加载中......",
+	        "zeroRecords": "对不起，查询不到相关数据！",
+	        "emptyTable": "表中无数据存在！",
+	        "lengthMenu": "显示 _MENU_ 条记录",
+	        "infoFiltered": "数据表中共为 _MAX_ 条记录",
+	        "info": '_START_ 到 _END_ 条,共 _TOTAL_ 条',
+	        "paginate": {
+	            "first": "首页",
+	            "previous": "上一页",
+	            "next": "下一页",
+	            "last": "末页"
+	        } 
+	     },
+	     ajax : function(data, callback, settings) {
+	         //封装请求参数
+	         var param = getStudentQueryCondition(data);
+	
+	         $.ajax({
+	             type: "POST",
+	             url: '/arrturns',
+	             cache : false,  //禁用缓存
+	             data: param,    //传入已封装的参数
+	             dataType: "json",
+	             success: function(result) {
+	                 callback(result);
+	                 var $selectAll = $('#student-datatable').find('.select_all_student');
+	                 var selectCount = init_student_select_state();
+	                 if(selectCount==result.data.length){
+	                	 $selectAll.val('取消全部');
+	                 }else{
+	                	 $selectAll.val('全部选择');
+	                 }
+	             },
+	             error: function() {
+	                 layer.msg("查询失败");
+	             }
+	         });
+	     },
+	     "columns": [
+	         { "data": "loginName" },
+	         { "data": "realName" },
+	         { "data": "baseName" },
+	         { "data": "roomName" },
+	         { "data": "startTime" },
+	         { "data": "endTime" },
+	         {
+	             "data": "loginName",
+	             "render": function (data, type, full, meta) {
+	                 return '<input type="button" class="select_student btn btn-default" loginName="'+data+'" onclick="select_student(this)" value="选择"/>';
+	             },
+	         },
+	     ],
+	     'columnDefs': [
+	      	{"sClass": "text-center", 'targets': '_all'},
+	         {
+					"targets": [-2, -3],
+					"render": function ( data, type, full, meta ) {
+						return DateUtil.dateToStr("yyyy-MM-dd HH:mm:ss", new Date(data));
+				    }
+	         }
+	      ]
+	
+	 } );
+		
+	});
+	
+	//封装查询参数
+	function getStudentQueryCondition(data){
+		var param = {};
+		//组装排序参数
+		param.outTime = $('#outTime').val();
+		param.baseName = $("#studentSearchForm .arrturnBase").val();
+		param.roomName = $("#studentSearchForm .arrturnRoom").val();
+		param.realName = $("#studentSearchForm .realName").val();
+		//组装分页参数
+		param.start = data.start;
+		param.length = data.length;
+		param.draw = data.draw;
+		return param;
+	}
+	
+	function studentSearch(){
+		studentTable.ajax.reload();
+	}
+	
+	$(function(){
+		teacherTable = $('#teacher-datatable').DataTable( {
+		"dom": 'rtlip',
+		"ordering": false,
+	    "searching" : false,
+	    "sPaginationType": "full_numbers",
+	    "pageLength": 10,
+	    "serverSide": true,//开启服务器模式，使用服务器端处理配置datatable
+	    "processing": true,//开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
+	    "language": {
+	        "Processing": "正在加载中......",
+	        "zeroRecords": "对不起，查询不到相关数据！",
+	        "emptyTable": "表中无数据存在！",
+	        "lengthMenu": "显示 _MENU_ 条记录",
+	        "infoFiltered": "数据表中共为 _MAX_ 条记录",
+	        "info": '_START_ 到 _END_ 条,共 _TOTAL_ 条',
+	        "paginate": {
+	            "first": "首页",
+	            "previous": "上一页",
+	            "next": "下一页",
+	            "last": "末页"
+	        } 
+	     },
+	     ajax : function(data, callback, settings) {
+	         //封装请求参数
+	         var param = getTeacherQueryCondition(data);
+	
+	         $.ajax({
+	             type: "POST",
+	             url: '/users',
+	             cache : false,  //禁用缓存
+	             data: param,    //传入已封装的参数
+	             dataType: "json",
+	             success: function(result) {
+	                 callback(result);
+	             },
+	             error: function() {
+	                 layer.msg("查询失败");
+	             }
+	         });
+	     },
+	     "columns": [
+	         {
+	             "data": "loginName",
+	             "render": function (data, type, full, meta) {
+	                 return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
+	             },
+	         },
+	         { "data": "loginName" },
+	         { "data": "realName" },
+	         { "data": "baseName" },
+	         { "data": "roomName" },
+	         { "data": "sex" },
+	         { "data": "staff" },
+	         { "data": "cellphone" },
+	         { "data": "birthTime" },
+	     ],
+	     'columnDefs': [
+	      	{"sClass": "text-center", 'targets': '_all'},
+	         {
+					"targets": [-1],
+					"render": function ( data, type, full, meta ) {
+						return DateUtil.dateToStr("yyyy-MM-dd HH:mm:ss", new Date(data));
+				    }
+	         }
+	      ]
+	
+	 });
+	});
+	
+	function showTeacherConfig(obj){
+		$('#tb').data('index', $(obj).parents('tr').index());
+		$('#configTeacher').modal('show');
+	}
+	
+	function teacherSearch(){
+		teacherTable.ajax.reload();
+	}
+	//封装查询参数
+	function getTeacherQueryCondition(data){
+		var param = {};
+		//组装排序参数
+		param.baseName = $("#teacherSearchForm .arrturnBase").val();
+		param.roomName = $("#teacherSearchForm .arrturnRoom").val();
+		param.realName = $("#teacherSearchForm .realName").val();
+		param.identityId = 1;
+		//组装分页参数
+		param.start = data.start;
+		param.length = data.length;
+		param.draw = data.draw;
+		return param;
+	}
+
+	function saveTeacher(){
+		var $select = $('#teacher-datatable').find(".checkchild:checked");
+		if($select.length==0){
+			layer.msg("请选择老师！");
+			return;
+		}
+		var teacherArray = [];
+		$select.each(function(){
+			var loginName = $(this).parents('tr').find('td:eq(1)').text();
+			var realName = $(this).parents('tr').find('td:eq(2)').text();
+			var teacher = loginName+"("+realName+")";
+			teacherArray.push(teacher);
+		});
+		var index = $('#tb').data('index');
+		$('#tb tr:eq('+index+')').find('td:eq(2)').text(teacherArray.join(','));
+		$('#configTeacher').modal('hide');
+
+	}
+	
+	$(function(){
+		questionTable = $('#question-datatable').DataTable( {
+		"dom": 'rtlip',
+		"ordering": false,
+	    "searching" : false,
+	    "sPaginationType": "full_numbers",
+	    "pageLength": 25,
+	    "serverSide": true,//开启服务器模式，使用服务器端处理配置datatable
+	    "processing": true,//开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
+	    "language": {
+	        "Processing": "正在加载中......",
+	        "zeroRecords": "对不起，查询不到相关数据！",
+	        "emptyTable": "表中无数据存在！<a href='/questionsPage' class='btn btn-inverse'>创建考题</a>",
+	        "lengthMenu": "显示 _MENU_ 条记录",
+	        "infoFiltered": "数据表中共为 _MAX_ 条记录",
+	        "info": '_START_ 到 _END_ 条,共 _TOTAL_ 条',
+	        "paginate": {
+	            "first": "首页",
+	            "previous": "上一页",
+	            "next": "下一页",
+	            "last": "末页"
+	        } 
+	     },
+	     ajax : function(data, callback, settings) {
+	         //封装请求参数
+	         var param = getQuestionQueryCondition(data);
+	
+	         $.ajax({
+	             type: "POST",
+	             url: '/questions',
+	             cache : false,  //禁用缓存
+	             data: param,    //传入已封装的参数
+	             dataType: "json",
+	             success: function(result) {
+	                 //封装返回数据  如果参数相同，可以直接返回result ，此处作为学习，先这么写了。
+	                 var returnData = {};
+	                 returnData.draw = result.draw;//这里直接自行返回了draw计数器,应该由后台返回
+	                 returnData.recordsTotal = result.recordsTotal;//总记录数
+	                 returnData.recordsFiltered = result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果
+	                 returnData.data = result.data;
+	                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+	                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+	                 callback(returnData);
+	             },
+	             error: function() {
+	                 layer.msg("查询失败");
+	             }
+	         });
+	     },
+	     "columns": [
+	         {
+	             "data": "id",
+	             "render": function (data, type, full, meta) {
+	                 return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
+	             },
+	         },
+	         { "data": "title" },
+	         { "data": "mark" },
+	         { "data": "duration" },
+	         { "data": "score" },
+	         { "data": "baseName" },
+	         { "data": "roomName" },
+             {
+                 "sClass": "text-center",
+                 "data": "filePath",
+                 "render": function (data, type, full, meta) {
+                	 return '<a class="btn btn-inverse" target="_blank" href="/file/download?fileName='+data+'">下载</a>';
+                 }
+             },
+	         {
+                 "sClass": "text-center",
+                 "data": "answer",
+                 "render": function (data, type, full, meta) {
+                	 return '<a class="btn btn-inverse" target="_blank" href="/file/download?fileName='+data+'">下载</a>';
+                 }
+             }
+	     ]
+	
+	 });
+	});
+	
+	function showQuestionConfig(obj){
+		$('#tb').data('index', $(obj).parents('tr').index());
+		$('#questionConfig').modal('show');
+	}
+	
+	function questionSearch(){
+		questionTable.ajax.reload();
+	}
+	//封装查询参数
+	function getQuestionQueryCondition(data){
+		var param = {};
+		//组装排序参数
+		param.baseName = $("#questionBase-search").val();
+		param.roomName = $("#questionRoom-search").val();
+		param.title = $("#questionTitle-search").val();
+		
+		//组装分页参数WWW
+		param.start = data.start;
+		param.length = data.length;
+		param.draw = data.draw;
+		return param;
+	}
+
+	function saveQuestion(){
+		var $select = $('#question-datatable').find(".checkchild:checked");
+		if($select.length!=1){
+			layer.msg("请选择一个考题！");
+			return false;
+		}
+		var questionId = $select.val();
+		var questionName = $select.parents("tr").find("td:eq(1)").text();
+		var index = $('#tb').data('index');
+		$('#tb tr:eq('+index+')').find('td:eq(1)').html('<a onclick="questionDetail('+questionId+')" questionId="'+questionId+'">'+questionName+'</a>');
+		$('#questionConfig').modal('hide');
+
+	}
+	
+    var stationsJson = ${stationsJson};
+	var stationSelect = "";
+    for(var i in stationsJson){
+    	stationSelect += "<option value='"+stationsJson[i].id+"'>"+stationsJson[i].name+"</option>";
+	}
+	function addStation(){
+		//添加考站
+ 		var tr = "<tr>";
+ 		tr +=  	'<td><select class="form-control stationId">';
+ 		tr +=     stationSelect;
+ 		tr +=     '</select></td>';
+ 		tr +=     '<td></td>';
+ 		tr +=     '<td></td>';
+ 		tr +=     '<td><input type="text" class="address"/></td>';
+ 		tr +=     '<td><a class="btn btn-inverse" onclick="showQuestionConfig(this);">选择题目</a>&nbsp;<a class="btn btn-inverse" onclick="showTeacherConfig(this);">选择老师</a>&nbsp;<a class="btn btn-danger" onclick="deleteStation(this);">删除</a></td></tr>';
+ 		$('#tb').append(tr);
+ 	}
+
+ 	//删除本考站
+ 	function deleteStation(obj){
+		$(obj).parents('tr').remove();
+ 	}
+
+ 	$('.form_datetime').datetimepicker({
+ 		format: 'yyyy/mm',
+        language:  'zh-CN',
+        startView: 3,
+        minView:2,
+        weekStart: 1,
+        todayBtn:  1,
+ 		autoclose: 1,
+ 		todayHighlight: 1,
+ 		forceParse: 1
+     });
+
+	//提交 配置
+    $('#submitConfigBtn').click(function(){
+    	var params = {};
+    	//考站
+ 		var stationIds = [];
+ 		var stationNames = [];
+ 		var questionIds = [];
+ 		var questionNames = [];
+ 		var addresses = [];
+ 		var teacherNames = [];
+ 		//考站配置
+ 		var flag = true;
+ 		$('#tb tr').each(function(){
+ 			var selectOption = $(this).find('.stationId option:selected');
+ 			var stationId = selectOption.val();
+ 			var stationName = selectOption.text();
+ 			var $a = $(this).find('td:eq(1)').find('a'); 			
+ 			var questionId = $a.attr('questionId');
+ 			var questionName = $a.text();
+ 			var teacherName = $(this).find('td:eq(2)').text();
+ 			var address = $(this).find('.address').val();
+ 			if($.inArray(stationId, stationIds)>-1){
+ 				layer.msg(stationName+" 选择重复！")
+ 				flag = false;
+ 				return;
+ 			}
+ 			if(questionId==null || questionId==''){
+ 				layer.msg("请选择题目！");
+ 				flag = false;
+ 				return;
+ 			} 
+ 			if(teacherName==null || teacherName==''){
+ 				layer.msg("请选择老师！");
+ 				flag = false;
+ 				return;
+ 			} 
+			stationIds.push(stationId);
+			stationNames.push(stationName);
+			questionIds.push(questionId);
+			questionNames.push(questionName);
+			addresses.push(address);
+			teacherNames.push(teacherName);
+ 		});
+ 		if(stationIds.length==0){
+				layer.msg("请选择考站！");
+				return;
+		} 
+		if(!flag){
+			return;
+		}
+		//考生
+		var userNames = [];
+		var userIds = [];
+ 		$('#exam_users label').each(function(){
+ 			var userId = $(this).find('input[name="loginName"]').val();
+ 			var userName = $(this).text();
+ 			var userType = $(this).find('input[name="examUserType"]').val();
+ 			userIds.push(userId+'-'+userType);
+ 	 		userNames.push(userName);
+		});
+		//考站
+ 		params.stationIds = stationIds;
+ 		params.stationNames = stationNames;
+ 		params.questionIds = questionIds;
+ 		params.questionNames = questionNames;
+ 		params.addresses = addresses;
+ 		params.teacherNames = teacherNames;
+ 		//考卷属性
+ 		params.id = '${exam.id}';
+ 		params.title = '${exam.title}';
+ 		params.userIds = userIds.join(',');
+ 		params.userNames = userNames.join(',');
+ 		//保存试卷配置
+ 	   	$.ajax({
+           type: "POST",
+           url:'/exams/saveConfig',
+           data: params,
+           traditional: true,//这里设置为true
+           success: function(result) {
+               if(result=='success'){
+                   layer.msg('保存成功！');
+                   location.reload();
+               }else{
+            	   layer.msg('保存失败！');
+               }
+           }
+       });
+    });
+	
+	function questionDetail(id){
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:'/questions/getQuestionById',
+            data:{id:id},
+            async: false,
+            success: function(result) {
+           	 if(result.success){
+                	var question = result.data;
+                	var html = '<tr>';
+                	html += '<td>'+question.title+'</td>';
+                	html += '<td>'+question.mark+'</td>';
+                	html += '<td>'+question.duration+'</td>';
+                	html += '<td>'+question.score+'</td>';
+                	html += '<td>'+question.baseName+'</td>';
+                	html += '<td>'+question.roomName+'</td>';
+                	html += '<td><a class="btn btn-inverse" target="_blank" href="/file/download?fileName='+question.filePath+'">下载</a></td>';
+                	html += '<td><a class="btn btn-inverse" target="_blank" href="/file/download?fileName='+question.answer+'">下载</a></td>';
+                	html += '</tr>';
+                	$('#question-detail tbody').html(html);
+                	$('#questionDetail').modal('show');
+                }
+            }
+        });
+	}
+	
+//     $('.arrturnBase').change(function(){
+//     	var baseName = $(this).val();
+//     	var $arrturnRoom = $(this).parents('form').find('.arrturnRoom');
+//     	if(baseName==''){
+//     		$arrturnRoom.empty();
+//     		return;
+//     	}
+//         $.ajax({
+//             cache: true,
+//             type: "POST",
+//             url:'/bases/listArrturnRuleByBaseName',
+//             data:{baseName:baseName},
+//             async: false,
+//             success: function(result) {
+//            	 if(result.success){
+//                 	var arrturnRules = result.data;
+//                 	var html = '';
+//                 	for(var i in arrturnRules){
+//                 		html += '<option value="'+arrturnRules[i].roomName+'">'+arrturnRules[i].roomName+'</option>';
+//                 	}
+//                 	$arrturnRoom.html(html);
+//                 }
+//             }
+//         });
+//     });
+    //选择考生按钮
+    function select_student(obj){
+    	var loginName = $(obj).attr('loginName');
+    	if($(obj).val()=='选择'){
+	    	$(obj).removeClass("btn-default").addClass('btn-danger').val('取消');
+    	}else{
+    		$(obj).removeClass("btn-danger").addClass('btn-default').val('选择');
+    	}
+    }
+    //全选、取消全选
+    function select_all_student(obj){
+    	if($(obj).val()=='全部选择'){
+    		$(obj).val('取消全部');
+    		$('#student-datatable').find('.select_student').removeClass("btn-default").addClass('btn-danger').val('取消');
+    	}else{
+    		$(obj).val('全部选择');
+    		$('#student-datatable').find('.select_student').removeClass("btn-danger").addClass('btn-default').val('选择');
+    	}
+    }
+    function remove_student(obj){
+    	var loginName = $(obj).parents('label').find('input[name="loginName"]').val();
+    	$(obj).parents('label').remove();
+    	studentMap.set(loginName, false);
+    	var $student = $('#student-datatable').find('.select_student[loginName="'+loginName+'"]')
+    	if($student!=null && $student.hasClass('btn-danger')){
+    		$student.removeClass("btn-danger").addClass('btn-default').val('选择')
+    	}
+    }
+    //清空考生
+    function clear_student(){
+        layer.confirm('您确定要删除所有考生吗？', {
+            btn: ['确认','取消'] //按钮
+        }, function(index){
+	    	$('#exam_users').empty();
+	    	studentMap.clear();
+	    	$('#select_all_student').val('全部选择');
+	    	$('#student-datatable .select_student').removeClass("btn-danger").addClass('btn-default').val('选择');
+	    	layer.close(index);
+        });
+    }
+    function saveStudent(){
+    	$('#student-datatable').find('.select_student').each(function(){
+    		var loginName = $(this).attr('loginName');
+    		if($(this).hasClass('btn-danger')){//选择的部分
+    			var $input = $('#exam_users').find('input[value="'+loginName+'"]');
+    			if($input==null || $input.length==0){
+	     	 		var loginName = $(this).parents('tr').find('td:eq(0)').text();
+	     	 		var realName = $(this).parents('tr').find('td:eq(1)').text();
+	     	 		var showName = loginName+'('+realName+')';
+	    			var label = '<label><input name="loginName" value="'+loginName+'" type="hidden"/><input type="hidden" name="examUserType" value="0"/>'+showName+'<a href="javascript:void(0);" onclick="javascript:remove_student(this)"><i class="ion-close text-danger"></i></a></label>';
+	    			$('#exam_users').append(label);
+	    			studentMap.set(loginName, true);
+    			}
+    		}else{
+    			var $input = $('#exam_users').find('input[name="loginName"][value="'+loginName+'"]');
+    			if($input!=null && $input.length>0){
+    				$input.parents('label').remove();
+    			}
+    			studentMap.set(loginName, false);
+    		}
+    	});
+   		$('#student_select_modal').modal('hide');
+   		console.log(studentMap);
+    }
+    //初始化学生选择的状态
+    function init_student_select_state(){
+    	var selectCount = 0;
+    	$('#student-datatable').find('.select_student').each(function(){
+    		var loginName = $(this).attr('loginName');
+    		if(studentMap.get(loginName)){
+    			$(this).removeClass("btn-default").addClass('btn-danger').val('取消');
+    			selectCount++;
+    		}
+    	});
+    	return selectCount;
+    }
+    //导入评分项,js读取excel内容
+    $('#import_student_file').change(function(e) {
+    	$('#import_student_filename').html(this.files[0].name);
+        var files = e.target.files;
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(ev) {
+            try {
+                var data = ev.target.result,
+                    workbook = XLSX.read(data, {
+                        type: 'binary'
+                    }), // 以二进制流方式读取得到整份excel表格对象
+                    persons = []; // 存储获取到的数据
+            } catch (e) {
+                console.log('文件类型不正确');
+                return;
+            }
+
+            // 表格的表格范围，可用于判断表头是否数量是否正确
+            // 遍历每张表读取
+            for (var sheet in workbook.Sheets) {
+                if (workbook.Sheets.hasOwnProperty(sheet)) {
+                    persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+//                     break; // 如果只取第一张表，就取消注释这行
+                }
+            }
+
+//             console.log(persons);
+            if(persons!=null && persons.length>0){
+            	if(persons[0].登录名==null || persons[0].姓名==null || persons[0].外来考生==null){
+            		layer.msg('excel格式不正确！');
+            		return;
+            	}
+            	var labels = '';
+            	var flag = true;
+            	var students = [];
+	            for(var i in persons){
+	            	if(studentMap.get(persons[i].登录名)){
+	            		flag = false;
+	            		layer.msg(persons[i].登录名+'已经存在，不能重复导入！');
+	            		return;
+	            	}
+	            	var examUserType = 0;
+	            	var iclass = 'text-danger';
+	            	if(persons[i].外来考生.trim()=='是'){
+	            		examUserType = 1;
+	            		iclass = 'text-warning';
+	            	}
+	            	labels += '<label><input type="hidden" name="loginName" value="'+persons[i].登录名+'"/><input type="hidden" name="examUserType" value="'+examUserType+'"/>'+persons[i].登录名+'('+persons[i].姓名+')<a href="javascript:void(0);" onclick="remove_student(this)"><i class="ion-close '+iclass+'"></i></a></label>';
+	            	students.push(persons[i].登录名);
+	            }
+	            if(flag){
+		            $('#exam_users').append(labels);
+	            	for(var i in students){
+	            		studentMap.set(students[i], true);
+	            	}
+	            }
+            }
+        };
+
+        // 以二进制方式打开文件
+        fileReader.readAsBinaryString(files[0]);
+    });
+</script>
+<#include "/common/footer.html"/>

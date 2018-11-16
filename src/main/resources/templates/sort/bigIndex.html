@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Osce System | Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <style>
+#customers
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:100%;
+	border-collapse:collapse;
+}
+#customers td, #customers th 
+{
+	font-size:20px;
+	border:1px solid #98bf21;
+	padding:3px 7px 2px 7px;
+}
+#customers th 
+{
+	font-size:1.1em;
+	text-align:left;
+	padding-top:5px;
+	padding-bottom:4px;
+	background-color:#A7C942;
+	color:#ffffff;
+}
+#customers tr.alt td 
+{
+	color:#000000;
+	background-color:#EAF2D3;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<div>
+		考站编号${examId!}
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+		
+			<table  id="customers" class="table">
+				<thead>
+					<tr class="alt">
+						<th>
+							组数
+						</th>
+						<th>
+							学生名称
+						</th>
+						<th>
+							总站数
+						</th>
+						<th>
+							已考站点
+						</th>
+						<th>
+							未考站数
+						</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+		<#if bigShowVos?? && bigShowVos?size gt 0>
+  			<#list bigShowVos as bigShowVo>    	
+					<tr class="alt">
+							<td>第${bigShowVo.groupId!}组</td>
+							<td>${bigShowVo.userNameStr!}</td>
+							<td>${bigShowVo.stationnum!}</td>
+			
+							<td>${bigShowVo.finished!}</td>
+							<td>${bigShowVo.unfinished!}</td>
+					</tr>
+					</#list>
+					</#if>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+
+    var myVar=setInterval(
+        function(){
+            refrestView()
+		},1000
+	);
+
+    function refrestView(){
+        window.location.reload();
+	}
+</script>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.ExamUserMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.ExamUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="real_name" jdbcType="CHAR" property="realName" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="exam_title" jdbcType="VARCHAR" property="examTitle" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="join_time" jdbcType="TIMESTAMP" property="joinTime" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="system_id" jdbcType="INTEGER" property="systemId" />
+  </resultMap>
+</mapper>

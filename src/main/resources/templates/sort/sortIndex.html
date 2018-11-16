@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>Osce System | Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/css/animate.min.css" rel="stylesheet" />
+    <link href="/css/style.min.css" rel="stylesheet" />
+    <link href="/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="/plugins/pace/pace.min.js"></script>
+    <script src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/crossbrowserjs/html5shiv.js"></script>
+    <script src="/crossbrowserjs/respond.min.js"></script>
+    <script src="/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="/plugins/layer/layer.js"></script>
+    <script src="/js/datetime.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <h2>
+                        提示!
+                    </h2> <h3><strong>学生${examUser.realName!}! 学号${examUser.loginName!}未未安排 </strong>
+                    </h3><br>
+                    点击下面按钮进行安排考试顺序
+                </div>
+            </div>
+        </div>
+    <br>
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+            <input type="hidden" id="userId" value="${userId!}">
+            <input type="hidden" id="examId" value="${examId!}">
+        </div>
+        <div class="col-md-4 column">
+            <button type="button" class="btn btn-lg btn-primary" onclick="sortUser()">给该学生排序</button>
+        </div>
+        <div class="col-md-4 column">
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    function sortUser() {
+        var examId = document.getElementById("examId").value;
+        var userId = document.getElementById("userId").value;
+        $.ajax({
+            async:false,
+            type : "POST",
+            data:{examId:examId,userId:userId },
+            url: "addSort",
+            dataType:'json',
+            success: function(data){
+                alert(data);
+            }
+        });
+
+    }
+</script>
+</html>

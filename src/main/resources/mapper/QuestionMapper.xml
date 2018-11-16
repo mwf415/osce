@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.QuestionMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.Question">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+  </resultMap>
+</mapper>
