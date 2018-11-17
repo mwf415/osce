@@ -24,17 +24,17 @@
 
 
   <!-- - 查询出某一个考试的所有人-->
-  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultMap="java.lang.String">
+  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultMap="com.youyicn.model">
      select user_name from osce_sort where exam_id = #{exam_id}
   </select>
   <!-- 查询未报名的学生-->
-  <select id="getUnInUserByExamId" parameterType="java.lang.Integer" resultMap="java.lang.String">
-     select real_name from osce_exam_user where exam_id=  #{exam_id} and  user_id not in
+  <select id="getUnInUserByExamId" parameterType="java.lang.Integer" resultMap="com.youyicn.model">
+     select real_name as userName , from osce_exam_user where exam_id=  #{exam_id} and  user_id not in
        (select user_id from osce_sort where exam_id =  #{exam_id});
   </select>
 
   <!-- 考站的动态查询，查看未参加考试的-->
-  <select id="getUserByExamId" parameterType="hashmap" resultMap="java.lang.String">
+  <select id="getUserByExamId" parameterType="hashmap" resultMap="com.youyicn.model">
       select real_name from osce_exam_station_record where exam_id = #{examId} and station_id= #{stationId} and state = #{state}
   </select>
 
