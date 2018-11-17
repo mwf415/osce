@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("osceSortService")
 @Transactional
@@ -51,5 +53,31 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 	        return osceSorts;
 	}
 
+    @Override
+    public List<String> getInUserByExamId(Integer examId) {
+        return osceSortMapper.getInUserByExamId(examId);
+    }
+
+    @Override
+    public List<String> getUnInUserByExamId(Integer examId) {
+        return osceSortMapper.getUnInUserByExamId(examId);
+    }
+
+    /**
+     * 根据入参查询对应的学生，主要功能事查看站点的数据
+     * @param examId
+     * @param stationId
+     * @param state
+     * @return
+     */
+    @Override
+    public List<String> getUserByExamId(Integer examId, Integer stationId, Integer state) {
+
+        Map<String,Integer> parm = new HashMap<>();
+        parm.put("examId" ,examId);
+        parm.put("stationId" ,stationId);
+        parm.put("state" ,state);
+        return osceSortMapper.getUserByExamId(parm);
+    }
 
 }

@@ -5,19 +5,38 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="sortId" jdbcType="INTEGER" property="sortid" />
-    <result column="examId" jdbcType="INTEGER" property="examid" />
-    <result column="userId" jdbcType="INTEGER" property="userid" />
-    <result column="userName" jdbcType="VARCHAR" property="username" />
-    <result column="groupId" jdbcType="INTEGER" property="groupid" />
-    <result column="sortNo" jdbcType="INTEGER" property="sortno" />
-    <result column="stationNum" jdbcType="INTEGER" property="stationnum" />
+    <id column="sortId" jdbcType="INTEGER" property="sort_id" />
+    <result column="examId" jdbcType="INTEGER" property="exam_id" />
+    <result column="userId" jdbcType="INTEGER" property="user_id" />
+    <result column="userName" jdbcType="VARCHAR" property="user_name" />
+    <result column="groupId" jdbcType="INTEGER" property="group_id" />
+    <result column="sortNo" jdbcType="INTEGER" property="sort_no" />
+    <result column="stationNum" jdbcType="INTEGER" property="station_num" />
     <result column="finished" jdbcType="INTEGER" property="finished" />
     <result column="unfinished" jdbcType="INTEGER" property="unfinished" />
   </resultMap>
 
 
+  <!-- 获取某一考站最大的添加的最大的人 -->
   <select id="getMaxOsceSort" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-     select *  from osce_sort where examId = #{examId} order by   sortId desc limit 1
+     select *  from osce_sort where exam_id = #{exam_id} order by   sort_id desc limit 1
   </select>
+
+
+  <!-- - 查询出某一个考试的所有人-->
+  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultMap="java.lang.String">
+     select user_name from osce_sort where exam_id = #{exam_id}
+  </select>
+  <!-- 查询未报名的学生-->
+  <select id="getUnInUserByExamId" parameterType="java.lang.Integer" resultMap="java.lang.String">
+     select real_name from osce_exam_user where exam_id=  #{exam_id} and  user_id not in
+       (select user_id from osce_sort where exam_id =  #{exam_id});
+  </select>
+
+  <!-- 考站的动态查询，查看未参加考试的-->
+  <select id="getUserByExamId" parameterType="hashmap" resultMap="java.lang.String">
+      select real_name from osce_exam_station_record where exam_id = #{examId} and station_id= #{stationId} and state = #{state}
+  </select>
+
+
 </mapper>

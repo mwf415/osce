@@ -10,34 +10,34 @@ public class OsceSort {
      * 编号Id
      */
     @Id
-    @Column(name = "sortId")
+    @Column(name = "sort_id")
     private Integer sortid;
 
-    @Column(name = "examId")
+    @Column(name = "exam_id")
     private Integer examid;
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private String userid;
 
-    @Column(name = "userName")
+    @Column(name = "user_name")
     private String username;
 
     /**
      * 分组，根据站点分组
      */
-    @Column(name = "groupId")
+    @Column(name = "group_id")
     private Integer groupid;
 
     /**
      * 第几组的第几人
      */
-    @Column(name = "sortNo")
+    @Column(name = "sort_no")
     private Integer sortno;
 
     /**
      * 总站点数
      */
-    @Column(name = "stationNum")
+    @Column(name = "station_num")
     private Integer stationnum;
 
     /**
@@ -51,9 +51,9 @@ public class OsceSort {
     private Integer unfinished;
 
     /**
-     * 获取编号Id
+     * 获取编号_id
      *
-     * @return sortId - 编号Id
+     * @return sort_id - 编号Id
      */
     public Integer getSortid() {
         return sortid;
