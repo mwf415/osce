@@ -1,13 +1,16 @@
 package com.youyicn.service.impl;
 
 import com.youyicn.mapper.OsceSortMapper;
+import com.youyicn.model.ExamStationRecord;
 import com.youyicn.model.OsceSort;
+import com.youyicn.model.UserParm;
 import com.youyicn.service.OsceSortService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,8 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 
     @Override
     public List<String> getInUserByExamId(Integer examId) {
+
+
         return osceSortMapper.getInUserByExamId(examId);
     }
 
@@ -77,7 +82,53 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
         parm.put("examId" ,examId);
         parm.put("stationId" ,stationId);
         parm.put("state" ,state);
-        return osceSortMapper.getUserByExamId(parm);
+         osceSortMapper.getUserByExamId(parm);
+        return  null;
+    }
+
+
+    public List<UserParm> getUserDetailService(Integer examId){
+        List<ExamStationRecord> userDetailList = osceSortMapper.getUserDetailByExamId(examId);
+        Map<String , List<ExamStationRecord>> userExamStationMap = new HashMap<>();
+        List<String> userIds = new ArrayList<>();
+
+        if(userDetailList.size()>0){
+        for (ExamStationRecord examStationRecord : userDetailList) {
+
+            String userId = examStationRecord.getUserId();
+            userIds.add(userId);
+            if(userExamStationMap.containsKey(userId)){
+                List<ExamStationRecord> examStationRecords = userExamStationMap.get(userId);
+                examStationRecords.add(examStationRecord);
+            }else {
+                List<ExamStationRecord> examStationRecords = new ArrayList<>();
+                examStationRecords.add(examStationRecord);
+                userExamStationMap.put(userId,examStationRecords);
+            }
+        }}
+
+        List<UserParm> userParms = new ArrayList<>();
+        for (String userId : userIds) {
+            List<ExamStationRecord> examStationRecords = userExamStationMap.get(userId);
+            UserParm userParm = new UserParm();
+            userParm.setUserId(userId);
+            StringBuffer finished = new StringBuffer();
+            StringBuffer unfinished = new StringBuffer();
+            for (ExamStationRecord examStationRecord : examStationRecords) {
+                Byte state = examStationRecord.getState();
+                switch (state){
+                    case 0:
+                        unfinished=unfinished.append(examStationRecord.getStationName()+";");
+                    case 1:
+                        finished = finished.append(examStationRecord.getStationName()+"");
+                }
+                userParm.setUserName(examStationRecord.getRealName());
+            }
+            userParm.setFinished(finished.toString());
+            userParm.setUnFinished(unfinished.toString());
+            userParms.add(userParm);
+        }
+return userParms;
     }
 
 }

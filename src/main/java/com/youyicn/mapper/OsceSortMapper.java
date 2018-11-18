@@ -1,5 +1,6 @@
 package com.youyicn.mapper;
 
+import com.youyicn.model.ExamStationRecord;
 import org.apache.ibatis.annotations.Param;
 
 import com.youyicn.model.OsceSort;
@@ -13,6 +14,8 @@ public interface OsceSortMapper extends MyMapper<OsceSort> {
     List<String > getInUserByExamId (@Param( "exam_id") Integer examId);
 
     List<String > getUnInUserByExamId(@Param( "exam_id") Integer examId);
+    // 查詢某一考试所有参加考生的学员的详细情况
+    List<ExamStationRecord > getUserDetailByExamId(@Param( "exam_id") Integer examId);
 
-    List<String >  getUserByExamId (Map<String,Integer> parm);
+    List<ExamStationRecord>  getUserByExamId (Map<String,Integer> parm);
 }

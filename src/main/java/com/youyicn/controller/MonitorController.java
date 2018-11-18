@@ -1,5 +1,6 @@
 package com.youyicn.controller;
 
+import com.youyicn.model.UserParm;
 import com.youyicn.service.OsceSortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +17,18 @@ public class MonitorController {
 
     @Resource
     private OsceSortService osceSortService;
+//
+//    @RequestMapping("userIn")
+//    @ResponseBody
+//    public Map<String,Object> userIn(@RequestParam Integer examId ){
+//        Map<String ,Object> resultMap = new HashMap<>();
+//        List<Str> inUserList =  osceSortService.getInUserByExamId(examId);
+//        resultMap.put("date",inUserList);
+//        return resultMap;
+//    }
 
-    @RequestMapping("userIn")
-    @ResponseBody
-    public Map<String,Object> userIn(@RequestParam Integer examId ){
-        Map<String ,Object> resultMap = new HashMap<>();
-        List<String> inUserList =  osceSortService.getInUserByExamId(examId);
-        resultMap.put("date",inUserList);
-        return resultMap;
+    public void a(Integer examId){
+        List<UserParm> userDetailService = osceSortService.getUserDetailService(examId);
     }
     @RequestMapping("userIn")
     public Map<String,Object> userOut(@RequestParam Integer examId ){

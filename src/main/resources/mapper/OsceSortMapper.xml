@@ -33,6 +33,11 @@
        (select user_id from osce_sort where exam_id =  #{exam_id});
   </select>
 
+  <!-- 查询所有的报名学生的信息  -->
+  <select id="getUserDetailByExamId" parameterType="java.lang.Integer" resultMap="com.youyicn.model">
+     select * from osce_exam_station_record where user_id in (select user_id from osce_sort where exam_id =  #{exam_id});
+  </select>
+
   <!-- 考站的动态查询，查看未参加考试的-->
   <select id="getUserByExamId" parameterType="hashmap" resultMap="com.youyicn.model">
       select real_name from osce_exam_station_record where exam_id = #{examId} and station_id= #{stationId} and state = #{state}
