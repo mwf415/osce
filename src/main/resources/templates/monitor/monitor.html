@@ -94,6 +94,7 @@
 <!-- end #content -->
 
 <script type="text/javascript">
+    var examIdAll ;
     $(".checkall").click(function () {
         var check = $(this).prop("checked");
         $(this).parents('table').find(".checkchild").prop("checked", check);
@@ -104,12 +105,12 @@
     );
     function getFinishedUser() {
             //封装请求参数
-            var param =  getQueryCondition(data);
+
             $.ajax({
                 type: "GET",
                 url: '/monitor/finishedUser',
                 cache: false,  //禁用缓存
-                data: param,    //传入已封装的参数
+                data: {"examId":examIdAll},    //传入已封装的参数
                 dataType: "json",
                 success: function (result) {
                     returnData.draw = result.draw;
@@ -249,6 +250,7 @@
     //封装查询参数
     function getQueryCondition(data) {
         var param = {};
+        examIdAll = 33;
         //组装排序参数
         param.examId = 33;// data.examId;//
         return param;
