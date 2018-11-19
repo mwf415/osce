@@ -13,9 +13,5 @@ public interface OsceSortMapper extends MyMapper<OsceSort> {
     OsceSort getMaxOsceSort(@Param("exam_id") Integer examId);
     List<String > getInUserByExamId (@Param( "exam_id") Integer examId);
 
-    List<String > getUnInUserByExamId(@Param( "exam_id") Integer examId);
-    // 查詢某一考试所有参加考生的学员的详细情况
-    List<ExamStationRecord > getUserDetailByExamId(@Param( "exam_id") Integer examId);
-
     List<ExamStationRecord>  getUserByExamId (Map<String,Integer> parm);
 }

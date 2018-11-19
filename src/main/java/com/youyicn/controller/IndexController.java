@@ -121,28 +121,28 @@ public class IndexController {
      * 动态监控页面
      * @return
      */
-    @RequestMapping("/allMonitor")
+    @RequestMapping("/allMonitorPage")
     public String allMonitor(Model model){
         model.addAttribute("topTitle","全院监控");
-        return "monitor/monitor";
+        return "/monitor/monitor";
     }
 
-    @RequestMapping("/baseMonitor")
+    @RequestMapping("/baseMonitorPage")
     public String baseMonitor(Model model){
         model.addAttribute("topTitle","基地监控");
-        return "monitor/monitor";
+        return "/monitor/monitor";
     }
 
-    @RequestMapping("/roomMonitor")
+    @RequestMapping("/roomMonitorPage")
     public String roomMonitor(Model model){
         model.addAttribute("topTitle","科室监控");
-        return "monitor/monitor";
+        return "/monitor/monitor";
     }
 
-    @RequestMapping("/stationMonitor")
+    @RequestMapping("/stationMonitorPage")
     public String stationMonitor(Model model){
         model.addAttribute("topTitle","站点监控");
-        return "monitor/monitor";
+        return "/monitor/monitor";
     }
 
 
@@ -152,7 +152,7 @@ public class IndexController {
     	List<Room> rooms = roomService.selectAll();
     	model.addAttribute("bases", bases);
     	model.addAttribute("rooms", rooms);
-        return "question/questions";
+        return "/question/questions";
     }
 
     /**
@@ -177,7 +177,7 @@ public class IndexController {
      * @param model
      * @return
      */
-    @RequestMapping(value={"/examsDetail",""})
+    @RequestMapping(value={"/examsDetail"})
     public String examsDetail(Model model){
         Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
         List<Role> roles = roleService.queryRoleListByUserId(userId);
