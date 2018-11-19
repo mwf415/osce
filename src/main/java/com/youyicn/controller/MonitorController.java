@@ -19,6 +19,12 @@ public class MonitorController {
     @Resource
     private OsceSortService osceSortService;
 
+    /**
+     * 正在考试的学生
+     * @param draw
+     * @param examId
+     * @return
+     */
     @RequestMapping("/userIn")
     @ResponseBody
     public Map<String,Object> userIn(String draw,@RequestParam Integer examId ){
@@ -31,6 +37,12 @@ public class MonitorController {
         return map;
     }
 
+    /**
+     * 没有报名的人员
+     * @param draw
+     * @param examId
+     * @return
+     */
     @RequestMapping("/userOut")
     @ResponseBody
     public Map<String,Object> userOut(String draw,@RequestParam Integer examId ){
@@ -43,13 +55,17 @@ public class MonitorController {
         return map;
     }
 
-
+    /**
+     * 已经完成考试的人员
+     * @param examId
+     * @return
+     */
     @RequestMapping("/finishedUser")
     @ResponseBody
     public Map<String,Object> getFinishedUser(Integer examId){
         Map<String ,Object> map = new HashMap<>();
        String finishedUser = osceSortService.getFinishedUser(examId);
-        map.put("finishedUser",finishedUser);
+        map.put("users",finishedUser);
         return map;
     }
     @RequestMapping("/userDetail")
