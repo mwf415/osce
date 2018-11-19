@@ -113,7 +113,6 @@
                 data: {"examId":examIdAll},    //传入已封装的参数
                 dataType: "json",
                 success: function (result) {
-                    returnData.draw = result.draw;
                     var userParm = result.users;
                     $("finishedUser").text(userParm);
                 },
