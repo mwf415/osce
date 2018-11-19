@@ -19,6 +19,17 @@ public class MonitorController {
     @Resource
     private OsceSortService osceSortService;
 
+    @RequestMapping("/index")
+    public String index (String draw ){
+
+
+
+        return "/monitor/monitor";
+    }
+
+
+
+
     /**
      * 正在考试的学生
      * @param draw

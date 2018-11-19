@@ -124,25 +124,25 @@ public class IndexController {
     @RequestMapping("/allMonitorPage")
     public String allMonitor(Model model){
         model.addAttribute("topTitle","全院监控");
-        return "/monitor/monitor";
+        return "/monitor/index";
     }
 
     @RequestMapping("/baseMonitorPage")
     public String baseMonitor(Model model){
         model.addAttribute("topTitle","基地监控");
-        return "/monitor/monitor";
+        return "/monitor/index";
     }
 
     @RequestMapping("/roomMonitorPage")
     public String roomMonitor(Model model){
         model.addAttribute("topTitle","科室监控");
-        return "/monitor/monitor";
+        return "/monitor/index";
     }
 
     @RequestMapping("/stationMonitorPage")
     public String stationMonitor(Model model){
         model.addAttribute("topTitle","站点监控");
-        return "/monitor/monitor";
+        return "/monitor/index";
     }
 
 
