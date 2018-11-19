@@ -16,4 +16,16 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="system_id" jdbcType="INTEGER" property="systemId" />
   </resultMap>
+
+
+  <!-- 查询未报名的学生-->
+  <select id="getUnInUserByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from osce_exam_user where exam_id=  #{exam_id} and  user_id not in
+    (select user_id from osce_sort where exam_id =  #{exam_id});
+  </select>
+
+  <!-- 查询未报名的学生-->
+  <select id="getFinishedUserByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from osce_exam_user where exam_id=  #{exam_id} and  state = 1 ;
+  </select>
 </mapper>
