@@ -27,8 +27,7 @@
 	<!-- end breadcrumb -->
 	<!-- begin page-header -->
 	<h1 class="page-header">
-		安排考试
-		<small></small>
+			${topTitle!}
 	</h1>
 	<!-- end page-header -->
 
@@ -241,7 +240,7 @@
                  {
  					"data":"id",
  					"render": function ( data, type, full, meta ) {
-					     var btn= "<a href='/monitor/index?examId="+data+"' class='btn btn-inverse'>动态监控</a>";
+					     var btn= "<a href='/monitor/index?examId="+data+"' target='_blank' class='btn btn-inverse'>动态监控</a>";
  					     return btn;
  				    }
                  }

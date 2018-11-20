@@ -26,7 +26,7 @@ public class MonitorController {
     private ExamService examService;
 
     @RequestMapping("/index")
-    public String index (Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam Integer examId ){
+    public String index (Model model,@RequestParam Integer examId ){
         List<UserParm> inUserList =  osceSortService.getInUserByExamId(examId); // 正在考试的学生
         String toInUser =osceSortService.toInExamByExamId(examId);//候考的学生
         Exam exam = osceSortService.getExamByExamId(examId);
@@ -50,13 +50,20 @@ public class MonitorController {
      * @return
      */
 
-    @RequestMapping("/userDetail")
-    public Map<String,Object> userDetalOut(@RequestParam Integer examId ){
-        Map<String ,Object > resultMap = new HashMap<>();
-//        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
-        resultMap.put("date",null);
-        return resultMap;
-    }
+//    @RequestMapping("/station")
+//    public String userDetalOut(Model model, @RequestParam Integer examId ,@RequestParam Integer stationId ){
+//        String outUserList =  osceSortService.getUnInUserByExamId(examId); // 没有报考的学生
+//        String finishedUser = osceSortService.getFinishedUser(examId); // 已经完成的学生
+//        Exam exam = osceSortService.getExamByExamId(examId);
+//        model.addAttribute("inUserList", inUserList);
+//        model.addAttribute("outUserList", outUserList);
+//        model.addAttribute("finishedUser", finishedUser);
+//        model.addAttribute("toInUser", toInUser);
+//        model.addAttribute("exam", exam);
+////        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
+//
+//        return resultMap;
+//    }
 
 
 }

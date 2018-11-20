@@ -27,6 +27,8 @@ public class BigShowController {
 	
 	@RequestMapping("bigShowController")
 	private String index(Model model,Integer examId){
+
+
 		List<BigShowVo> bigShowVos = new ArrayList<>();
 		if(null==examId){
 			model.addAttribute("bigShowVos",bigShowVos);
