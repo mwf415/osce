@@ -1,54 +1,85 @@
-<#include "/common/header.html"/>
-<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-<link href="/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
-<link
-        href="/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet"/>
-<link
-        href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
-<link href="/plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet"/>
-<!-- ================== END PAGE LEVEL STYLE ================== -->
-<!-- ================== BEGIN PAGE LEVEL JS ================== -->
-<script src="/plugins/DataTables/media/js/jquery.dataTables.js"></script>
-<script src="/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
-<script src="/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-<script src="/js/apps.min.js"></script>
-<script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-<script src="/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
-<!-- ================== END PAGE LEVEL JS ================== -->
-<!-- begin #content -->
-<div id="content" class="content">
-    <!-- begin breadcrumb -->
-    <ol class="breadcrumb pull-right">
-        <li>
-            <a href="usersPage">主页</a>
-        </li>
-    </ol>
-    <!-- end breadcrumb -->
-    <!-- begin page-header -->
-    <h1 class="page-header">
-        ${topTitle!}
-        <small></small>
-    </h1>
-    <!-- end page-header -->
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <title>Osce System | Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
 
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <link href="/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+    <link href="/css/style.min.css" rel="stylesheet"/>
+    <link href="/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="/plugins/pace/pace.min.js"></script>
+    <script src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/crossbrowserjs/html5shiv.js"></script>
+    <script src="/crossbrowserjs/respond.min.js"></script>
+    <script src="/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="/plugins/layer/layer.js"></script>
+    <script src="/js/datetime.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    <style>
+        .slide {
+            height: 80%;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+    </style>
+</head>
+<body>
+<h1 class="page-header">
+    ${topTitle!}
+    <small></small>
+</h1>
+<div id="scroll-message">
     <div class="container">
+        <!-- end page-header -->
         <div class="row clearfix">
             <div class="col-md-12 column">
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h4>
-                        已经考完的学生
-                    </h4><p id="finishedUser"></p>
+                <div class="page-header">
+                <h2>
+                   <strong> ${exam.title!}动态监控</strong>
+                </h2>
                 </div>
             </div>
-            <div class="col-md-8 column">
+            <div class="col-md-12 column">
+                <div class="alert alert-info alert-dismissable">
+                    <h3>
+                        <strong> 已经考完的学生</strong>
+                    </h3>
+                    <p>
+                    <h3>${finishedUser!}</h3></p>
+                </div>
+            </div>
+            <div class="col-md-12 column">
                 <div class="page-header">
                     <h3>
                         正在考试的学生
                     </h3>
                 </div>
-                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatableIn">
+                <table class="table table-striped table-bordered" style="font-size:17px;" cellspacing="0"
+                       width="100%">
                     <thead>
                     <tr>
                         <th>
@@ -56,232 +87,94 @@
                         </th>
                         <th>
                             学生编号
+                        </th>
+                        <th>
+                            分组
+                        </th>
+                        <th>
+                            序号
                         </th>
                         <th>
                             已考站点
                         </th>
                         <th>
-                            代考站点
+                            待考站点
                         </th>
                     </tr>
                     </thead>
-                </table>
-            </div>
-            <div class="col-md-4 column">
-                <div class="page-header">
-                    <h3>
-                        未报考学生
-                    </h3>
-                </div>
-                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatableOut">
-                    <thead>
-                    <tr>
-                        <th>
-                            学生姓名
-                        </th>
-                        <th>
-                            学生编号
-                        </th>
-                    </tr>
-                    </thead>
+                    <tbody>
+                    <#if inUserList?? && inUserList?size gt 0>
+                        <#list inUserList as inUser>
+                            <tr>
+                                <td>${inUser.userName!}</td>
+                                <td>${inUser.userId!}</td>
+                                <td>${inUser.groupId!}</td>
+                                <td>${inUser.sortNo!}</td>
+                                <td>${inUser.finished!}</td>
+                                <td>${inUser.unFinished!}</td>
+                            </tr>
+                        </#list>
+                    </#if>
+                    </tbody>
 
                 </table>
+            </div>
+            <div class="col-md-12 column">
+                <div class="alert alert-warning alert-dismissable">
+                    <h3>
+                        <strong>候考的学生</strong>
+                    </h3>
+                    <p>
+                    <h3>${toInUser!}</h3></p>
+                </div>
+            </div>
+            <div class="col-md-12 column">
+                <div class="alert alert-danger alert-dismissable">
+                    <h3>
+                        <strong> 未报考学生</strong>
+                    </h3>
+                    <p><h3>${outUserList!}</h3></p>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-<!-- end #content -->
-
-<script type="text/javascript">
-    var examIdAll ;
-    $(".checkall").click(function () {
-        var check = $(this).prop("checked");
-        $(this).parents('table').find(".checkchild").prop("checked", check);
-    });
-    var table;
-    $(document).ready(
-        inUser(), outUser(),getFinishedUser()
-    );
-    function getFinishedUser() {
-            //封装请求参数
-
-            $.ajax({
-                type: "GET",
-                url: '/monitor/finishedUser',
-                cache: false,  //禁用缓存
-                data: {"examId":examIdAll},    //传入已封装的参数
-                dataType: "json",
-                success: function (result) {
-                    var userParm = result.users;
-                    $("finishedUser").text(userParm);
-                },
-                error: function () {
-                    layer.msg("查询失败");
-                }
-            });
-
-    }
-    function inUser () {
-        table = $('#datatableIn').DataTable({
-            "paging": false,
-            "dom": 'rtlip',
-            "ordering": false,
-            "searching": false,
-            "sPaginationType": "full_numbers",
-            "pageLength": 25,
-            "serverSide": true,//开启服务器模式，使用服务器端处理配置datatable
-            "processing": true,//开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
-            "language": {
-                "Processing": "正在加载中......",
-                "zeroRecords": "对不起，查询不到相关数据！",
-                "emptyTable": "表中无数据存在！",
-                "lengthMenu": "显示 _MENU_ 条记录",
-                "infoFiltered": "数据表中共为 _MAX_ 条记录",
-                "info": '_START_ 到 _END_ 条,共 _TOTAL_ 条',
-                "paginate": {
-                    "first": "首页",
-                    "previous": "上一页",
-                    "next": "下一页",
-                    "last": "末页"
-                }
-            },
-            ajax: function (data, callback, settings) {
-                //封装请求参数
-                var param =  getQueryCondition(data);
-                $.ajax({
-                    type: "GET",
-                    url: '/monitor/userIn',
-                    cache: false,  //禁用缓存
-                    data: param,    //传入已封装的参数
-                    dataType: "json",
-                    success: function (result) {
-                        //封装返回数据  如果参数相同，可以直接返回result ，此处作为学习，先这么写了。
-                        var returnData = {};
-                        returnData.draw = result.draw;// 这里直接自行返回了draw计数器,应该由后台返回
-                        returnData.recordsTotal = result.recordsTotal;//总记录数
-                        returnData.recordsFiltered =  result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果
-                        returnData.data =result.data;
-                        //调用 DataTables 提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                        callback(returnData);
-                    },
-                    error: function () {
-                        layer.msg("查询失败");
-                    }
-                });
-            },
-            "columns": [
-                {"data": "userName"},
-                {"data": "userId"},
-                {"data": "finished"},
-                {"data": "unFinished"}
-
-            ]
-
-        });
-    }
-
-    function outUser () {
-        table = $('#datatableOut').DataTable({
-            "paging": false,
-            "dom": 'rtlip',
-            "ordering": false,
-            "searching": false,
-            "sPaginationType": "full_numbers",
-            "pageLength": 25,
-            "serverSide": true,//开启服务器模式，使用服务器端处理配置datatable
-            "processing": true,//开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
-            "language": {
-                "Processing": "正在加载中......",
-                "zeroRecords": "对不起，查询不到相关数据！",
-                "emptyTable": "表中无数据存在！",
-                "lengthMenu": "显示 _MENU_ 条记录",
-                "infoFiltered": "数据表中共为 _MAX_ 条记录",
-                "info": '_START_ 到 _END_ 条,共 _TOTAL_ 条',
-                "paginate": {
-                    "first": "首页",
-                    "previous": "上一页",
-                    "next": "下一页",
-                    "last": "末页"
-                }
-            },
-            ajax: function (data, callback, settings) {
-                //封装请求参数
-                var param =  getQueryCondition(data);
-                $.ajax({
-                    type: "GET",
-                    url: '/monitor/userOut',
-                    cache: false,  //禁用缓存
-                    data: param,    //传入已封装的参数
-                    dataType: "json",
-                    success: function (result) {
-                        //封装返回数据  如果参数相同，可以直接返回result ，此处作为学习，先这么写了。
-                        var returnData = {};
-                        returnData.draw = result.draw;// 这里直接自行返回了draw计数器,应该由后台返回
-                        returnData.recordsTotal = result.recordsTotal;//总记录数
-                        returnData.recordsFiltered =  result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果
-                        returnData.data =result.data;
-                        //调用 DataTables 提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                        callback(returnData);
-                    },
-                    error: function () {
-                        layer.msg("查询失败");
-                    }
-                });
-            },
-            "columns": [
-                {"data": "userName"},
-                {"data": "userId"}
-
-            ]
-
-        });
-    }
-
-
-
-    function search() {
-        table.ajax.reload();
-    }
-
-    //封装查询参数
-    function getQueryCondition(data) {
-        var param = {};
-        examIdAll = 33;
-        //组装排序参数
-        param.examId = 33;// data.examId;//
-        return param;
-    }
+<script>
+//    setTimeout(function () {
+//        var table = document.getElementById("scroll-message");
+//        var timer = null;
+//        table.scrollTop = 0;
+//        table.innerHTML += table.innerHTML;
 //
-//    function getQueryCondition(data){
-//        var param = {};
-//        //组装排序参数
-//        param.name = $("#name-search").val();//查询条件
-//        //组装分页参数
-//        param.start = data.start;
-//        param.length = data.length;
-//        param.draw = data.draw;
-//        return param;
-//    }
+//        function play() {
+//            clearInterval(timer);
+//            timer = setInterval(function () {
+//                table.scrollTop++;
+//                if (table.scrollTop >= table.scrollHeight / 2) {
+//                    table.scrollTop = 0;
+//                }
+//            }, 100);
+//        }
 //
-//
-//    function getLocalTime(nS) {
-//        return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/, ' ');
-//    }
-//
-
-    $('.form_datetime').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language: 'zh-CN',
-        startView: 2, minView: 2,
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        forceParse: 1
-    });
+//        setTimeout(play, 500);
+//        table.onmouseover = function () {
+//            clearInterval(timer)
+//        };
+//        table.onmouseout = play;
+//    }, 0)
 
 </script>
-<#include "/common/footer.html"/>
+<script>
+    var myVar = setInterval(
+        function () {
+            refrestView()
+        }, 10000
+    );
+
+    function refrestView() {
+        window.location.reload();
+    }
+</script>
+
+</body>
+</html>
