@@ -1,5 +1,6 @@
 package com.youyicn.service.impl;
 
+import com.youyicn.mapper.ExamMapper;
 import com.youyicn.mapper.ExamStationRecordMapper;
 import com.youyicn.mapper.ExamUserMapper;
 import com.youyicn.mapper.OsceSortMapper;
@@ -25,6 +26,9 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 
     @Resource
     private ExamUserMapper examUserMapper;
+
+    @Resource
+    private ExamMapper examMapper;
 
     @Override
     public OsceSort getByExamIdAndUserId(Integer examId, String userId) {
@@ -61,51 +65,30 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 
     /**
      * 查询未报名的同学
-     * @param examId
-     * @return
-     */
-    @Override
-    public List<UserParm> getUnInUserByExamId(Integer examId) {
-        List<ExamUser> unInUserList= examUserMapper.getUnInUserByExamId(examId);
-        List<UserParm> userParms = new ArrayList<>();
-        if(unInUserList.size()>0){
-            for (ExamUser examUser : unInUserList) {
-                UserParm userParm = new UserParm();
-                userParm.setUserId(examUser.getUserId());
-                userParm.setUserName(examUser.getRealName());
-                userParm.setFinished("");
-                userParm.setUnFinished("");
-                userParms.add(userParm);
-            }
-        }
-        return userParms;
-    }
-
-    /**
-     * 根据入参查询对应的学生，主要功能事查看站点的数据
      *
      * @param examId
-     * @param stationId
-     * @param state
      * @return
      */
     @Override
-    public List<String> getUserByExamId(Integer examId, Integer stationId, Integer state) {
-
-        Map<String, Integer> parm = new HashMap<>();
-        parm.put("examId", examId);
-        parm.put("stationId", stationId);
-        parm.put("state", state);
-        osceSortMapper.getUserByExamId(parm);
-        return null;
+    public String getUnInUserByExamId(Integer examId) {
+        List<ExamUser> unInUserList = examUserMapper.getUnInUserByExamId(examId);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (unInUserList.size() > 0) {
+            for (ExamUser examUser : unInUserList) {
+                stringBuilder.append(examUser.getRealName() + ":" + examUser.getUserId() + ";    ");
+            }
+        }
+        return stringBuilder.toString();
     }
 
 
-    public List<UserParm> getUserDetailService(Integer examId) {
-        List<ExamStationRecord> userDetailList = examStationRecordMapper.getUserDetailByExamId(examId);
+    public List<UserParm> getInUserByExamId(Integer examId) {
+        /**
+         * 查询所有站点信息
+         */
+        List<ExamStationRecord> userDetailList = examStationRecordMapper.getInUserByExamId(examId);
         Map<String, List<ExamStationRecord>> userExamStationMap = new HashMap<>();
         Set<String> userIds = new HashSet<>();
-
         if (userDetailList.size() > 0) {
             for (ExamStationRecord examStationRecord : userDetailList) {
 
@@ -122,11 +105,27 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
             }
         }
 
+        /**
+         * 查询排序信息
+         */
+        List<OsceSort> osceSorts = osceSortMapper.getInUserByExamId(examId);
+        Map<String, OsceSort> osceSortMap = new HashMap<>();
+        for (OsceSort osceSort : osceSorts) {
+            String userId = osceSort.getUserid();
+            osceSortMap.put(userId, osceSort);
+        }
+
         List<UserParm> userParms = new ArrayList<>();
         for (String userId : userIds) {
+            OsceSort osceSort = osceSortMap.get(userId);
+
             List<ExamStationRecord> examStationRecords = userExamStationMap.get(userId);
             UserParm userParm = new UserParm();
             userParm.setUserId(userId);
+            if (null != osceSort) {
+                userParm.setGroupId(osceSort.getGroupid());
+                userParm.setSortNo(osceSort.getSortno());
+            }
             StringBuffer finished = new StringBuffer();
             StringBuffer unfinished = new StringBuffer();
             for (ExamStationRecord examStationRecord : examStationRecords) {
@@ -134,10 +133,10 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
                 userParm.setUserName(examStationRecord.getRealName());
                 switch (state) {
                     case 0:
-                        unfinished = unfinished.append(examStationRecord.getStationName() + ";");
+                        unfinished = unfinished.append(examStationRecord.getStationName() + ";   ");
                         continue;
                     case 1:
-                        finished = finished.append(examStationRecord.getStationName() + "");
+                        finished = finished.append(examStationRecord.getStationName() + ":   ");
                         continue;
                 }
 
@@ -151,19 +150,43 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 
     /**
      * 查找完成的学员
+     *
      * @param examId
      * @return
      */
     @Override
-    public String getFinishedUser (Integer examId){
+    public String getFinishedUser(Integer examId) {
         StringBuilder stringBuilder = new StringBuilder();
         List<ExamUser> finishedUsers = examUserMapper.getFinishedUserByExamId(examId);
-        if(finishedUsers.size()>0){
+        if (finishedUsers.size() > 0) {
             for (ExamUser finishedUser : finishedUsers) {
-                stringBuilder.append(finishedUser.getRealName()+":"+finishedUser.getUserId()+";");
+                stringBuilder.append(finishedUser.getRealName() + ":" + finishedUser.getUserId() + ";    ");
             }
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 候考人员
+     * @param examId
+     * @return
+     */
+    @Override
+    public String toInExamByExamId(Integer examId) {
+        List<OsceSort> osceSorts = osceSortMapper.toBeInUserByExamId(examId);
+        StringBuilder stringBuilder = new StringBuilder();
+        if(null!=osceSorts){
+            for (OsceSort osceSort : osceSorts) {
+                stringBuilder.append(osceSort.getUsername()+":"+osceSort.getUserid()+";    ");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public Exam getExamByExamId(Integer examId) {
+        return examMapper.selectByPrimaryKey(examId);
     }
 
 }

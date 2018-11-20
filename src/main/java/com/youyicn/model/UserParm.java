@@ -5,6 +5,8 @@ public class UserParm {
     private String userId;
     private String finished;// 已经完成的考站
     private String unFinished;// 未完成的考站
+    private Integer groupId; // 分组Id
+    private Integer sortNo;// 排序号
 
     @Override
     public String toString() {
@@ -13,7 +15,25 @@ public class UserParm {
                 ", userId='" + userId + '\'' +
                 ", finished='" + finished + '\'' +
                 ", unFinished='" + unFinished + '\'' +
+                ", groupId=" + groupId +
+                ", sortNo=" + sortNo +
                 '}';
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public Integer getSortNo() {
+        return sortNo;
+    }
+
+    public void setSortNo(Integer sortNo) {
+        this.sortNo = sortNo;
     }
 
     public String getUserId() {

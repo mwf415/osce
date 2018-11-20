@@ -11,7 +11,13 @@ import java.util.Map;
 
 public interface OsceSortMapper extends MyMapper<OsceSort> {
     OsceSort getMaxOsceSort(@Param("exam_id") Integer examId);
-    List<String > getInUserByExamId (@Param( "exam_id") Integer examId);
 
-    List<ExamStationRecord>  getUserByExamId (Map<String,Integer> parm);
+    List<OsceSort> getInUserByExamId (@Param( "exam_id") Integer examId); // 查询出某一个考试的所有人
+    /**
+     * c查询候考的人
+     */
+    List<OsceSort> toBeInUserByExamId (@Param("exam_id")Integer examId);
+
+
+
 }

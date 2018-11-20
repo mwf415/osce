@@ -26,7 +26,7 @@ public class BigShowController {
     private OsceSortService osceSortService;
 	
 	@RequestMapping("bigShowController")
-	private String index(Model model,HttpServletRequest request,HttpServletResponse response,Integer examId){
+	private String index(Model model,Integer examId){
 		List<BigShowVo> bigShowVos = new ArrayList<>();
 		if(null==examId){
 			model.addAttribute("bigShowVos",bigShowVos);
