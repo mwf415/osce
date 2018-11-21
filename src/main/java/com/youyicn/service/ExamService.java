@@ -1,5 +1,6 @@
 package com.youyicn.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
@@ -20,5 +21,8 @@ public interface ExamService extends IService<Exam> {
 	List<ExamCompose>  listGetAllComposeWithOutScore(String teacherName);
 	
 	List<ExamCompose> listExamComposeByCondition(String teacherName,Integer examId);
+
+	List<Exam> listTodayExam(Date startTime, Date endTime);
+
 
 }

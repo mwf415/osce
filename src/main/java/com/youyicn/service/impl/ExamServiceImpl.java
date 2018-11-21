@@ -173,6 +173,16 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
 	}
 
 	@Override
+	public List<Exam> listTodayExam(Date startTime, Date endTime) {
+		Example example = new Example(ExamCompose.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andGreaterThan("start_time", startTime);
+		criteria.andLessThan("end_time", endTime);
+		List<Exam> examList = examMapper.selectByExample(example);
+		return examList;
+	}
+
+	@Override
 	public List<ExamCompose> listGetAllComposeWithOutScore(String teacherName) {
 		Map<String, Object> condition = Maps.newHashMap();
 		condition.put("teacherName", teacherName);
