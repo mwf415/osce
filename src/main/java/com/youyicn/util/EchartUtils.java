@@ -69,7 +69,7 @@ public class EchartUtils {
     /**
      *  饼图
      */
-    public static GsonOption getPie(String[] types,int[] datas,String title ) {
+    public static GsonOption getPie(String[] types,int[] datas ,String title ) {
 //        String[] types = { "邮件营销", "联盟广告", "视频广告" };
 //        int[] datas = { 120, 132, 101 };
 //        String title = "数据";

@@ -26,23 +26,23 @@ import com.youyicn.service.ExamUserService;
  */
 @Service("examUserService")
 @Transactional
-public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUserService{
+public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUserService {
     @Resource
     private ExamUserMapper examUserMapper;
     @Resource
     private ExamStationRecordMapper examStationRecordMapper;
-    
+
     @Override
     public PageInfo<ExamUser> selectByPage(ExamUser examUser, int start, int length) {
-        int page = start/length+1;
+        int page = start / length + 1;
         Example example = new Example(ExamUser.class);
         example.orderBy("createTime desc");
         Criteria criteria = example.createCriteria();
         criteria.andEqualTo("examId", examUser.getExamId());
-        if(StringUtils.isNotBlank(examUser.getUserId()))
-        	criteria.andEqualTo("userId", examUser.getUserId());
-        if(StringUtils.isNotBlank(examUser.getRealName()))
-        	criteria.andEqualTo("realName", examUser.getRealName());
+        if (StringUtils.isNotBlank(examUser.getUserId()))
+            criteria.andEqualTo("userId", examUser.getUserId());
+        if (StringUtils.isNotBlank(examUser.getRealName()))
+            criteria.andEqualTo("realName", examUser.getRealName());
         criteria.andEqualTo("userType", examUser.getUserType());
         criteria.andEqualTo("state", examUser.getState());
         //分页查询
@@ -51,20 +51,29 @@ public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUs
         return new PageInfo<>(examUserList);
     }
 
-	@Override
-	public void deleteUserRecords(Integer examId, String[] userIds) {
-		//删除考生考试记录
-		Example example = new Example(ExamUser.class);
+    @Override
+    public void deleteUserRecords(Integer examId, String[] userIds) {
+        //删除考生考试记录
+        Example example = new Example(ExamUser.class);
         Criteria criteria = example.createCriteria();
         criteria.andEqualTo("examId", examId);
-    	criteria.andIn("userId", Arrays.asList(userIds));
-    	examUserMapper.deleteByExample(example);
-    	//删除考生相关考站记录
-    	Example example1 = new Example(ExamStationRecord.class);
+        criteria.andIn("userId", Arrays.asList(userIds));
+        examUserMapper.deleteByExample(example);
+        //删除考生相关考站记录
+        Example example1 = new Example(ExamStationRecord.class);
         Criteria criteria1 = example1.createCriteria();
         criteria1.andEqualTo("examId", examId);
         criteria1.andIn("userId", Arrays.asList(userIds));
         examStationRecordMapper.deleteByExample(example1);
-	}
-	
+    }
+
+    @Override
+    public List<ExamUser> selectById(Integer examId) {
+        Example example = new Example(ExamUser.class);
+        Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("examId", examId);
+        List<ExamUser> examUsers = examUserMapper.selectByExample(example);
+        return examUsers;
+    }
+
 }
