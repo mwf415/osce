@@ -114,8 +114,14 @@ public class IndexController {
 
     @RequestMapping("/applyPage")
     public String applyPage(){
-    	return "apply/applys";
+        return "apply/applys";
     }
+
+    @RequestMapping("/applyPage")
+    public String countPage(){
+        return "count/index";
+    }
+
 
     /**
      * 动态监控页面

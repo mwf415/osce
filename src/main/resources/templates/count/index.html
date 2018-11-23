@@ -202,7 +202,7 @@
 
                  $.ajax({
                      type: "GET",
-                     url: 'exams',
+                     url: 'count',
                      cache : false,  //禁用缓存
                      data: param,    //传入已封装的参数
                      dataType: "json",
@@ -240,7 +240,7 @@
                  {
  					"data":"id",
  					"render": function ( data, type, full, meta ) {
-					     var btn= "<a href='/monitor/index?examId="+data+"' target='_blank' class='btn btn-inverse'>动态监控</a>";
+					     var btn= "<a href='/monitor/detail?examId="+data+"' target='_blank' class='btn btn-inverse'>考试统计</a>";
  					     return btn;
  				    }
                  }
