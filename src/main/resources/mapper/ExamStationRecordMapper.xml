@@ -22,7 +22,7 @@
   </resultMap>
 
   <!-- 查询所有的报名学生的信息  -->
-  <select id="getUserDetailByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from osce_exam_station_record where exam_id = #{exam_id} AND user_id in (select user_id from osce_sort where exam_id =  #{exam_id});
+  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from osce_exam_station_record where exam_id = #{exam_id} AND user_id in (select user_id from osce_sort os where os.exam_id =  #{exam_id} AND os.finished != 0 AND os.finished!= os.station_num );
   </select>
 </mapper>

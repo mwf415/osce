@@ -114,8 +114,14 @@ public class IndexController {
 
     @RequestMapping("/applyPage")
     public String applyPage(){
-    	return "apply/applys";
+        return "apply/applys";
     }
+
+    @RequestMapping("/applyPage")
+    public String countPage(){
+        return "count/index";
+    }
+
 
     /**
      * 动态监控页面
@@ -123,12 +129,14 @@ public class IndexController {
      */
     @RequestMapping("/allMonitorPage")
     public String allMonitor(Model model){
+        model= indexSession(model);
         model.addAttribute("topTitle","全院监控");
         return "/monitor/index";
     }
 
     @RequestMapping("/baseMonitorPage")
     public String baseMonitor(Model model){
+        model= indexSession(model);
         model.addAttribute("topTitle","基地监控");
         return "/monitor/index";
     }
@@ -162,14 +170,19 @@ public class IndexController {
      */
     @RequestMapping(value={"/examsPage",""})
     public String examsPage(Model model){
-    	Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
-    	List<Role> roles = roleService.queryRoleListByUserId(userId);
-    	List<Base> bases = baseService.selectAll();
-    	List<Room> rooms = roomService.selectAll();
-    	model.addAttribute("roles", roles);
-    	model.addAttribute("bases", bases);
-    	model.addAttribute("rooms", rooms);
+        model = indexSession(model);
         return "/exam/exams";
+    }
+
+    private Model indexSession(Model model) {
+        Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
+        List<Role> roles = roleService.queryRoleListByUserId(userId);
+        List<Base> bases = baseService.selectAll();
+        List<Room> rooms = roomService.selectAll();
+        model.addAttribute("roles", roles);
+        model.addAttribute("bases", bases);
+        model.addAttribute("rooms", rooms);
+    return  model;
     }
 
     /**
@@ -179,13 +192,7 @@ public class IndexController {
      */
     @RequestMapping(value={"/examsDetail"})
     public String examsDetail(Model model){
-        Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
-        List<Role> roles = roleService.queryRoleListByUserId(userId);
-        List<Base> bases = baseService.selectAll();
-        List<Room> rooms = roomService.selectAll();
-        model.addAttribute("roles", roles);
-        model.addAttribute("bases", bases);
-        model.addAttribute("rooms", rooms);
+        indexSession(model);
         return "/exam/exams_detail";
     }
     @RequestMapping("/basesPage")

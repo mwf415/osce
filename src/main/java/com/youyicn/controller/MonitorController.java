@@ -1,13 +1,17 @@
 package com.youyicn.controller;
 
-import com.youyicn.model.UserParm;
+import com.youyicn.model.*;
+import com.youyicn.service.ExamComposeService;
+import com.youyicn.service.ExamService;
 import com.youyicn.service.OsceSortService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +22,22 @@ public class MonitorController {
 
     @Resource
     private OsceSortService osceSortService;
+    @Resource
+    private ExamService examService;
 
     @RequestMapping("/index")
-    public String index (String draw ){
-
-
-
+    public String index (Model model,@RequestParam Integer examId ){
+        List<UserParm> inUserList =  osceSortService.getInUserByExamId(examId); // 正在考试的学生
+        List<BigShowEntity> toInUser =osceSortService.toInExamByExamId(examId);//候考的学生
+        Exam exam = osceSortService.getExamByExamId(examId);
+        String outUserList =  osceSortService.getUnInUserByExamId(examId); // 没有报考的学生
+        String finishedUser = osceSortService.getFinishedUser(examId); // 已经完成的学生
+        // 候考学生
+        model.addAttribute("inUserList", inUserList);
+        model.addAttribute("outUserList", outUserList);
+        model.addAttribute("finishedUser", finishedUser);
+        model.addAttribute("toInUser", toInUser);
+        model.addAttribute("exam", exam);
         return "/monitor/monitor";
     }
 
@@ -31,61 +45,25 @@ public class MonitorController {
 
 
     /**
-     * 正在考试的学生
-     * @param draw
-     * @param examId
-     * @return
-     */
-    @RequestMapping("/userIn")
-    @ResponseBody
-    public Map<String,Object> userIn(String draw,@RequestParam Integer examId ){
-        Map<String ,Object> map = new HashMap<>();
-        List<UserParm> inUserList =  osceSortService.getUserDetailService(examId);
-        map.put("draw",draw);
-        map.put("recordsTotal",inUserList.size());
-        map.put("recordsFiltered",inUserList.size());
-        map.put("data", inUserList);
-        return map;
-    }
-
-    /**
-     * 没有报名的人员
-     * @param draw
-     * @param examId
-     * @return
-     */
-    @RequestMapping("/userOut")
-    @ResponseBody
-    public Map<String,Object> userOut(String draw,@RequestParam Integer examId ){
-        Map<String ,Object> map = new HashMap<>();
-        List<UserParm> inUserList =  osceSortService.getUnInUserByExamId(examId);
-        map.put("draw",draw);
-        map.put("recordsTotal",inUserList.size());
-        map.put("recordsFiltered",inUserList.size());
-        map.put("data", inUserList);
-        return map;
-    }
-
-    /**
      * 已经完成考试的人员
      * @param examId
      * @return
      */
-    @RequestMapping("/finishedUser")
-    @ResponseBody
-    public Map<String,Object> getFinishedUser(Integer examId){
-        Map<String ,Object> map = new HashMap<>();
-       String finishedUser = osceSortService.getFinishedUser(examId);
-        map.put("users",finishedUser);
-        return map;
-    }
-    @RequestMapping("/userDetail")
-    public Map<String,Object> userDetalOut(@RequestParam Integer examId ){
-        Map<String ,Object > resultMap = new HashMap<>();
-//        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
-        resultMap.put("date",null);
-        return resultMap;
-    }
+
+//    @RequestMapping("/station")
+//    public String userDetalOut(Model model, @RequestParam Integer examId ,@RequestParam Integer stationId ){
+//        String outUserList =  osceSortService.getUnInUserByExamId(examId); // 没有报考的学生
+//        String finishedUser = osceSortService.getFinishedUser(examId); // 已经完成的学生
+//        Exam exam = osceSortService.getExamByExamId(examId);
+//        model.addAttribute("inUserList", inUserList);
+//        model.addAttribute("outUserList", outUserList);
+//        model.addAttribute("finishedUser", finishedUser);
+//        model.addAttribute("toInUser", toInUser);
+//        model.addAttribute("exam", exam);
+////        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
+//
+//        return resultMap;
+//    }
 
 
 }

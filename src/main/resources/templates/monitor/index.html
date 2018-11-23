@@ -27,8 +27,7 @@
 	<!-- end breadcrumb -->
 	<!-- begin page-header -->
 	<h1 class="page-header">
-		安排考试
-		<small></small>
+			${topTitle!}
 	</h1>
 	<!-- end page-header -->
 
@@ -241,7 +240,7 @@
                  {
  					"data":"id",
  					"render": function ( data, type, full, meta ) {
-					     var btn =  "<a href='/monitor/detail?examId="+data+"' class='btn btn-info'>考试详情</a>&nbsp;";
+					     var btn= "<a href='/monitor/index?examId="+data+"' target='_blank' class='btn btn-inverse'>动态监控</a>";
  					     return btn;
  				    }
                  }
@@ -249,7 +248,7 @@
              'columnDefs': [
               	{"sClass": "text-center", 'targets': '_all'},
                  {
- 					"targets": [4, 5, 6],
+ 					"targets": [5, 6, 7	],
  					"render": function ( data, type, full, meta ) {
  						return DateUtil.dateToStr("yyyy-MM-dd HH:mm", new Date(data));
  				    }
@@ -276,154 +275,6 @@
          return param;
      }
 
- 	function add(){
- 	 	//清空表单
- 		$(':input','#examForm')
- 		.not(':button, :submit, :reset')  
- 		.val('')  
- 		.removeAttr('checked')  
- 		.removeAttr('selected');
- 		
- 		$('#addExamLabel').text('添加考试');
- 		$('#addExam').modal('show');
- 	}
- 	
-     //添加考试
-     function addExam() {
-     	 var url = 'exams/add';
-          if($('#id').val() != ''){
-          	url = 'exams/update';
-          }
-         var title = $("#title").val();
-         var startTime = $("#startTime").val();
-         var endTime = $("#endTime").val();
-         if(title == "" || title == undefined || title == null){
-             return layer.msg('考试标题不能为空！', function(){
-                 //关闭后的操作
-             });
-         }
-         if(startTime == "" || startTime == undefined || startTime == null){
-             return layer.msg('请选择考试开始时间！', function(){
-                 //关闭后的操作
-             });
-         }
-         if(endTime == "" || endTime == undefined || endTime == null){
-             return layer.msg('请选择考试结束时间！', function(){
-                 //关闭后的操作
-             });
-         }
-
-         $.ajax({
-             cache: true,
-             type: "POST",
-             url: url,
-             data:$('#examForm').serialize(),// 你的formid
-             async: false,
-             success: function(data) {
-                 if(data=="success"){
-                     layer.msg('保存成功');
-                     table.ajax.reload();
-                     $('#addExam').modal('hide');
-                 }else{
-                     layer.msg('保存失败');
-                     $('#addExam').modal('hide');
-                 }
-             }
-         });
-     }
-
-     function update(){
-     	var $checkchild = $('#datatable').find(".checkchild:checked");
-     	var id = $checkchild.val();
-         if ($checkchild.length < 1)
-         {
-             layer.msg('请选择一条数据');
-             return;
-         }
-         if ($checkchild.length > 1)
-         {
-             layer.msg('一次只能修改一条数据');
-             return;
-         }
- 		$('#addExamLabel').text('修改考试');
- 		var $tr = $checkchild.parents("tr[role='row']");
- 		var title = $tr.children('td:eq(1)').text();
- 		var startTime = $tr.children('td:eq(2)').text();
- 		var endTime = $tr.children('td:eq(3)').text();
-//  		var state = $tr.children('td:eq(4)').text().trim()=='关闭'?0:1;
- 		$('#id').val(id);
- 		$('#title').val(title);
- 		$('#startTime').val(startTime);
- 		$('#endTime').val(endTime);
-//  		$('#state').val(state);
- 		$('#addExam').modal();
- 		
-     }
-     
-     function delByID() {
-         var id = $('#datatable').find(".checkchild:checked").val();
-         if ($('#datatable').find(".checkchild:checked").length < 1)
-         {
-             layer.msg('请选择一条数据');
-             return;
-         }
-         if ($('#datatable').find(".checkchild:checked").length > 1)
-         {
-             layer.msg('一次只能删除一条数据');
-             return;
-         }
-         layer.confirm('您确定要删除该考试吗？', {
-             btn: ['确认','取消'] //按钮
-         }, function(){
-             $.ajax({
-                 cache: true,
-                 type: "POST",
-                 url:'exams/delete',
-                 data:{id:id},
-                 async: false,
-                 success: function(data) {
-                     if(data=="success"){
-                         layer.msg('删除成功');
-                         table.ajax.reload();
-                     }else{
-                         layer.msg('删除失败');
-                     }
-                 }
-             });
-         });
-     }
-
- 	function detail(id){
- 		$.ajax({
-             cache: true,
-             type: "POST",
-             url:'questions/listQuestionByExamId',
-             data:{examId:id},
-             success: function(result) {
-                 if(result.success){
-                 	var html = "";
-                 	var questions = result.data;
-                 	if(questions.length>0){
- 	                    for(i in questions){
- 	                    	html+= "<tr><td>"+questions[i].id+"</td>";
- 	                    	html+= "<td>"+questions[i].title+"</td>";
- 	                    	html+= "<td>"+questions[i].content+"</td>";
- 	                    	html+= "<td>"+questions[i].stationName+"</td>";
- 	                    	html+= "<td>"+questions[i].filePath+"</td></tr>";
- 	                    }
-                     }else{
-                     	html+="<tr><td colspan='5' align='center'>此试卷没有考题</td></tr>";
-                     }
-                     $('#questions').html(html);
-                     $('#questionDetail').modal('show');
-                 }else{
-                     layer.msg(result.msg);
-                 }
-             }
-         });
- 	}
-
- 	
  	$('.form_datetime').datetimepicker({
  		format: 'yyyy-mm-dd hh:ii',
          language:  'zh-CN',
@@ -436,31 +287,6 @@
  		forceParse: 1
      });
 
-//  	$('#baseName').change(function(){
-//      	var baseName = $(this).val();
-//      	var $arrturnRoom = $('#roomName');
-//      	if(baseName==''){
-//      		$arrturnRoom.empty();
-//      		return;
-//      	}
-//          $.ajax({
-//              cache: true,
-//              type: "POST",
-//              url:'/bases/listArrturnRuleByBaseName',
-//              data:{baseName:baseName},
-//              async: false,
-//              success: function(result) {
-//             	 if(result.success){
-//                  	var arrturnRules = result.data;
-//                  	var html = '<option value="">请选择</option>';
-//                  	for(var i in arrturnRules){
-//                  		html += '<option value="'+arrturnRules[i].roomName+'">'+arrturnRules[i].roomName+'</option>';
-//                  	}
-//                  	$arrturnRoom.html(html);
-//                  }
-//              }
-//          });
-//      });
  	
  </script>
 <#include "/common/footer.html"/>

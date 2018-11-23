@@ -5,13 +5,13 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="sortId" jdbcType="INTEGER" property="sort_id" />
-    <result column="examId" jdbcType="INTEGER" property="exam_id" />
-    <result column="userId" jdbcType="INTEGER" property="user_id" />
-    <result column="userName" jdbcType="VARCHAR" property="user_name" />
-    <result column="groupId" jdbcType="INTEGER" property="group_id" />
-    <result column="sortNo" jdbcType="INTEGER" property="sort_no" />
-    <result column="stationNum" jdbcType="INTEGER" property="station_num" />
+    <id column="sort_id" jdbcType="INTEGER" property="sortid" />
+    <result column="exam_id" jdbcType="INTEGER" property="examid" />
+    <result column="user_id" jdbcType="INTEGER" property="userid" />
+    <result column="user_name" jdbcType="VARCHAR" property="username" />
+    <result column="group_id" jdbcType="INTEGER" property="groupid" />
+    <result column="sort_no" jdbcType="INTEGER" property="sortno" />
+    <result column="station_num" jdbcType="INTEGER" property="stationnum" />
     <result column="finished" jdbcType="INTEGER" property="finished" />
     <result column="unfinished" jdbcType="INTEGER" property="unfinished" />
   </resultMap>
@@ -23,15 +23,14 @@
   </select>
 
 
-  <!-- - 查询出某一个考试的所有人-->
-  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultType="com.youyicn.model.ExamStationRecord">
-     select user_name from osce_sort where exam_id = #{exam_id}
+  <!-- - 查询出某一个考试的所有人 -->
+  <select id="getInUserByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     select * from osce_sort where exam_id = #{exam_id}
   </select>
 
-  <!-- 考站的动态查询，查看未参加考试的-->
-  <select id="getUserByExamId" parameterType="hashmap" resultType="com.youyicn.model.ExamStationRecord">
-      select real_name from osce_exam_station_record where exam_id = #{examId} and station_id= #{stationId} and state = #{state}
+  <!-- - 查询出某一个考试候考的人-->
+  <select id="toBeInUserByExamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     select * from osce_sort where exam_id = #{exam_id} and finished = 0
   </select>
-
 
 </mapper>

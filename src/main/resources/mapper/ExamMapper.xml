@@ -35,6 +35,7 @@
 	<if test="exam.endTime!=null">
   		AND startTime &lt; #{exam.endTime}
   	</if>
+	  ORDER BY  id DESC
   	LIMIT #{start}, #{length}
   </select>
 </mapper>
