@@ -28,7 +28,7 @@ public class MonitorController {
     @RequestMapping("/index")
     public String index (Model model,@RequestParam Integer examId ){
         List<UserParm> inUserList =  osceSortService.getInUserByExamId(examId); // 正在考试的学生
-        String toInUser =osceSortService.toInExamByExamId(examId);//候考的学生
+        List<BigShowEntity> toInUser =osceSortService.toInExamByExamId(examId);//候考的学生
         Exam exam = osceSortService.getExamByExamId(examId);
         String outUserList =  osceSortService.getUnInUserByExamId(examId); // 没有报考的学生
         String finishedUser = osceSortService.getFinishedUser(examId); // 已经完成的学生

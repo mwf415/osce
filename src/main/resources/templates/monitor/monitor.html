@@ -38,14 +38,6 @@
     <script src="/plugins/layer/layer.js"></script>
     <script src="/js/datetime.js"></script>
     <!-- ================== END BASE JS ================== -->
-    <style>
-        .slide {
-            height: 80%;
-            width: 100%;
-            overflow-y: auto;
-        }
-
-    </style>
 </head>
 <body>
 <div id="scroll-message">
@@ -68,6 +60,8 @@
                     <h3>${finishedUser!}</h3></p>
                 </div>
             </div>
+
+            <#if inUserList?? && inUserList?size gt 0>
             <div class="col-md-12 column">
                 <div class="page-header">
                     <h3>
@@ -99,7 +93,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <#if inUserList?? && inUserList?size gt 0>
                         <#list inUserList as inUser>
                             <tr>
                                 <td>${inUser.userName!}</td>
@@ -110,20 +103,44 @@
                                 <td>${inUser.unFinished!}</td>
                             </tr>
                         </#list>
-                    </#if>
                     </tbody>
-
                 </table>
             </div>
+            </#if>
+
+            <#if toInUser?? && toInUser?size gt 0>
             <div class="col-md-12 column">
                 <div class="alert alert-warning alert-dismissable">
                     <h3>
                         <strong>候考的学生</strong>
                     </h3>
-                    <p>
-                    <h3>${toInUser!}</h3></p>
+                    <table class="table table-striped table-bordered" style="font-size:17px;" cellspacing="0"
+                           width="100%">
+                        <thead>
+                        <tr>
+                            <th>
+                                组号
+                            </th>
+                            <th>
+                                姓名
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                            <#list toInUser as toUser>
+                                <tr>
+                                    <td>第${toUser.groupId!}组</td>
+                                    <td>${inUser.userList!}</td>
+                                </tr>
+                            </#list>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            </#if>
+
             <div class="col-md-12 column">
                 <div class="alert alert-danger alert-dismissable">
                     <h3>
@@ -135,31 +152,7 @@
         </div>
     </div>
 </div>
-<script>
-//    setTimeout(function () {
-//        var table = document.getElementById("scroll-message");
-//        var timer = null;
-//        table.scrollTop = 0;
-//        table.innerHTML += table.innerHTML;
-//
-//        function play() {
-//            clearInterval(timer);
-//            timer = setInterval(function () {
-//                table.scrollTop++;
-//                if (table.scrollTop >= table.scrollHeight / 2) {
-//                    table.scrollTop = 0;
-//                }
-//            }, 100);
-//        }
-//
-//        setTimeout(play, 500);
-//        table.onmouseover = function () {
-//            clearInterval(timer)
-//        };
-//        table.onmouseout = play;
-//    }, 0)
 
-</script>
 <script>
     var myVar = setInterval(
         function () {

@@ -2,6 +2,7 @@ package com.youyicn.service;
 
 import java.util.List;
 
+import com.youyicn.model.BigShowEntity;
 import com.youyicn.model.Exam;
 import com.youyicn.model.OsceSort;
 import com.youyicn.model.UserParm;
@@ -22,10 +23,10 @@ public interface OsceSortService  extends IService<OsceSort> {
     public List<UserParm> getInUserByExamId(Integer examId);
 
     // 查找已经考完的学生
-    public String getFinishedUser(Integer examId);
+     String getFinishedUser(Integer examId);
 
     // 查找候考学生
-    public  String toInExamByExamId(Integer examId);
+    List<BigShowEntity> toInExamByExamId(Integer examId);
 
     public Exam getExamByExamId(Integer examId);
 

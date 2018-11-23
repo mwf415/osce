@@ -174,10 +174,10 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
 
 	@Override
 	public List<Exam> listTodayExam(Date startTime, Date endTime) {
-		Example example = new Example(ExamCompose.class);
+		Example example = new Example(Exam.class);
 		Criteria criteria = example.createCriteria();
-		criteria.andGreaterThan("start_time", startTime);
-		criteria.andLessThan("end_time", endTime);
+		criteria.andGreaterThan("startTime", startTime);
+		criteria.andLessThan("startTime", endTime);
 		List<Exam> examList = examMapper.selectByExample(example);
 		return examList;
 	}

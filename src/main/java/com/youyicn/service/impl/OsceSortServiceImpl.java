@@ -139,7 +139,6 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
                         finished = finished.append(examStationRecord.getStationName() + ":   ");
                         continue;
                 }
-
             }
             userParm.setFinished(finished.toString());
             userParm.setUnFinished(unfinished.toString());
@@ -168,20 +167,44 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
 
     /**
      * 候考人员
+     *
      * @param examId
      * @return
      */
     @Override
-    public String toInExamByExamId(Integer examId) {
+    public List<BigShowEntity> toInExamByExamId(Integer examId) {
+        List<BigShowEntity> bigShowEntities = new ArrayList<>();
+
         List<OsceSort> osceSorts = osceSortMapper.toBeInUserByExamId(examId);
-        StringBuilder stringBuilder = new StringBuilder();
-        if(null!=osceSorts){
+        Map<Integer, List<OsceSort>> groupMap = new HashMap<>();
+        if (osceSorts.size() > 0) {
             for (OsceSort osceSort : osceSorts) {
-                stringBuilder.append(osceSort.getUsername()+":"+osceSort.getUserid()+";    ");
+                Integer groupId = osceSort.getGroupid();
+                if (groupMap.containsKey(groupId)) {
+                    List<OsceSort> osceSortsTemp = groupMap.get(groupId);
+                    osceSortsTemp.add(osceSort);
+
+                } else {
+                    List<OsceSort> osceSortList = new ArrayList<>();
+                    osceSortList.add(osceSort);
+                    groupMap.put(groupId, osceSortList);
+                }
             }
         }
 
-        return stringBuilder.toString();
+        for (Integer integer : groupMap.keySet()) {
+            BigShowEntity bigShowEntity = new BigShowEntity();
+            List<OsceSort> osceSorts1 = groupMap.get(integer);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (OsceSort osceSort : osceSorts1) {
+                stringBuilder.append(osceSort.getUsername() + ":" + osceSort.getUserid());
+            }
+            bigShowEntity.setGroupId(integer);
+            bigShowEntity.setUserList(stringBuilder.toString());
+            bigShowEntities.add(bigShowEntity);
+        }
+
+        return bigShowEntities;
     }
 
     @Override
