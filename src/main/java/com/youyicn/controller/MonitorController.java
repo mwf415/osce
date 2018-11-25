@@ -49,7 +49,7 @@ public class MonitorController {
      * @param examId
      * @return
      */
-
+//
 //    @RequestMapping("/station")
 //    public String userDetalOut(Model model, @RequestParam Integer examId ,@RequestParam Integer stationId ){
 //        String outUserList =  osceSortService.getUnInUserByExamId(examId); // 没有报考的学生
@@ -60,7 +60,7 @@ public class MonitorController {
 //        model.addAttribute("finishedUser", finishedUser);
 //        model.addAttribute("toInUser", toInUser);
 //        model.addAttribute("exam", exam);
-////        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
+//        List<String> inUserList =  osceSortService.getUnInUserByExamId(examId);
 //
 //        return resultMap;
 //    }

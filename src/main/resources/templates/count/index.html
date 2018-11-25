@@ -240,7 +240,7 @@
                  {
  					"data":"id",
  					"render": function ( data, type, full, meta ) {
-					     var btn= "<a href='/monitor/detail?examId="+data+"' target='_blank' class='btn btn-inverse'>考试统计</a>";
+					     var btn= "<a href='/count/detail?examId="+data+"' target='_blank' class='btn btn-inverse'>考试统计</a>";
  					     return btn;
  				    }
                  }
@@ -248,7 +248,7 @@
              'columnDefs': [
               	{"sClass": "text-center", 'targets': '_all'},
                  {
- 					"targets": [5, 6, 7	],
+ 					"targets": [4, 5, 6 ],
  					"render": function ( data, type, full, meta ) {
  						return DateUtil.dateToStr("yyyy-MM-dd HH:mm", new Date(data));
  				    }

@@ -15,6 +15,7 @@
 <script src="/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+<script src="/js/echarts.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 <!-- begin #content -->
 <div id="content" class="content">
@@ -22,12 +23,10 @@
 	<h1 class="page-header">
 		考试饼状图
 	</h1>
-
-
+	<div id='line' style="border:1px solid #ccc;padding:10px;"></div>
 	<!-- begin page-header -->
 	<h1 class="page-header">
 		考生列表
-		<small></small>
 	</h1>
 	<!-- end page-header -->
 
@@ -216,6 +215,7 @@ $(document).ready(function() {
 function search(){
     table.ajax.reload();
 }
+
 //封装查询参数
 function getQueryCondition(data){
     var param = {};
@@ -233,4 +233,79 @@ function getQueryCondition(data){
 }
 
 </script>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('line'));
+    var lineOption = {
+        title : {
+            text: '',
+            subtext: '纯属虚构',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: data.legendData,
+
+            selected: data.selected
+        },
+        series : [
+            {
+                name: '姓名',
+                type: 'pie',
+                radius : '55%',
+                center: ['40%', '50%'],
+                data: data.seriesData,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+
+
+
+    };
+
+    myChart.setOption(lineOption);
+    var ajax = function() {
+        $.ajax({
+            url : '/count/getPie',
+            success: function(responseText) {
+                //请求成功时处理
+                var responseText = eval('(' + responseText + ')');
+                lineOption.legend.data=responseText.legend;
+                lineOption.xAxis[0].data = responseText.xAxis;
+                var serieslist = responseText.series;
+                //alert(serieslist);
+                for(var i=0;i<serieslist.length;i++) {
+                    lineOption.series[i] = serieslist[i];
+                }
+                //alert(lineOption.series);
+                myChart.setOption(lineOption,true);
+            },
+            complete: function() {
+                //请求完成的处理
+            },
+            error: function() {
+                //请求出错处理
+                alert("加载失败");
+            }
+        })
+    }
+
+    // window.setTimeout(ajax,100);
+
+</script>
+
+
 <#include "/common/footer.html"/>

@@ -117,8 +117,17 @@ public class IndexController {
         return "apply/applys";
     }
 
-    @RequestMapping("/applyPage")
-    public String countPage(){
+    @RequestMapping("/countPage")
+    public String countPage(Model model){
+        Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
+        List<Role> roles = roleService.queryRoleListByUserId(userId);
+        List<Base> bases = baseService.selectAll();
+        List<Room> rooms = roomService.selectAll();
+        model.addAttribute("roles", roles);
+        model.addAttribute("bases", bases);
+        model.addAttribute("rooms", rooms);
+
+
         return "count/index";
     }
 

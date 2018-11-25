@@ -34,6 +34,8 @@ public class AcountController {
 
     @Resource
     private ExamService examService;
+    @Autowired
+    private ExamUserService examUserService ;
 
     @RequestMapping
     @ResponseBody
@@ -50,29 +52,65 @@ public class AcountController {
         return map;
     }
 
-
-
-    @Autowired
-    private ExamUserService examUserService ;
     @RequestMapping("/detail")
+    public String detailIndex(@Param("examId") Integer examId ,Model model){
+
+        model.addAttribute("examId",examId);
+        return "/count/count";
+    }
+
+
+
+    @RequestMapping("/getPie")
+    @ResponseBody
     public String detail(@Param("examId") Integer examId){
         // 查询所有的考生信息
         List<ExamUser> examUserList = examUserService.selectById(examId);
         String examTitle ="";
         String[] types = { "0-60分", "60-70", "70-80", "80-90", "90-10" };
-        int[] datas= new int[4];
+        int[] datas= {0,0,0,0,0};
+        StringBuffer stringBufferOutUser = new StringBuffer(); // 没有打分的学生
         if(examUserList.size()>0){
+
             examTitle = examUserList.get(0).getExamTitle();
+            for (ExamUser examUser : examUserList) {
+                Integer score = examUser.getScore();
+                if (null == score){
+                    stringBufferOutUser.append(examUser.getRealName()+":"+examId+";  ");
+                    continue;
+                }
+                int b = ((0<score&& score<60)==true?1:0)
+                        +((60<=score && score<70)==true?2:0)+
+                        ((70<=score&& score<80)==true?3:0)+
+                        ((80<=score&& score<90)==true?4:0)+
+                        ((90<=score)==true?5:0);
 
+                switch (b){
+                    case 1:
+                        datas[0]=datas[0]+1;
+                        continue;
+                    case 2:
+                        datas[1]=datas[1]+1;
+                        continue;
+                    case 3:
+                        datas[2]=datas[2]+1;
+                        continue;
+                    case 4:
+                        datas[3]=datas[3]+1;
+                        continue;
+                    case 5:
+                        datas[4]=datas[4]+1;
+                        continue;
 
+                }
 
-
+            }
 
         }
         GsonOption pie = EchartUtils.getPie(types, datas, examTitle);
         String pieString  = pie.toString();
 
-        return "/count/count";
+        return pieString;
     }
 
 
