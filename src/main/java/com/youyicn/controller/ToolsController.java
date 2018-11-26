@@ -25,10 +25,7 @@ import java.util.Map;
 @RequestMapping("/tools")
 public class ToolsController {
 
-    @Value("${cn.onlov.qrcodehost}")
     private String host;
-
-    @Value("${cn.onlov.qrcodefilepath}")
     private String path;
 
     @Resource
