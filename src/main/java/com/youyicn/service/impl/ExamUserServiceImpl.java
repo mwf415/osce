@@ -45,6 +45,7 @@ public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUs
             criteria.andEqualTo("realName", examUser.getRealName());
         criteria.andEqualTo("userType", examUser.getUserType());
         criteria.andEqualTo("state", examUser.getState());
+
         //分页查询
         PageHelper.startPage(page, length);
         List<ExamUser> examUserList = selectByExample(example);

@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/count")
@@ -63,20 +65,17 @@ public class AcountController {
 
     @RequestMapping("/getPie")
     @ResponseBody
-    public String detail(@Param("examId") Integer examId){
+    public String detail(Integer examId){
         // 查询所有的考生信息
         List<ExamUser> examUserList = examUserService.selectById(examId);
         String examTitle ="";
-        String[] types = { "0-60分", "60-70", "70-80", "80-90", "90-10" };
+        String[] types = { "0-60分人数", "60-70人数", "70-80人数", "80-90人数", "90-100人数" };
         int[] datas= {0,0,0,0,0};
-        StringBuffer stringBufferOutUser = new StringBuffer(); // 没有打分的学生
         if(examUserList.size()>0){
-
             examTitle = examUserList.get(0).getExamTitle();
             for (ExamUser examUser : examUserList) {
                 Integer score = examUser.getScore();
                 if (null == score){
-                    stringBufferOutUser.append(examUser.getRealName()+":"+examId+";  ");
                     continue;
                 }
                 int b = ((0<score&& score<60)==true?1:0)
@@ -101,16 +100,54 @@ public class AcountController {
                     case 5:
                         datas[4]=datas[4]+1;
                         continue;
-
                 }
-
             }
-
         }
         GsonOption pie = EchartUtils.getPie(types, datas, examTitle);
         String pieString  = pie.toString();
-
         return pieString;
+    }
+    @RequestMapping("/detailStr")
+    @ResponseBody
+    public Map<String  ,Object> detailStr(Integer examId){
+        Map<String  ,Object> resultMap = new HashMap<>();
+        List<ExamUser> examUserList = examUserService.selectById(examId);
+        StringBuffer finishedUser = new StringBuffer(); // 完成的学生
+        int finishedUserCount = 0;
+        StringBuffer unFinishedUser = new StringBuffer(); // 没有打分的学生
+        int unFinishedUserCount =0;
+
+        List<Integer> scores = new ArrayList<>();
+        if(examUserList.size()>0){
+            for (ExamUser examUser : examUserList) {
+                Integer score = examUser.getScore();
+                if (null == score){
+                    unFinishedUser.append(examUser.getRealName()+":"+examUser.getUserId()+";  ");
+                    unFinishedUserCount = unFinishedUserCount+1;
+                }else {
+                    finishedUser.append(examUser.getRealName()+":"+ examUser.getUserId()+";  ");
+                    finishedUserCount = finishedUserCount+1;
+                    scores.add(score);
+                }
+            }
+        }
+
+        if(null!=scores && scores.size()>0){
+            Integer[] scoreTemp =new Integer[scores.size()];
+            for (int i = 0; i <scores.size(); i++) {
+                scoreTemp[i]= scores.get(i);
+            }
+            int min = IntStream.range(0, scoreTemp.length).reduce((i, j) -> scoreTemp[i] > scoreTemp[j] ? j : i).getAsInt();
+            int max = IntStream.range(0, scoreTemp.length).reduce((i, j) -> scoreTemp[i] < scoreTemp[j] ? j : i).getAsInt();
+            resultMap.put("maxScort",scores.get(max));
+            resultMap.put("minScort",scores.get(min));
+        }
+        resultMap.put("finishedUserCount",finishedUserCount);
+        resultMap.put("unFinishedUserCount",unFinishedUserCount);
+
+        resultMap.put("finishedUser",finishedUser);
+        resultMap.put("unFinishedUser",unFinishedUser);
+        return resultMap;
     }
 
 
