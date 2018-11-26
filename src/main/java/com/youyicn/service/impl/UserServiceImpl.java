@@ -48,7 +48,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService{
         	criteria.andEqualTo("roomName", user.getRoomName());
         }
         if(StringUtils.isNotBlank(user.getRealName())){
-        	criteria.andEqualTo("realName", user.getRealName());
+        	criteria.andLike("realName", user.getRealName());
         }
         //分页查询
         PageHelper.startPage(page, length);
