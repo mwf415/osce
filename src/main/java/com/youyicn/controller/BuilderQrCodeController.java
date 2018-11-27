@@ -62,12 +62,7 @@ public class BuilderQrCodeController {
         }
 
         response.setContentType("application/force-download");// 设置强制下载不打开
-        String fileName = "";
-        try {
-            fileName = new String((examId + ":" + exam.getTitle()+"所有学生二维码").getBytes(), "ISO8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String fileName = examId+"";
         WriteResponseUtil.writeZipResponse(request,response,allFile,fileName);
         System.out.println("导出文件夹压缩完成");
 
