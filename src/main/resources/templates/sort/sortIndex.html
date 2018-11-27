@@ -70,23 +70,7 @@
     function sortUser() {
         var examId = document.getElementById("examId").value;
         var userId = document.getElementById("userId").value;
-        $.ajax({
-            async:false,
-            type : "POST",
-            data:{examId:examId,userId:userId },
-            url: "addSort",
-            dataType:'json',
-            success: function(result){
-            alert(result);
-                var returnData = {};
-                returnData=result;
-                $("#showResult").html("添加成功");
-                alert(data);
-            },
-            error:function (result) {
-              alert("添加成功");
-            }
-        });
+        window.location.href='/addSort?examId='+examId +"&userId=" +userId;
     }
 </script>
 </html>

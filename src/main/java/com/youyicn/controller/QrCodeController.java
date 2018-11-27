@@ -121,7 +121,6 @@ public class QrCodeController {
 
 
     @RequestMapping("/addSort")
-    @ResponseBody
     public String addSort(HttpServletRequest request, HttpServletResponse response, Integer examId, String userId, ModelMap model){
         OsceSort osceSort =new OsceSort();
 
@@ -165,9 +164,9 @@ public class QrCodeController {
         int save = osceSortService.save(osceSort);
         if(1==save){
             model.addAttribute("osceSort",osceSort);
-            return osceSort.toString();
+            return "/sort/sortIndexed";
         }else {
-            return "error";
+            return "/403";
         }
     }
 }
