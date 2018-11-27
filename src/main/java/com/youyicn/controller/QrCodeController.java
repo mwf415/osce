@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -120,6 +121,7 @@ public class QrCodeController {
 
 
     @RequestMapping("/addSort")
+    @ResponseBody
     public String addSort(HttpServletRequest request, HttpServletResponse response, Integer examId, String userId, ModelMap model){
         OsceSort osceSort =new OsceSort();
 
@@ -163,9 +165,9 @@ public class QrCodeController {
         int save = osceSortService.save(osceSort);
         if(1==save){
             model.addAttribute("osceSort",osceSort);
-            return "/sort/sortIndexed";
+            return osceSort.toString();
         }else {
-            return "/403";
+            return "error";
         }
     }
 }
