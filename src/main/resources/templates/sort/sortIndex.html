@@ -45,7 +45,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
                     <h2>
                         提示!
-                    </h2> <h3><strong>学生${examUser.realName!}! 学号${examUser.loginName!}未未安排 </strong>
+                    </h2> <h3><strong>学生${examUser.realName!}! 学号${examUser.loginName!}为未安排 </strong>
                     </h3><br>
                     点击下面按钮进行安排考试顺序
                 </div>
@@ -58,7 +58,7 @@
             <input type="hidden" id="examId" value="${examId!}">
         </div>
         <div class="col-md-4 column">
-            <button type="button" class="btn btn-lg btn-primary" onclick="sortUser()">给该学生排序</button>
+            <button type="button" id="showResult" class="btn btn-lg btn-primary" onclick="sortUser()">给该学生排序</button>
         </div>
         <div class="col-md-4 column">
         </div>
@@ -76,11 +76,17 @@
             data:{examId:examId,userId:userId },
             url: "addSort",
             dataType:'json',
-            success: function(data){
+            success: function(result){
+            alert(result);
+                var returnData = {};
+                returnData=result;
+                $("#showResult").html("添加成功");
                 alert(data);
+            },
+            error:function (result) {
+              alert("添加成功");
             }
         });
-
     }
 </script>
 </html>

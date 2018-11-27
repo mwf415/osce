@@ -46,9 +46,11 @@
         <div class="row clearfix">
             <div class="col-md-12 column">
                 <div class="page-header">
-                <h2>
+                <#if exam ??>
+                    <h2>
                    <strong> ${exam.title!}动态监控</strong>
                 </h2>
+                </#if>
                 </div>
             </div>
             <div class="col-md-12 column">
@@ -144,7 +146,7 @@
             <div class="col-md-12 column">
                 <div class="alert alert-danger alert-dismissable">
                     <h3>
-                        <strong> 未报考学生</strong>
+                        <strong> 未报到学生</strong>
                     </h3>
                     <p><h3>${outUserList!}</h3></p>
                 </div>
