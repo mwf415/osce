@@ -26,6 +26,7 @@ public class StationServiceImpl extends BaseService<Station> implements StationS
 	   public PageInfo<Station> selectByPage(Station station, int start, int length) {
 	       int page = start/length+1;
 	       Example example = new Example(Station.class);
+		   example.orderBy("sortid").desc();
 	       Criteria criteria = example.createCriteria();
 	       if(station.getId()!=null){	
 	    	   criteria.andEqualTo("id", station.getId());

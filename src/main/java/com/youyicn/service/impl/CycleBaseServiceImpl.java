@@ -36,6 +36,7 @@ public class CycleBaseServiceImpl extends BaseService<Base> implements CycleBase
 	public PageInfo<Base> selectByPage(Base base, int start, int length) {
 		int page = start/length+1;
 		Example example = new Example(Base.class);
+		example.orderBy("id").desc();
 		Criteria criteria = example.createCriteria();
 		if(base.getBaseNum()!=null){
 			criteria.andEqualTo("baseNum", base.getBaseNum());

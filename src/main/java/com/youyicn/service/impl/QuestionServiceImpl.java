@@ -44,6 +44,7 @@ public class QuestionServiceImpl extends BaseService<Question> implements Questi
     public PageInfo<Question> selectByPage(Question question, int start, int length) {
         int page = start/length+1;
         Example example = new Example(Question.class);
+		example.orderBy("id").desc();
         Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(question.getBaseName())) {
             criteria.andEqualTo("baseName", question.getBaseName());

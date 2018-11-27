@@ -62,6 +62,7 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
 		
 		//删除原来的考站配置数据
 		Example example = new Example(ExamCompose.class);
+		example.orderBy("examId").desc();
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("examId", exam.getId());
 		examComposeMapper.deleteByExample(example);

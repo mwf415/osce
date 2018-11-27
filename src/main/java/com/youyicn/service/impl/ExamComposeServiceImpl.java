@@ -23,6 +23,7 @@ public class ExamComposeServiceImpl extends BaseService<ExamCompose> implements 
 	@Override
 	public List<ExamCompose> listExamComposeByExamId(Integer examId) {
 		Example example = new Example(ExamCompose.class);
+		example.orderBy("examId").desc();
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("examId", examId);
 		return examComposeMapper.selectByExample(example);

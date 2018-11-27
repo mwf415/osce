@@ -31,6 +31,7 @@ public class ExamStationRecordServiceImpl extends BaseService<ExamStationRecord>
     public PageInfo<ExamStationRecord> selectByPage(ExamStationRecord examStationRecord, int start, int length) {
         int page = start/length+1;
         Example example = new Example(ExamStationRecord.class);
+        example.orderBy("id").desc();
         Criteria criteria = example.createCriteria();
         criteria.andEqualTo("examId", examStationRecord.getExamId());
         criteria.andEqualTo("stationId", examStationRecord.getStationId());

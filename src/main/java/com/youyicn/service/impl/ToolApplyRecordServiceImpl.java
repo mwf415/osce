@@ -26,8 +26,6 @@ public class ToolApplyRecordServiceImpl extends BaseService<ToolApplyRecord> imp
 
 	@Override
 	public PageInfo<ToolApplyRecord> selectByPageAssotiation(ToolApplyRecord toolApplyRecord, int start, int length) {
-
-			
 			int page = start/length + 1;
 			//分页查询
 		    PageHelper.startPage(page, length);

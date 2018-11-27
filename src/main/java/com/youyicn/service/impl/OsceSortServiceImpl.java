@@ -34,7 +34,9 @@ public class OsceSortServiceImpl extends BaseService<OsceSort> implements OsceSo
     public OsceSort getByExamIdAndUserId(Integer examId, String userId) {
 
         Example example = new Example(OsceSort.class);
+        example.orderBy("sortid").desc();
         Example.Criteria criteria = example.createCriteria();
+
         criteria.andEqualTo("examid", examId);
         criteria.andEqualTo("userid", userId);
 
