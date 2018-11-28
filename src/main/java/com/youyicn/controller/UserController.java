@@ -43,8 +43,7 @@ public class UserController {
 
     /**
      * 保存用户角色
-     * @param userRole 用户角色
-     *  	  此处获取的参数的角色id是以 “,” 分隔的字符串
+     * @param
      * @return
      */
     @RequestMapping("/saveUserRoles")
@@ -69,6 +68,8 @@ public class UserController {
 //            user.setEnable(1);
             PasswordHelper passwordHelper = new PasswordHelper();
             passwordHelper.encryptPassword(user);
+            user.setIdentityId(1);
+            user.setStatus(1+"");
             userService.save(user);
             return "success";
         } catch (Exception e) {
