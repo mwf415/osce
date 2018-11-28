@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.youyicn.service.OsceSortService;
 
+/**
+ * 大屏显示功能
+ */
 @Controller
 public class BigShowController {
 

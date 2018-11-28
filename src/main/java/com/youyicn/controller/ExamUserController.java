@@ -48,6 +48,7 @@ public class ExamUserController {
     @Resource
     private  OsceSortService osceSortService;
 
+
     @RequestMapping
     @ResponseBody
     public Map<String,Object> getAll(ExamUser examUser, String draw,
@@ -220,7 +221,12 @@ public class ExamUserController {
     @RequestMapping(value="/monitorItem")
     public String monitorItem(@RequestParam Integer stationRecordId, Model model){
     	ExamStationRecord examStationRecord = examStationRecordService.selectByKey(stationRecordId);
-    	List<ScoreItem> scoreItems = questionService.listScoreItemByQuestionId(examStationRecord.getQuestionId());
+        Integer questionId = examStationRecord.getQuestionId();
+        Question question = questionService.selectByKey(questionId);
+        Integer duration = question.getDuration();
+
+
+        List<ScoreItem> scoreItems = questionService.listScoreItemByQuestionId(examStationRecord.getQuestionId());
     	User user = null;
     	if(examStationRecord!=null){
     		user = userService.selectByLoginName(examStationRecord.getUserId());
@@ -228,6 +234,7 @@ public class ExamUserController {
     	model.addAttribute("examStationRecord", examStationRecord);
     	model.addAttribute("scoreItems", scoreItems);
     	model.addAttribute("user", user);
+    	model.addAttribute("duration", duration);
 		return "/exam/monitor_item";
     	
     }
