@@ -64,14 +64,6 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label class="control-label">状态:</label>
-                            <select id="status-search" class="form-control">
-                                <option value="">全部</option>
-                                <option value="1">开启</option>
-                                <option value="0">关闭</option>
-                            </select>
-                        </div>
                         <button type="button" onclick="search();" class="btn btn-primary">查询</button>
                         <@shiro.hasPermission name="/questions/delete">
                         <button type="button" onclick="delById();" class="btn btn-danger"
