@@ -24,13 +24,11 @@
 			<a href="usersPage">主页</a>
 		</li>
 	</ol>
-	<!-- end breadcrumb -->
-	<!-- begin page-header -->
+
 	<h1 class="page-header">
 		考生打分
 		<small class="text-danger">分值：<input type="text" id="score" value=""/></small>
 	</h1>
-	<!-- end page-header -->
 
 	<!-- begin row -->
 	<div class="row">
@@ -101,6 +99,12 @@
 	</div>
 	<!-- end row -->
 </div>
+
+		<div class="alert alert-info alert-dismissable"  style="position:fixed;width:150px;height:50px;right: 50px;top:40px">
+			<h5><div id = "timer"></div>
+			</h5>
+		</div>
+
 <!-- end #content -->
 <script>
 function countScore(){
@@ -163,4 +167,25 @@ $('#submitBtn').click(function(){
 	
 });
 </script>
+<script type="text/javascript">
+	var duration = "${duration}";
+    var maxtime = duration * 60; //一个小时，按秒计算，自己调整!
+    function CountDown() {
+        if (maxtime >= 0) {
+            minutes = Math.floor(maxtime / 60);
+            seconds = Math.floor(maxtime % 60);
+            msg = "倒计时" + minutes + "分" + seconds + "秒";
+            document.all["timer"].innerHTML = msg;
+            if (maxtime == 5 * 60){
+                alert("还剩5分钟");
+            }
+            --maxtime;
+        } else{
+            clearInterval(timer);
+            alert("时间到，结束!");
+        }
+    }
+    timer = setInterval("CountDown()", 1000);
+</script>
+
 <#include "/common/footer.html"/>
