@@ -24,16 +24,16 @@
   		AND title LIKE CONCAT('%',#{exam.title}, '%')
   	</if>
  	<if test="exam.baseName!=null and exam.baseName!=''">
-  		AND baseName=#{exam.baseName}
+  		AND base_name=#{exam.baseName}
   	</if>
   	<if test="exam.roomName!=null and exam.roomName!=''">
-  		AND roomName=#{exam.roomName}
+  		AND room_name=#{exam.roomName}
   	</if>
   	<if test="exam.startTime!=null">
-  		AND startTime &gt; #{exam.startTime}
+  		AND start_time &gt; #{exam.startTime}
   	</if>
 	<if test="exam.endTime!=null">
-  		AND startTime &lt; #{exam.endTime}
+  		AND start_time &lt; #{exam.endTime}
   	</if>
 	  ORDER BY  id DESC
   	LIMIT #{start}, #{length}
