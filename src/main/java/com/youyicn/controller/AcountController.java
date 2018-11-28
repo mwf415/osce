@@ -37,116 +37,140 @@ public class AcountController {
     @Resource
     private ExamService examService;
     @Autowired
-    private ExamUserService examUserService ;
+    private ExamUserService examUserService;
 
     @RequestMapping
     @ResponseBody
-    public  Map<String,Object> getAll(Exam exam, String draw, Integer roleId,
+    public Map<String, Object> getAll(Exam exam, String draw, Integer roleId,
                                       @RequestParam(required = false, defaultValue = "1") int start,
-                                      @RequestParam(required = false, defaultValue = "10") int length){
+                                      @RequestParam(required = false, defaultValue = "10") int length) {
 
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         PageInfo<Exam> pageInfo = examService.selectByPage(exam, roleId, start, length);
-        map.put("draw",draw);
-        map.put("recordsTotal",pageInfo.getTotal());
-        map.put("recordsFiltered",pageInfo.getTotal());
+        map.put("draw", draw);
+        map.put("recordsTotal", pageInfo.getTotal());
+        map.put("recordsFiltered", pageInfo.getTotal());
         map.put("data", pageInfo.getList());
         return map;
     }
 
     @RequestMapping("/detail")
-    public String detailIndex(@Param("examId") Integer examId ,Model model){
+    public String detailIndex(@Param("examId") Integer examId, Model model) {
 
-        model.addAttribute("examId",examId);
+        model.addAttribute("examId", examId);
         return "/count/count";
     }
 
 
-
     @RequestMapping("/getPie")
     @ResponseBody
-    public String detail(Integer examId){
+    public String detail(Integer examId) {
         // 查询所有的考生信息
         List<ExamUser> examUserList = examUserService.selectById(examId);
-        String examTitle ="";
-        String[] types = { "0-60分人数", "60-70人数", "70-80人数", "80-90人数", "90-100人数" };
-        int[] datas= {0,0,0,0,0};
-        if(examUserList.size()>0){
+        String examTitle = "";
+        String[] types = {"10分以下", "10-20分人数", "20-30分人数", "30-40分人数", "40-50分人数", "50-60分人数", "60-70人数", "70-80人数", "80-90人数", "90-100人数"};
+        int[] datas = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        if (examUserList.size() > 0) {
             examTitle = examUserList.get(0).getExamTitle();
             for (ExamUser examUser : examUserList) {
-                Integer score = examUser.getScore();
-                if (null == score){
-                    continue;
-                }
-                int b = ((0<score&& score<60)==true?1:0)
-                        +((60<=score && score<70)==true?2:0)+
-                        ((70<=score&& score<80)==true?3:0)+
-                        ((80<=score&& score<90)==true?4:0)+
-                        ((90<=score)==true?5:0);
-
-                switch (b){
-                    case 1:
-                        datas[0]=datas[0]+1;
-                        continue;
-                    case 2:
-                        datas[1]=datas[1]+1;
-                        continue;
-                    case 3:
-                        datas[2]=datas[2]+1;
-                        continue;
-                    case 4:
-                        datas[3]=datas[3]+1;
-                        continue;
-                    case 5:
-                        datas[4]=datas[4]+1;
-                        continue;
-                }
+                getDatas(datas, examUser);
             }
         }
         GsonOption pie = EchartUtils.getPie(types, datas, examTitle);
-        String pieString  = pie.toString();
+        String pieString = pie.toString();
         return pieString;
     }
+
+    private int[]  getDatas(int[] datas, ExamUser examUser) {
+        Integer score = examUser.getScore();
+        if (null == score) {
+            return datas;
+        }
+        int b = ((score < 10) == true ? 1 : 0) +
+                ((10 < score && score < 20) == true ? 2 : 0) +
+                ((20 < score && score < 30) == true ? 3 : 0) +
+                ((30 < score && score < 40) == true ? 4 : 0) +
+                ((40 < score && score < 50) == true ? 5 : 0) +
+                ((50 < score && score < 60) == true ? 6 : 0) +
+                ((60 <= score && score < 70) == true ? 7 : 0) +
+                ((70 <= score && score < 80) == true ? 8 : 0) +
+                ((80 <= score && score < 90) == true ? 9 : 0) +
+                ((90 <= score) == true ? 10 : 0);
+        switch (b) {
+            case 1:
+                datas[0] = datas[0] + 1;
+                return datas;
+            case 2:
+                datas[1] = datas[1] + 1;
+                return datas;
+            case 3:
+                datas[2] = datas[2] + 1;
+                return datas;
+            case 4:
+                datas[3] = datas[3] + 1;
+                return datas;
+            case 5:
+                datas[4] = datas[4] + 1;
+                return datas;
+            case 6:
+                datas[5] = datas[5] + 1;
+                return datas;
+            case 7:
+                datas[6] = datas[6] + 1;
+                return datas;
+            case 8:
+                datas[7] = datas[7] + 1;
+                return datas;
+            case 9:
+                datas[8] = datas[8] + 1;
+                return datas;
+            case 10:
+                datas[9] = datas[9] + 1;
+                return datas;
+        }
+        return datas;
+    }
+
     @RequestMapping("/detailStr")
     @ResponseBody
-    public Map<String  ,Object> detailStr(Integer examId){
-        Map<String  ,Object> resultMap = new HashMap<>();
+    public Map<String, Object> detailStr(Integer examId) {
+        Map<String, Object> resultMap = new HashMap<>();
         List<ExamUser> examUserList = examUserService.selectById(examId);
         StringBuffer finishedUser = new StringBuffer(); // 完成的学生
         int finishedUserCount = 0;
         StringBuffer unFinishedUser = new StringBuffer(); // 没有打分的学生
-        int unFinishedUserCount =0;
+        int unFinishedUserCount = 0;
 
         List<Integer> scores = new ArrayList<>();
-        if(examUserList.size()>0){
+        if (examUserList.size() > 0) {
             for (ExamUser examUser : examUserList) {
                 Integer score = examUser.getScore();
-                if (null == score){
-                    unFinishedUser.append(examUser.getRealName()+":"+examUser.getUserId()+";  ");
-                    unFinishedUserCount = unFinishedUserCount+1;
-                }else {
-                    finishedUser.append(examUser.getRealName()+":"+ examUser.getUserId()+";  ");
-                    finishedUserCount = finishedUserCount+1;
+                if (null == score) {
+                    unFinishedUser.append(examUser.getRealName() + ":" + examUser.getUserId() + ";  ");
+                    unFinishedUserCount = unFinishedUserCount + 1;
+                } else {
+                    finishedUser.append(examUser.getRealName() + ":" + examUser.getUserId() + ";  ");
+                    finishedUserCount = finishedUserCount + 1;
                     scores.add(score);
                 }
             }
         }
 
-        if(null!=scores && scores.size()>0){
-            Integer[] scoreTemp =new Integer[scores.size()];
-            for (int i = 0; i <scores.size(); i++) {
-                scoreTemp[i]= scores.get(i);
+        if (null != scores && scores.size() > 0) {
+            Integer[] scoreTemp = new Integer[scores.size()];
+            for (int i = 0; i < scores.size(); i++) {
+                scoreTemp[i] = scores.get(i);
             }
             int min = IntStream.range(0, scoreTemp.length).reduce((i, j) -> scoreTemp[i] > scoreTemp[j] ? j : i).getAsInt();
             int max = IntStream.range(0, scoreTemp.length).reduce((i, j) -> scoreTemp[i] < scoreTemp[j] ? j : i).getAsInt();
-            resultMap.put("maxScort",scores.get(max));
-            resultMap.put("minScort",scores.get(min));
+            resultMap.put("maxScort", scores.get(max));
+            resultMap.put("minScort", scores.get(min));
         }
-        resultMap.put("finishedUserCount",finishedUserCount);
-        resultMap.put("unFinishedUserCount",unFinishedUserCount);
+        resultMap.put("finishedUserCount", finishedUserCount);
+        resultMap.put("unFinishedUserCount", unFinishedUserCount);
 
-        resultMap.put("finishedUser",finishedUser);
-        resultMap.put("unFinishedUser",unFinishedUser);
+        resultMap.put("finishedUser", finishedUser);
+        resultMap.put("unFinishedUser", unFinishedUser);
         return resultMap;
     }
 

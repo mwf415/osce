@@ -39,6 +39,29 @@
 		                            <label >名称:</label>
 		                            <input type="text" class="form-control" id="name-search" placeholder="名称"/>
 		                        </div>
+                               <div class="form-group">
+                                   <label class="control-label">专业基地:</label>
+                                   <select id="baseName-search" class="arrturnBase form-control">
+                                       <option value=''>全部</option>
+                                       <#if bases?? && bases?size gt 0>
+                                           <#list bases as base>
+                                               <option value='${base.value}'>${base.value}</option>
+                                           </#list>
+                                       </#if>
+                                   </select>
+                               </div>
+                               <div class="form-group">
+                                   <label class="control-label">科室:</label>
+                                   <select id="roomName-search" class="arrturnRoom form-control">
+                                       <option value='' selected>全部</option>
+                                       <#if rooms?? && rooms?size gt 0>
+                                           <#list rooms as room>
+                                               <option value='${room.value}'>${room.value}</option>
+                                           </#list>
+                                       </#if>
+                                   </select>
+                               </div>
+
 		                        <div class="form-group">
 		                            <label class="control-label">状态:</label>
 		                            <select id="status-search"  class="form-control">
@@ -67,6 +90,8 @@
 		                                <th>ID</th>
 		                                <th>用户名</th>
 		                                <th>真实姓名</th>
+		                                <th>基地</th>
+		                                <th>科室</th>
 		                            </tr>
                                 </thead>
                                 <tbody>
@@ -210,7 +235,9 @@
                 },
                 { "data": "id" },
                 { "data": "loginName" },
-                { "data": "realName" }
+                { "data": "realName" },
+                { "data": "baseName" },
+                { "data": "roomName" }
             ]
 
         } );
@@ -227,6 +254,8 @@
         param.loginName = $("#id-search").val();//查询条件
         param.realName = $("#name-search").val();//查询条件
         param.enable = $("#status-search").val();//查询条件
+        param.baseName = $("#baseName-search").val();//查询条件
+        param.roomName = $("#roomName-search").val();//查询条件
         //组装分页参数
         param.start = data.start;
         param.length = data.length;

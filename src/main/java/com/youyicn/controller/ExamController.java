@@ -157,12 +157,16 @@ public class ExamController {
     public String configExam(@RequestParam Integer examId, Model model){
     	Exam exam = examService.selectByKey(examId);
     	List<Station> stations = stationService.selectAll();
-        List<Base> bases = cycleBaseService.selectAll();
-        List<Room> rooms = roomService.selectAll();
+
+
         List<ExamCompose> examComposes = examComposeService.listExamComposeByExamId(examId);
         model.addAttribute("exam", exam);
         model.addAttribute("stations", stations);
         model.addAttribute("stationsJson", JSON.toJSONString(stations));
+
+        List<Base> bases = cycleBaseService.selectAll();
+        List<Room> rooms = roomService.selectAll();
+
         model.addAttribute("bases", bases);
         model.addAttribute("rooms", rooms);
         model.addAttribute("examComposes", examComposes);

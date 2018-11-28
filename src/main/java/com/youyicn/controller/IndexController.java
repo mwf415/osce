@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -43,7 +44,9 @@ public class IndexController {
     private RoomService roomService;
 	@Resource
 	private StationService stationService;
-	
+    @Resource
+    private CycleBaseService cycleBaseService;
+
     @RequestMapping(value="/login",method= RequestMethod.GET)
     public String login(){
         return "login";
@@ -83,8 +86,15 @@ public class IndexController {
         
         
     }
+
+
     @RequestMapping(value="/usersPage")
-    public String usersPage(){
+    public String usersPage(Model model){
+        List<Base> bases = cycleBaseService.selectAll();
+        List<Room> rooms = roomService.selectAll();
+        model.addAttribute("bases",bases);
+        model.addAttribute("rooms",rooms);
+
         return "user/users";
     }
 
