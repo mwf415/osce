@@ -98,11 +98,11 @@ public class ToolsController {
     public void toolQrDown(@Param("toolId") Integer toolId, HttpServletResponse response) {
         if (null != toolId) {
             Tool tool = toolService.selectByKey(toolId);
-            String urlMethod = "/showToolQr";
+            String urlMethod = "tools/showToolQr";
             Map<String, String> strings = new HashMap<>();// 二维码中的文字
             strings.put("toolId",toolId+"");
             LinkedHashMap<String, String> wordsString = new LinkedHashMap<>();
-            wordsString.put("NAME", tool.getName().substring(0,15));
+            wordsString.put("NAME", tool.getName());
             wordsString.put("SUPPLIER", tool.getProductor());
             wordsString.put("NUM", tool.getToolNum());
             File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString,12);
