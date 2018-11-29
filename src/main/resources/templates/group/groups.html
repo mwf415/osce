@@ -386,8 +386,8 @@
  		$.ajax({
              cache: true,
              type: "POST",
-             url:'tools/listToolsByGroupId',
-             data:{examId:id},
+             url:'tools',
+             data:{groupId:id},
              success: function(result) {
                  if(result.success){
                  	var html = "";

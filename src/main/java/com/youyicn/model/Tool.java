@@ -13,11 +13,11 @@ public class Tool implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "tool_grop_id")
-    private Integer toolGropId;
+    @Column(name = "tool_group_id")
+    private Integer toolGroupId;
     
-    @Column(name = "tool_grop_name")
-    private  String toolGropName;
+    @Column(name = "tool_group_name")
+    private  String toolGroupName;
 
     @Column(name = "tool_num")
     private String toolNum;
@@ -29,6 +29,9 @@ public class Tool implements Serializable{
     @Column(name = "buy_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date buyTime;
+    @Column(name = "update_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
 
     @Column(name = "code_url")
     private String codeUrl;
@@ -36,19 +39,36 @@ public class Tool implements Serializable{
     @Column(name = "code_apply_url")
     private String codeApplyUrl;
     
-    private Integer status;
+    private Integer status; //状态  1 是正常，2 维修中，0 报废
 
     private String descri;
-    
-    	
 
-    public String getToolGropName() {
-		return toolGropName;
-	}
+    @Override
+    public String toString() {
+        return "Tool{" +
+                "id=" + id +
+                ", toolGroupId=" + toolGroupId +
+                ", toolGroupName='" + toolGroupName + '\'' +
+                ", toolNum='" + toolNum + '\'' +
+                ", name='" + name + '\'' +
+                ", productor='" + productor + '\'' +
+                ", buyTime=" + buyTime +
+                ", updateTime=" + updateTime +
+                ", codeUrl='" + codeUrl + '\'' +
+                ", codeApplyUrl='" + codeApplyUrl + '\'' +
+                ", status=" + status +
+                ", descri='" + descri + '\'' +
+                '}';
+    }
 
-	public void setToolGropName(String toolGropName) {
-		this.toolGropName = toolGropName;
-	}
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
 
 	public Integer getStatus() {
 		return status;
@@ -72,18 +92,20 @@ public class Tool implements Serializable{
         this.id = id;
     }
 
-    /**
-     * @return tool_grop_id
-     */
-    public Integer getToolGropId() {
-        return toolGropId;
+    public Integer getToolGroupId() {
+        return toolGroupId;
     }
 
-    /**
-     * @param toolGropId
-     */
-    public void setToolGropId(Integer toolGropId) {
-        this.toolGropId = toolGropId;
+    public void setToolGroupId(Integer toolGroupId) {
+        this.toolGroupId = toolGroupId;
+    }
+
+    public String getToolGroupName() {
+        return toolGroupName;
+    }
+
+    public void setToolGroupName(String toolGroupName) {
+        this.toolGroupName = toolGroupName;
     }
 
     /**
@@ -176,12 +198,6 @@ public class Tool implements Serializable{
 
 	public void setDescri(String descri) {
 		this.descri = descri;
-	}
-
-	@Override
-	public String toString() {
-		return "设备详情 [设备ID=" + id + ", 设备分组=" + toolGropId + ", 设备编号=" + toolNum + ", 设备名称=" + name
-				+ ", 厂商=" + productor + ", 采购时间=" + buyTime +  ",设置状态=" + status + ", 设备描述=" + descri + "]";
 	}
 
     /**

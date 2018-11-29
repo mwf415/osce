@@ -7,6 +7,7 @@ import com.youyicn.model.ToolGroup;
 import com.youyicn.service.ToolGroupService;
 import com.youyicn.service.ToolService;
 import com.youyicn.util.QrCodeUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,90 +26,87 @@ import java.util.Map;
 @RequestMapping("/tools")
 public class ToolsController {
 
-    private String host;
-    private String path;
-
     @Resource
     private ToolService toolService;
     @Resource
     private ToolGroupService toolGroupService;
 
-    
-   
+
     @RequestMapping
     @ResponseBody
-    public  Map<String,Object> getAll(Tool tool, String draw,
-                             @RequestParam(required = false, defaultValue = "1") int start,
-                             @RequestParam(required = false, defaultValue = "10") int length){
+    public Map<String, Object> getAll(Tool tool, String draw, Integer groupId,
+                                      @RequestParam(required = false, defaultValue = "1") int start,
+                                      @RequestParam(required = false, defaultValue = "10") int length) {
 
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        if (null != groupId) {
+            tool.setToolGroupId(groupId);
+        }
         PageInfo<Tool> pageInfo = toolService.selectByPageAssotiation(tool, start, length);
-//        PageInfo<Station> pageInfo = stationService.selectByPage(station, start, length);
+        /**
+         * 处理分组的事情
+         */
         List<ToolGroup> groupList = toolGroupService.getAll();
+        Map<Integer, String> groupMap = this.getGroupMap(groupList);
+        for (Tool tool1 : pageInfo.getList()) {
+            Integer toolGroupId = tool1.getToolGroupId();
+            if (null != toolGroupId) {
+                tool1.setToolGroupName(groupMap.get(toolGroupId));
+            }
+        }
         map.put("groupList", groupList);
-        map.put("draw",draw);
-        map.put("recordsTotal",pageInfo.getTotal());
-        map.put("recordsFiltered",pageInfo.getTotal());
+        map.put("draw", draw);
+        map.put("recordsTotal", pageInfo.getTotal());
+        map.put("recordsFiltered", pageInfo.getTotal());
         map.put("data", pageInfo.getList());
+        map.put("success", true);
+        map.put("msg", "成功");
+
         return map;
     }
-    
-    
-    
-    @RequestMapping("/listToolsByGroupId")
-    @ResponseBody
-    public Map<String, Object> listQuestionByExamId(Integer groupId){
-    	
-    	Map<String, Object> result = Maps.newHashMap();
-	    boolean success = false;
-	    String msg = "获取数据失败！";
-	    Object data = null;
-	    try {
-			data = toolService.listToolsByGroupId(groupId);
-			success = true;
-			msg = "获取数据成功！";
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	    
-	    result.put("success", success);
-	    result.put("msg", msg);
-	    result.put("data", data);
-	    
-        return result;
+
+    private Map<Integer, String> getGroupMap(List<ToolGroup> groupList) {
+        Map<Integer, String> groupMap = new HashMap<>();
+        if (groupList.size() > 0) {
+            for (ToolGroup toolGroup : groupList) {
+                Integer id = toolGroup.getId();
+                String name = toolGroup.getName();
+                groupMap.put(id, name);
+            }
+        }
+        return groupMap;
     }
-    
-    
-    
-    
+
+
     @RequestMapping(value = "/add")
     @ResponseBody
     public String add(Tool tool) {
-        try {        	
-        	toolService.save(tool);
-        	Integer toolId = tool.getId();
-        	QrCodeUtil.getInstance();
-			String applyurl = null;
+        try {
+            toolService.save(tool);
+            Integer toolId = tool.getId();
+            QrCodeUtil.getInstance();
+            String applyurl = null;
 //                    QrCodeUtil.createStringMark(tool,propertiesConfig.getQrcodefilepath(), toolId, propertiesConfig.getQrcodehost());
-        	tool.setCodeApplyUrl(applyurl);
-        	toolService.updateNotNull(tool);
+            tool.setCodeApplyUrl(applyurl);
+            toolService.updateNotNull(tool);
             return "success";
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
         }
     }
-    
+
     @RequestMapping(value = "/update")
     @ResponseBody
     public String update(Tool tool) {
-    	System.out.println("aaaaaaa");
         try {
-        	toolService.updateNotNull(tool);
+            toolService.updateNotNull(tool);
             return "success";
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
         }
     }
+
+
 }

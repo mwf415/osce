@@ -112,7 +112,7 @@
 
 					<div class="form-group">
 						<label class="control-label">设备分组:</label>
-						<select class="form-control" name="toolGropId" id="toolGropId">
+						<select class="form-control" name="toolGroupId" id="toolGroupId">
 							<#if groupList?? &&	groupList?size gt 0>
 								<option value="">请选择</option>
 								<#list groupList as group>
@@ -228,7 +228,7 @@
                     "bSortable": false
                 },
                 { "data": "name" },
-                { "data": "toolGropId" },
+                { "data": "toolGroupName" },
                 { "data": "toolNum" },
                 { "data": "productor" },
                 { "data": "descri" },
@@ -299,13 +299,13 @@
             url = 'tools/update';
         }
         var name = $("#name").val();
-        var toolGropId = $("#toolGropId").val();
+        var toolGroupId = $("#toolGroupId").val();
         if(name == "" || name == undefined || name == null){
             return layer.msg('名称不能为空', function(){
                 //关闭后的操作
             });
         }
-        if(toolGropId == "" || toolGropId == undefined || toolGropId == null){
+        if(toolGroupId == "" || toolGroupId == undefined || toolGroupId == null){
             return layer.msg('分组不能为空', function(){
                 //关闭后的操作
             });
@@ -346,7 +346,7 @@
         }
         $('#addToolLabel').text('修改设备');
         var $tr = $checkchild.parents("tr[role='row']");
-        var toolGropId = $tr.children('td:eq(2)').text();
+        var toolGroupId = $tr.children('td:eq(2)').text();
         var name = $tr.children('td:eq(1)').text();
         var toolNum = $tr.children('td:eq(3)').text();
         var productor = $tr.children('td:eq(4)').text();
@@ -358,7 +358,7 @@
         $('#id').val(id);
         $('#name').val(name);
         $('#toolNum').val(toolNum);
-        $('#toolGropId').val(toolGropId);
+        $('#toolGroupId').val(toolGroupId);
         $('#descri').val(descri);
         $('#productor').val(productor);
         $('#status').val(status);

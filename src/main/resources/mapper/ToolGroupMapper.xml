@@ -11,7 +11,7 @@
   <!-- 该方法是查询每个分组的设备数量 -->
     <select id="selectByEntity" parameterType="com.youyicn.model.ToolGroup" resultType="com.youyicn.model.ToolGroupVo">        
 		SELECT gr.id id ,gr.name name ,COUNT(too.id) toolsNum
-		FROM osce_tool_group gr LEFT JOIN osce_tool too ON gr.id=too.tool_grop_id
+		FROM osce_tool_group gr LEFT JOIN osce_tool too ON gr.id=too.tool_group_id
 		GROUP BY gr.id
     </select>  
     

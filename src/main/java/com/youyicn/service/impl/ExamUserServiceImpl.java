@@ -42,7 +42,7 @@ public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUs
         if (StringUtils.isNotBlank(examUser.getUserId()))
             criteria.andEqualTo("userId", examUser.getUserId());
         if (StringUtils.isNotBlank(examUser.getRealName()))
-            criteria.andEqualTo("realName", examUser.getRealName());
+            criteria.andLike("realName", "%"+examUser.getRealName()+"%");
         criteria.andEqualTo("userType", examUser.getUserType());
         criteria.andEqualTo("state", examUser.getState());
 

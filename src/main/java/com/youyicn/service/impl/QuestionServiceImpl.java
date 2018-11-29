@@ -45,11 +45,11 @@ public class QuestionServiceImpl extends BaseService<Question> implements Questi
         int page = start/length+1;
         Example example = new Example(Question.class);
 		example.orderBy("id").desc();
-        Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(question.getBaseName())) {
-            criteria.andEqualTo("baseName", question.getBaseName());
-        }
-        if(StringUtils.isNotBlank(question.getRoomName())){
+		Criteria criteria = example.createCriteria();
+		if(StringUtils.isNotBlank(question.getBaseName())) {
+			criteria.andEqualTo("baseName", question.getBaseName());
+		}
+		if(StringUtils.isNotBlank(question.getRoomName())){
         	criteria.andEqualTo("roomName", question.getRoomName());
         }
         if(StringUtils.isNotBlank(question.getTitle())){
@@ -57,9 +57,9 @@ public class QuestionServiceImpl extends BaseService<Question> implements Questi
         }
         //分页查询
         PageHelper.startPage(page, length);
-        List<Question> questionList = selectByExample(example);
-        return new PageInfo<>(questionList);
-    }
+		List<Question> questionList = selectByExample(example);
+		return new PageInfo<>(questionList);
+	}
 
 	@Override
 	public List<ScoreItem> listScoreItemByQuestionId(Integer questionId) {

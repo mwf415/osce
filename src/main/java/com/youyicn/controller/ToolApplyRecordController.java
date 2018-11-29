@@ -26,29 +26,10 @@ import com.youyicn.service.ToolService;
 @RestController
 @RequestMapping("/applys")
 public class ToolApplyRecordController {
-	
-	@Resource
-	private ToolService toolService;
-	   
+
 	@Autowired
 	public ToolApplyRecordService toolApplyRecordService;	
-	
-	@RequestMapping
-    @ResponseBody
-    public  Map<String,Object> getAll(Tool tool, String draw,
-                             @RequestParam(required = false, defaultValue = "1") int start,
-                             @RequestParam(required = false, defaultValue = "10") int length){
 
-        Map<String,Object> map = new HashMap<>();
-        PageInfo<Tool> pageInfo = toolService.selectByPageAssotiation(tool, start, length);
-        map.put("draw",draw);
-        map.put("recordsTotal",pageInfo.getTotal());
-        map.put("recordsFiltered",pageInfo.getTotal());
-        map.put("data", pageInfo.getList());
-        return map;
-    }
-
-	
 	
 	@RequestMapping("/listApplysByToolId")
     @ResponseBody
