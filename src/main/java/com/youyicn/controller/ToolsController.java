@@ -10,12 +10,16 @@ import com.youyicn.util.QrCodeUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/tools")
 public class ToolsController {
-
+    @Value("${server.port}")
+    private String servicePort;
     @Resource
     private ToolService toolService;
     @Resource
@@ -81,20 +86,73 @@ public class ToolsController {
     @RequestMapping(value = "/add")
     @ResponseBody
     public String add(Tool tool) {
-        try {
-            toolService.save(tool);
-            Integer toolId = tool.getId();
-            QrCodeUtil.getInstance();
-            String applyurl = null;
-//                    QrCodeUtil.createStringMark(tool,propertiesConfig.getQrcodefilepath(), toolId, propertiesConfig.getQrcodehost());
-            tool.setCodeApplyUrl(applyurl);
-            toolService.updateNotNull(tool);
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "fail";
+        toolService.save(tool);
+        return "success";
+    }
+
+    /**
+     * 下载二维码
+     * @param toolId
+     */
+    @RequestMapping(value = "/qrToolDown")
+    public void toolQrDown(@Param("toolId") Integer toolId, HttpServletResponse response) {
+        if (null != toolId) {
+            Tool tool = toolService.selectByKey(toolId);
+            String urlMethod = "/showToolQr";
+            Map<String, String> strings = new HashMap<>();// 二维码中的文字
+            strings.put("toolId",toolId+"");
+            LinkedHashMap<String, String> wordsString = new LinkedHashMap<>();
+            wordsString.put("NAME", tool.getName().substring(0,15));
+            wordsString.put("SUPPLIER", tool.getProductor());
+            wordsString.put("NUM", tool.getToolNum());
+            File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString,12);
+
+            response.setContentType("application/force-download");// 设置强制下载不打开
+            response.addHeader("Content-Disposition", "attachment;fileName=" + tool.getToolNum() + ".png");// 设置文件名
+            byte[] buffer = new byte[1024];
+            FileInputStream fis = null;
+            BufferedInputStream bis = null;
+            try {
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
+
+    /**
+     * 扫描二维码显示的数据
+     * @param toolId
+     */
+    @RequestMapping(value = "/showToolQr")
+    public String showToolQr(@Param("toolId") Integer toolId , Model model) {
+       model.addAttribute("toolId",toolId);
+        return "tool/tool_apply";
+    }
+
+
 
     @RequestMapping(value = "/update")
     @ResponseBody

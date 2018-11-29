@@ -45,13 +45,15 @@ public class QrCodeUtil {
 
     /**
      * 从图片生成文件的方法
-     *
-     * @param url
+     * @param urlMethod
+     * @param hostPort
+     * @param strings
+     * @param wordsString
      * @return
      */
-    public  File createQRCode(String urlMethod,String hostPort , Map<String, String> strings, LinkedHashMap<String, String> wordsString) {
+    public  File createQRCode(String urlMethod,String hostPort , Map<String, String> strings, LinkedHashMap<String, String> wordsString,int fontSize) {
         String url = localHostIp+":"+hostPort+"/"+urlMethod; // 生成url地址
-        BufferedImage bimage = getBufferedImage( url, strings, wordsString);
+        BufferedImage bimage = getBufferedImage( url, strings, wordsString,fontSize);
 
         File outfile = null;//创建临时文件;
         try {
@@ -86,7 +88,7 @@ public class QrCodeUtil {
      * @param wordsString
      * @return
      */
-    private static BufferedImage getBufferedImage(String url, Map<String, String> strings, LinkedHashMap<String, String> wordsString) {
+    private static BufferedImage getBufferedImage(String url, Map<String, String> strings, LinkedHashMap<String, String> wordsString,int fontSize) {
         Color markContentColor = Color.white;
         String qrcodePath = createCode(url, strings);
 
@@ -98,7 +100,7 @@ public class QrCodeUtil {
         Graphics2D g = bimage.createGraphics();
 
         g.setColor(markContentColor);
-        g.setFont(new Font(null, Font.BOLD, 15)); // 字体、字型、字号
+        g.setFont(new Font(null, Font.BOLD, fontSize)); // 字体、字型、字号
         g.setBackground(new Color(255,0,0));
         g.drawImage(theImg, 0, 0, null);
         if (!wordsString.isEmpty()) {

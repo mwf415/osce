@@ -30,7 +30,7 @@ public class ToolApplyRecordController {
 	@Autowired
 	public ToolApplyRecordService toolApplyRecordService;	
 
-	
+
 	@RequestMapping("/listApplysByToolId")
     @ResponseBody
     public Map<String, Object> listQuestionByExamId(Integer toolId){
@@ -45,14 +45,14 @@ public class ToolApplyRecordController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    
+
 	    result.put("success", success);
 	    result.put("msg", msg);
 	    result.put("data", data);
-	    
+
         return result;
     }
     
-	
+
 	
 }

@@ -24,7 +24,6 @@
 		LEFT JOIN `user` u on  ar.user_id = u.id
 		LEFT JOIN osce_tool ot on ot.id = ar.tool_id 
   		where ar.tool_id = #{toolId} ORDER BY ar.id DESC
-  	
     </select>  
   
 </mapper>

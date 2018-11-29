@@ -70,7 +70,7 @@ public class BuilderQrCodeController {
 
 
     @RequestMapping(value = "/userQrcode", method = RequestMethod.GET)
-    public String download(String realName, String userId, String examId, HttpServletRequest request, HttpServletResponse response) {
+    public void download(String realName, String userId, String examId, HttpServletRequest request, HttpServletResponse response) {
         /**
          * 拼接二维码数据
          */
@@ -113,7 +113,6 @@ public class BuilderQrCodeController {
                 }
             }
         }
-        return null;
     }
 
     private File genertQrcode(String realName, String userId, String examId) {
@@ -131,7 +130,7 @@ public class BuilderQrCodeController {
         strings.put("examId", examId);
 
         String urlMethod = "qrCodeController";
-        File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString);
+        File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString,15);
 
         return file;
     }
