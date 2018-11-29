@@ -73,6 +73,7 @@
 					<th>描述</th>
 				、	<th>采购时间</th>
 					<th>状态</th>
+					<th>下载二维码</th>
 				</tr>
 				</thead>
 			</table>
@@ -246,8 +247,13 @@
                         }
                         return status;
                     }
-                },
-
+                },  {
+                    "data":"id",
+                    "render": function ( data, type, full, meta ) {
+                        var btn =  "<a href='/tools/qrToolDown?toolId='+data class='btn btn-info' '>设备二维码</a>&nbsp;&nbsp;";
+                        return btn;
+                    }
+                }
             ],
             'columnDefs': [
                 {"sClass": "text-center", 'targets': '_all'},

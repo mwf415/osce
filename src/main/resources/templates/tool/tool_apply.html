@@ -152,7 +152,7 @@
                 {
                     "data":"id",
                     "render": function ( data, type, full, meta ) {
-                        var btn =  "<a href='javascript:void(0)' class='btn btn-info' onclick='newApply("+data+")'>申请</a>&nbsp;&nbsp;";
+                        var btn =  "<a href='javascript:void(0)' class='btn btn-info' onclick='qrToolDown("+data+")'>申请</a>&nbsp;&nbsp;";
                         return btn;
                     }
                 }
@@ -194,6 +194,10 @@
         todayHighlight: 1,
         forceParse: 1
     });
+    
+    function qrToolDown (id) {
+        
+    }
 
 </script>
 <#include "/common/footer.html"/>
