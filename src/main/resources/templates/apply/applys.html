@@ -27,7 +27,7 @@
 	<!-- end breadcrumb -->
 	<!-- begin page-header -->
 	<h1 class="page-header">
-		工具管理
+		设备借用管理
 		<small></small>
 	</h1>
 	<!-- end page-header -->
@@ -52,13 +52,6 @@
 							<input type="text" class="form-control" id="name-search" placeholder="名称" />
 						</div>
 						<button type="button" onclick="search();" class="btn btn-info">查询</button>
-						<@shiro.hasPermission name="/exams/delete">
-						<button type="button" onclick="delByID();" class="btn btn-danger" style="float: right; margin-right: 1px;">删除</button>
-					</@shiro.hasPermission> <@shiro.hasPermission name="/exams/update">
-					<button type="button" onclick="update();" class="btn btn-info" style="float: right; margin-right: 1px;">修改</button>
-				</@shiro.hasPermission> <@shiro.hasPermission name="/exams/add">
-				<button type="button" onclick="add();" class="btn btn-info" style="float: right; margin-right: 1px;">新增</button>
-			</@shiro.hasPermission>
 			</form>
 			<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
 				<thead>
@@ -275,12 +268,18 @@
                     "data":"status",
                     "render": function ( data, type, full, meta ) {
                         var status = "";
-                        if(data==0){
+                        if(data==0){  //  状态 0 报废  1 是可以借用，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
                             status = "报废";
                         }else if(data==1){
-                            status = "正常";
-                        }else{
-                            status="维修中";
+                            status = "可借用";
+                        }else if(data==2){
+                            status = "借用中";
+                        }else if(data==3){
+                            status = "使用结束未归还";
+                        }else if(data==4){
+                            status = "使用造成损坏";
+                        }else if(data==5){
+                            status = "维修中";
                         }
                         return status;
                     }
@@ -482,12 +481,18 @@
 
     function getStatus( data ) {
         var status = "";
-        if(data==0){
-            status = "使用中";
-        }else if (data==1){
-            status = "使用结束已归还";
-        }else if (data==2){
+        if(data==0){  //  状态 0 报废  1 是可以借用，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
+            status = "报废";
+        }else if(data==1){
+            status = "可借用";
+        }else if(data==2){
+            status = "借用中";
+        }else if(data==3){
             status = "使用结束未归还";
+        }else if(data==4){
+            status = "使用造成损坏";
+        }else if(data==5){
+            status = "维修中";
         }
         return status;
     }

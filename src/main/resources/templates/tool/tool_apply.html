@@ -236,13 +236,19 @@
                     "data":"status",
                     "render": function ( data, type, full, meta ) {  // 0 报废  1 已归还，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
                         var status = "";
-                        if(data==2 ){
-                            status = "使用中";
+                        if(data==0){  //  状态 0 报废  1 是可以借用，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
+                            status = "报废";
                         }else if(data==1){
-                            status = "已归还";
-                        }else if(data ==3){
-                            status="未归还";
-						}
+                            status = "可借用";
+                        }else if(data==2){
+                            status = "借用中";
+                        }else if(data==3){
+                            status = "使用结束未归还";
+                        }else if(data==4){
+                            status = "使用造成损坏";
+                        }else if(data==5){
+                            status = "维修中";
+                        }
                         return status;
                     }
                 },

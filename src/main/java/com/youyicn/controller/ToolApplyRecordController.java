@@ -50,6 +50,7 @@ public class ToolApplyRecordController {
         map.put("recordsTotal",pageInfo.getTotal());
         map.put("recordsFiltered",pageInfo.getTotal());
         map.put("data", pageInfo.getList());
+        map.put("success", true);
         return map;
     }
 
