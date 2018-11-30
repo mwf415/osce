@@ -98,7 +98,7 @@ public class ToolApplyRecordController {
     public static final Integer TOOL_STATUS_OUT_FIXING = 5 ; // 维修中
 
 
-    @Scheduled(cron = "1 * * * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void demoSchedule() {
         System.out.println("");
         // 查询状态是1 并且到期的借用单，同时更改设施状态为2 到期未还 ；
