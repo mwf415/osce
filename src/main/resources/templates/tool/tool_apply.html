@@ -134,7 +134,40 @@
 	<!--/添加弹框-->
 
 
-
+	<!--添加弹框-->
+	<div class="modal fade" id="returnTool" tabindex="-1" role="dialog" aria-labelledby="returnToolLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="returnToolLabel">还设备</h4>
+				</div>
+				<div class="modal-body">
+					<form id="returnForm">
+						<input  value="${toolId!}" name="toolId" type="hidden">
+						<div class="form-group">
+							<label class="control-label">状态:</label>
+							<select class="form-control" name="status" id="status">
+								<option value="1">正常</option>
+								<option value="3">损坏</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">备注:</label>
+							<input  type="text" class="form-control" name="msg" placeholder="请输入备注描述" />
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" onclick="returnApply();" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/添加弹框-->
 </div>
 
 <script type="text/javascript">
@@ -218,7 +251,7 @@
                     "render": function ( data, type, full, meta ) {  // 0 报废  1 已归还，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
                         var btn ;
 						if(data==3 || data == 2 ) {
-                            btn = "<a href='javascript:void(0)' class='btn btn-info' onclick='returnApply()'>还设备</a>&nbsp;&nbsp;";
+                            btn = "<a href='javascript:void(0)' class='btn btn-info' onclick='returnShow()'>还设备</a>&nbsp;&nbsp;";
                         }else {
                             btn = "<a href='javascript:void(0)' class='btn btn-info' disabled='disabled'>还设备</a>&nbsp;&nbsp;";
 						}
@@ -289,7 +322,11 @@
         forceParse: 1
     });
 
-
+    function returnShow(){
+        //清空表单
+        $('#returnToolLabel').text('添加借用');
+        $('#returnTool').modal('show');
+    }
 
     function applyNew(){
         //清空表单
