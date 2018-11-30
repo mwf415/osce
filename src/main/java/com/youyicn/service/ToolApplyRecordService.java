@@ -9,8 +9,8 @@ import com.youyicn.model.ToolApplyRecordVo;
 public interface ToolApplyRecordService extends IService<ToolApplyRecord>  {
 	
 	 PageInfo<ToolApplyRecord> selectByPageAssotiation(ToolApplyRecord toolApplyRecord, int start, int length);
-	 
-	 List<ToolApplyRecordVo > listApplysByToolId (Integer toolId);
+
+	PageInfo<ToolApplyRecordVo> listApplysByToolId (Integer toolId,int start,int length);
 
 	 List<ToolApplyRecord> timerListToReturn ();
 

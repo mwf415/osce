@@ -162,8 +162,6 @@
 							<th>名称</th>
 							<th>厂商</th>
 							<th>采购时间</th>
-							<th>设备二维码</th>
-							<th>借用二维码</th>
 						</tr>
 					</thead>
 					<tbody id="questions">
@@ -398,9 +396,7 @@
  	                    	html+= "<td>"+tools[i].toolNum+"</td>";
  	                    	html+= "<td>"+tools[i].name+"</td>";
  	                    	html+= "<td>"+tools[i].productor+"</td>";
- 	                    	html+= "<td>"+tools[i].buyTime+"</td>";
- 	                    	html+= "<td>"+tools[i].codeUrl+"</td>";
- 	                    	html+= "<td>"+tools[i].codeApplyUrl+"</td></tr>";
+ 	                    	html+= "<td>"+getLocalTime(tools[i].buyTime)+"</td>";
  	                    }
                      }else{
                      	html+="<tr><td colspan='5' align='center'>此分组没有设备</td></tr>";
@@ -414,9 +410,12 @@
          });
  	}
 
- 	
- 	$('.form_datetime').datetimepicker({
- 		format: 'yyyy-mm-dd hh:ii',
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
+    }
+
+    $('.form_datetime').datetimepicker({
+ 		format: 'yyyy-mm-dd',
          language:  'zh-CN',
          startView: 2,minView:2,
          weekStart: 1,

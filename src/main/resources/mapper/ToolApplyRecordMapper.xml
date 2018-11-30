@@ -19,11 +19,12 @@
 		SELECT *
 		FROM osce_tool_apply_record tr order BY tr.id
     </select>  
-  <select id="listApplysByToolId" parameterType="Integer" resultType="com.youyicn.model.ToolApplyRecordVo">        
+  <select id="listApplysByToolId" parameterType="map" resultType="com.youyicn.model.ToolApplyRecordVo">
 	select ot.tool_num toolNum, ar.department department,ar.start_time startTime,ar.end_time endTime , ar.`status` `status`,u.real_name username, ot.`name` toolname from osce_tool_apply_record ar 
 		LEFT JOIN `user` u on  ar.user_id = u.id
 		LEFT JOIN osce_tool ot on ot.id = ar.tool_id 
   		where ar.tool_id = #{toolId} ORDER BY ar.id DESC
-    </select>  
-  
+  		LIMIT #{start}, #{length}
+    </select>
+
 </mapper>

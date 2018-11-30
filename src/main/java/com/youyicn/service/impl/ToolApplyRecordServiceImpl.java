@@ -3,8 +3,9 @@ package com.youyicn.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import com.youyicn.model.OsceSort;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +40,13 @@ public class ToolApplyRecordServiceImpl extends BaseService<ToolApplyRecord> imp
     }
 
     @Override
-    public List<ToolApplyRecordVo> listApplysByToolId(Integer toolId) {
-
-        return toolApplyRecordMapper.listApplysByToolId(toolId);
+    public PageInfo<ToolApplyRecordVo> listApplysByToolId(Integer toolId , int start, int length) {
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("start", start);
+        condition.put("length", length);
+        condition.put("toolId",toolId);
+        List<ToolApplyRecordVo> list = toolApplyRecordMapper.listApplysByToolId(condition);
+        return new PageInfo<ToolApplyRecordVo>(list);
     }
 
     @Override

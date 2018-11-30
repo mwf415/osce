@@ -39,23 +39,18 @@ public class ToolApplyRecordController {
 
     @RequestMapping("/listApplysByToolId")
     @ResponseBody
-    public Map<String, Object> listQuestionByExamId(@Param("toolId") Integer toolId) {
-        Map<String, Object> result = Maps.newHashMap();
-        boolean success = false;
-        String msg = "获取数据失败！";
-        Object data = null;
-        try {
-            data = toolApplyRecordService.listApplysByToolId(toolId);
-            success = true;
-            msg = "获取数据成功！";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        result.put("success", success);
-        result.put("msg", msg);
-        result.put("data", data);
+    public Map<String, Object> listQuestionByExamId(@Param("toolId") Integer toolId , String draw, Integer roleId,
+                                                    @RequestParam(required = false, defaultValue = "1") int start,
+                                                    @RequestParam(required = false, defaultValue = "10") int length ) {
 
-        return result;
+
+        Map<String,Object> map = new HashMap<>();
+        PageInfo<ToolApplyRecordVo> pageInfo = toolApplyRecordService.listApplysByToolId(toolId,start,length);
+        map.put("draw",draw);
+        map.put("recordsTotal",pageInfo.getTotal());
+        map.put("recordsFiltered",pageInfo.getTotal());
+        map.put("data", pageInfo.getList());
+        return map;
     }
 
     @RequestMapping("/add")
@@ -124,17 +119,17 @@ public class ToolApplyRecordController {
 
     @RequestMapping("/return")
     @ResponseBody
-    public Map<String ,Object> returnTool(@Param("toolId")Integer toolId){
+    public Map<String ,Object> returnTool(@Param("toolId")Integer toolId,@Param("status") int status){
         Map<String ,Object> result = new HashMap<>();
 
         try {
             ToolApplyRecord toolApplyRecord = toolApplyRecordService.getinUseByToolId(toolId);
             Tool tool = toolService.selectByKey(toolId);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("userSession");
-            toolApplyRecord.setStatus(TOOL_STATUS_RETURN);
+            toolApplyRecord.setStatus(status);
             toolApplyRecord.setReturnUserId(user.getId());
             toolApplyRecordService.updateNotNull(toolApplyRecord);
-            tool.setStatus(TOOL_STATUS_RETURN);
+            tool.setStatus(status);
             toolService.updateNotNull(tool);
             result.put("msg","success");
 
