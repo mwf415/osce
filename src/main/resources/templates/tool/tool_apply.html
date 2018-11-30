@@ -298,18 +298,16 @@
             cache: true,
             type: "GET",
             url: url,
-            data:{
-                "toolId":toolId
-			},
+            data:$('#returnForm').serialize(),// 你的formid
             async: false,
             success: function(data) {
                 if(data.msg=="success"){
                     layer.msg('保存成功');
                     table.ajax.reload();
-                    $('#addTool').modal('hide');
+                    $('#returnTool').modal('hide');
                 }else{
                     layer.msg('保存失败');
-                    $('#addTool').modal('hide');
+                    $('#returnTool').modal('hide');
                 }
             }
         });

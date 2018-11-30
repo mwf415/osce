@@ -36,6 +36,8 @@ public class ToolApplyRecord implements Serializable{
     @Column(name = "return_user_id")
     private Integer returnUserId;
 
+    @Column(name = "msg")
+    private String msg;
 
     @Override
     public String toString() {
@@ -48,7 +50,16 @@ public class ToolApplyRecord implements Serializable{
                 ", status=" + status +
                 ", userId=" + userId +
                 ", returnUserId=" + returnUserId +
+                ", msg='" + msg + '\'' +
                 '}';
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public Integer getReturnUserId() {
