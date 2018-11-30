@@ -92,6 +92,7 @@ public class ToolsController {
 
     /**
      * 下载二维码
+     *
      * @param toolId
      */
     @RequestMapping(value = "/qrToolDown")
@@ -100,12 +101,12 @@ public class ToolsController {
             Tool tool = toolService.selectByKey(toolId);
             String urlMethod = "tools/showToolQr";
             Map<String, String> strings = new HashMap<>();// 二维码中的文字
-            strings.put("toolId",toolId+"");
+            strings.put("toolId", toolId + "");
             LinkedHashMap<String, String> wordsString = new LinkedHashMap<>();
             wordsString.put("NAME", tool.getName());
             wordsString.put("SUPPLIER", tool.getProductor());
             wordsString.put("NUM", tool.getToolNum());
-            File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString,12);
+            File file = QrCodeUtil.getInstance().createQRCode(urlMethod, servicePort, strings, wordsString, 12);
 
             response.setContentType("application/force-download");// 设置强制下载不打开
             response.addHeader("Content-Disposition", "attachment;fileName=" + tool.getToolNum() + ".png");// 设置文件名
@@ -144,14 +145,17 @@ public class ToolsController {
 
     /**
      * 扫描二维码显示的数据
+     *
      * @param toolId
      */
     @RequestMapping(value = "/showToolQr")
-    public String showToolQr(@Param("toolId") Integer toolId , Model model) {
-       model.addAttribute("toolId",toolId);
+    public String showToolQr(@Param("toolId") Integer toolId, Model model) {
+        model.addAttribute("toolId", toolId);
+        Tool tool = toolService.selectByKey(toolId);
+        model.addAttribute("tool", tool);
+        model.addAttribute("toolId", toolId);
         return "tool/tool_apply";
     }
-
 
 
     @RequestMapping(value = "/update")

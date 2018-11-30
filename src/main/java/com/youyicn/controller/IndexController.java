@@ -6,6 +6,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.youyicn.model.*;
+import com.youyicn.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -16,17 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.youyicn.model.Base;
-import com.youyicn.model.Role;
-import com.youyicn.model.Room;
-import com.youyicn.model.Station;
-import com.youyicn.model.User;
-import com.youyicn.service.CycleBaseService;
-import com.youyicn.service.RoleService;
-import com.youyicn.service.RoomService;
-import com.youyicn.service.StationService;
-import com.youyicn.service.UserService;
 
 /**
  * Created by yangqj on 2017/4/21.
@@ -46,6 +37,9 @@ public class IndexController {
 	private StationService stationService;
     @Resource
     private CycleBaseService cycleBaseService;
+
+    @Resource
+    private ToolGroupService toolGroupService;
 
     @RequestMapping(value="/login",method= RequestMethod.GET)
     public String login(){
@@ -118,8 +112,11 @@ public class IndexController {
     }
     
     @RequestMapping("/toolsPage")
-    public String toolPage(){
-    	return "tool/tools";
+    public String toolPage(Model model){
+        List<ToolGroup> all = toolGroupService.getAll();
+        model.addAttribute("groupList",all);
+
+        return "tool/tools";
     }
 
     @RequestMapping("/applyPage")

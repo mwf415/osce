@@ -42,17 +42,8 @@
 					<h4 class="panel-title">数据列表</h4>
 				</div>
 				<div class="panel-body">
-					<form class="form-inline">
-						<div class="form-group">
-							<label>编号:</label>
-							<input type="text" class="form-control" id="id-search" placeholder="编号:" />
-						</div>
-						<div class="form-group">
-							<label>名称:</label>
-							<input type="text" class="form-control" id="name-search" placeholder="名称" />
-						</div>
-						<button type="button" onclick="search();" class="btn btn-info">查询</button>
-				</form>
+				<button type="button" onclick="applyNew();" class="btn btn-info" style="float: right; margin-right: 1px;">借用申请</button>
+
 			<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
 				<thead>
 				<tr>
@@ -71,6 +62,79 @@
 	</div>
 </div>
 </div>
+
+
+	<!--添加弹框-->
+	<div class="modal fade" id="addToolApply" tabindex="-1" role="dialog" aria-labelledby="addToolApplyLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="addToolApplyLabel">添加借用</h4>
+				</div>
+				<div class="modal-body">
+					<form id="toolApplyForm">
+						<input id="toolId" value="${toolId!}" name="toolId" type="hidden">
+						<div class="form-group">
+							<label class="control-label">设备名称:
+								<input type="text" class="form-control" value="${tool.name!}" readonly/>
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label">设备编号:
+								<input type="text" class="form-control" value="${tool.toolNum!}" readonly/>
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label">厂商:
+								<input type="text" class="form-control" value="${tool.productor!}" readonly/>
+							</label>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">借用开始时间:</label>
+							<div class="input-group date form_datetime">
+								<input class="form-control" type="text" id="startTime" name="startTime" placeholder="请选择借用开始时间" readonly>
+								<span class="input-group-addon">
+								<span class="glyphicon glyphicon-remove"></span>
+							</span>
+								<span class="input-group-addon">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">借用结束时间:</label>
+							<div class="input-group date form_datetime">
+								<input class="form-control" type="text" id="endTime" name="endTime" placeholder="请选择借用结束时间" readonly>
+								<span class="input-group-addon">
+								<span class="glyphicon glyphicon-remove"></span>
+							</span>
+								<span class="input-group-addon">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">备注:</label>
+							<input  type="text" class="form-control" id="descri" name="descri" placeholder="请输入设备描述" />
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" onclick="add();" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/添加弹框-->
+
+
+
 </div>
 
 <script type="text/javascript">
@@ -108,7 +172,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: 'applys/listApplysByToolId',
+                    url: '/applys/listApplysByToolId',
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -137,22 +201,27 @@
                 { "data": "endTime" },
                 {
                     "data":"status",
-                    "render": function ( data, type, full, meta ) {
+                    "render": function ( data, type, full, meta ) {  // 0 报废  1 已归还，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
                         var status = "";
-                        if(data==0){
+                        if(data==2 ){
                             status = "使用中";
                         }else if(data==1){
-                            status = "使用结束已归还";
-                        }else if(data==2){
-                            status="使用结束未归还";
-                        }
+                            status = "已归还";
+                        }else if(data ==3){
+                            status="未归还";
+						}
                         return status;
                     }
                 },
                 {
-                    "data":"id",
-                    "render": function ( data, type, full, meta ) {
-                        var btn =  "<a href='javascript:void(0)' class='btn btn-info' onclick='qrToolDown("+data+")'>申请</a>&nbsp;&nbsp;";
+                    "data":"status",
+                    "render": function ( data, type, full, meta ) {  // 0 报废  1 已归还，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
+                        var btn ;
+						if(data==3 || data == 2 ) {
+                            btn = "<a href='javascript:void(0)' class='btn btn-info' onclick='returnApply()'>还设备</a>&nbsp;&nbsp;";
+                        }else {
+                            btn = "<a href='javascript:void(0)' class='btn btn-info' disabled='disabled'>还设备</a>&nbsp;&nbsp;";
+						}
                         return btn;
                     }
                 }
@@ -160,7 +229,7 @@
             'columnDefs': [
                 {"sClass": "text-center", 'targets': '_all'},
                 {
-                    "targets": [-4],
+                    "targets": [-4,-3],
                     "render": function ( data, type, full, meta ) {
                         return DateUtil.dateToStr("yyyy-MM-dd", new Date(data));
                     }
@@ -175,14 +244,39 @@
     function getQueryCondition(data){
         var param = {};
         //组装排序参数
-        param.id ="${toolId}";
+        param.toolId="${toolId!}";
         //组装分页参数
         param.start = data.start;
         param.length = data.length;
         param.draw = data.draw;
         return param;
     }
+	
+    function returnApply () {
+        var url = "/applys/return";
+        var toolId="${toolId!}";
+        $.ajax({
+            cache: true,
+            type: "GET",
+            url: url,
+            data:{
+                "toolId":toolId
+			},
+            async: false,
+            success: function(data) {
+                if(data.msg=="success"){
+                    layer.msg('保存成功');
+                    table.ajax.reload();
+                    $('#addTool').modal('hide');
+                }else{
+                    layer.msg('保存失败');
+                    $('#addTool').modal('hide');
+                }
+            }
+        });
 
+
+    }
 
     $('.form_datetime').datetimepicker({
         format: 'yyyy-mm-dd',
@@ -194,9 +288,47 @@
         todayHighlight: 1,
         forceParse: 1
     });
-    
-    function qrToolDown (id) {
-        
+
+
+
+    function applyNew(){
+        //清空表单
+        $('#addToolApplyLabel').text('添加借用');
+        $('#addToolApply').modal('show');
+    }
+    //添加申请
+    function add() {
+        var url = '/applys/add';
+		var toolId = "${toolId}";
+		var startTime  = $("#startTime").val();
+		var endTime  = $("#endTime").val();
+        if(startTime == "" || startTime == undefined || startTime == null){
+            return layer.msg('开始时间不能为空', function(){
+                //关闭后的操作
+            });
+        }
+        if(endTime == "" || endTime == undefined || endTime == null){
+            return layer.msg('结束时间不能为空', function(){
+                //关闭后的操作
+            });
+        }
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: url,
+            data:$('#toolApplyForm').serialize(),// 你的formid
+            async: false,
+            success: function(data) {
+                if(data=="success"){
+                    layer.msg('保存成功');
+                    table.ajax.reload();
+                    $('#addTool').modal('hide');
+                }else{
+                    layer.msg('保存失败');
+                    $('#addTool').modal('hide');
+                }
+            }
+        });
     }
 
 </script>

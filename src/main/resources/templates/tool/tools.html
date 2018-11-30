@@ -117,7 +117,7 @@
 							<#if groupList?? &&	groupList?size gt 0>
 								<option value="">请选择</option>
 								<#list groupList as group>
-									<option value="${baseValue.id}">${baseValue.name}</option>
+									<option value="${group.id}">${group.name}</option>
 								</#list>
 							</#if>
 						</select></td>
@@ -298,7 +298,7 @@
         $('#addTool').modal('show');
     }
 
-    //添加考试
+    //添加工具
     function addTool() {
         var url = 'tools/add';
         if($('#id').val() != ''){

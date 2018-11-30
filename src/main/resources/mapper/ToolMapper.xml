@@ -12,8 +12,6 @@
     <result column="tool_group_name" jdbcType="VARCHAR" property="toolGroupName" />
     <result column="productor" jdbcType="VARCHAR" property="productor" />
     <result column="buy_time" jdbcType="DATE" property="buyTime" />
-    <result column="code_url" jdbcType="VARCHAR" property="codeUrl" />
-    <result column="code_apply_url" jdbcType="VARCHAR" property="codeApplyUrl" />
     <result column="descri" jdbcType="LONGVARCHAR" property="descri" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>

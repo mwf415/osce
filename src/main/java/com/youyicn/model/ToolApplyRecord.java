@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ToolApplyRecord implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String department;
 
@@ -19,35 +19,44 @@ public class ToolApplyRecord implements Serializable{
      * 设备id
      */
     @Column(name = "tool_id")
-    private Long toolId;
+    private Integer toolId;
 
     @Column(name = "start_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
     @Column(name = "end_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-    private Integer status;  // 0 使用中，1 使用结束已归还，也是其他用户可以使用的状态，2 使用结束未归还 。
+    private Integer status;  // 状态 0 报废  1 已归还，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
 
     @Column(name = "user_id")
-    private Long userId;
-    
-   
-   
-    /**
-     * @return id
-     */
-    public Long getId() {
-        return id;
+    private Integer userId;
+    @Column(name = "return_user_id")
+    private Integer returnUserId;
+
+
+    @Override
+    public String toString() {
+        return "ToolApplyRecord{" +
+                "id=" + id +
+                ", department='" + department + '\'' +
+                ", toolId=" + toolId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", userId=" + userId +
+                ", returnUserId=" + returnUserId +
+                '}';
     }
 
-    /**
-     * @param id
-     */
-    public void setId(Long id) {
-        this.id = id;
+    public Integer getReturnUserId() {
+        return returnUserId;
+    }
+
+    public void setReturnUserId(Integer returnUserId) {
+        this.returnUserId = returnUserId;
     }
 
     /**
@@ -64,17 +73,19 @@ public class ToolApplyRecord implements Serializable{
         this.department = department;
     }
 
-    /**
-     * @return tool_id
-     */
-    public Long getToolId() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getToolId() {
         return toolId;
     }
 
-    /**
-     * @param toolId
-     */
-    public void setToolId(Long toolId) {
+    public void setToolId(Integer toolId) {
         this.toolId = toolId;
     }
 
@@ -120,17 +131,11 @@ public class ToolApplyRecord implements Serializable{
         this.status = status;
     }
 
-    /**
-     * @return user_id
-     */
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    /**
-     * @param userId
-     */
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 }

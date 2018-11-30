@@ -21,26 +21,15 @@ public class Tool implements Serializable{
 
     @Column(name = "tool_num")
     private String toolNum;
-
     private String name;
-
     private String productor;
-
     @Column(name = "buy_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date buyTime;
     @Column(name = "update_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updateTime;
-
-    @Column(name = "code_url")
-    private String codeUrl;
-
-    @Column(name = "code_apply_url")
-    private String codeApplyUrl;
-    
-    private Integer status; //状态  1 是正常，2 维修中，0 报废
-
+    private Integer status; // 状态 0 报废  1 是可以借用，2 借用中   3 使用结束未归还  4 使用造成损坏。  5 维修中
     private String descri;
 
     @Override
@@ -54,13 +43,10 @@ public class Tool implements Serializable{
                 ", productor='" + productor + '\'' +
                 ", buyTime=" + buyTime +
                 ", updateTime=" + updateTime +
-                ", codeUrl='" + codeUrl + '\'' +
-                ", codeApplyUrl='" + codeApplyUrl + '\'' +
                 ", status=" + status +
                 ", descri='" + descri + '\'' +
                 '}';
     }
-
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -164,33 +150,6 @@ public class Tool implements Serializable{
         this.buyTime = buyTime;
     }
 
-    /**
-     * @return code_url
-     */
-    public String getCodeUrl() {
-        return codeUrl;
-    }
-
-    /**
-     * @param codeUrl
-     */
-    public void setCodeUrl(String codeUrl) {
-        this.codeUrl = codeUrl;
-    }
-
-    /**
-     * @return code_apply_url
-     */
-    public String getCodeApplyUrl() {
-        return codeApplyUrl;
-    }
-
-    /**
-     * @param codeApplyUrl
-     */
-    public void setCodeApplyUrl(String codeApplyUrl) {
-        this.codeApplyUrl = codeApplyUrl;
-    }
 
 	public String getDescri() {
 		return descri;
