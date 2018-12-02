@@ -63,16 +63,19 @@
                                </div>
 
 		                        <div class="form-group">
-		                            <label class="control-label">状态:</label>
+		                            <label class="control-label">身份:</label>
 		                            <select id="status-search"  class="form-control">
 		                                <option value="">全部</option>
-		                                <option value="1">开启</option>
-		                                <option value="0">关闭</option>
+		                                <option value="1">老师</option>
+		                                <option value="2">学生</option>
 		                            </select>
 		                        </div>
 		                        <button type="button"  onclick="search();" class="btn btn-primary">查询</button>
+		                        <button type="button"  onclick="$('#userItemModal').modal()" class="btn btn-primary">导入</button>
+
 	                            <@shiro.hasPermission name="/users/saveUserRoles">
-		                        	<button type="button"  onclick="allotRole();" class="btn btn-info" style="float: right; margin-right: 1px;">分配角色</button>
+		                        	<button type="button"  onclick="allotRole();" class="btn btn-info" style="float: right; margin-right: 1px;">
+                                        分配角色</button>
 							    </@shiro.hasPermission>
 							    <@shiro.hasPermission name="/users/delete">
 		                        	<button type="button"  onclick="delByID();" class="btn btn-info" style="float: right; margin-right: 1px;">删除</button>
@@ -107,6 +110,56 @@
 </div>
 <!-- end #content -->
 
+
+<!--查看评分项-->
+<!--添加弹框-->
+<div class="modal fade" id="userItemModal" tabindex="-1" role="dialog" aria-labelledby="userItemLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="userItemLabel">批量导入用户</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="questionId" name="questionId"/>
+                    <div style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                        <button class="btn btn-info">导入</button>
+                        <input type="file" id="import_useritem_file"
+                               style="position:absolute;top:0;left:0;font-size:34px; opacity:0"
+                               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                    </div>
+                    <span id="import_useritem_filename">未导入文件</span>
+                    <a class="btn btn-inverse pull-right" href="/file/download?fileName=userMoBan.xlsx">用户模版</a>
+                </form>
+                <table id="userItemTable" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>登录名</th>
+                        <th>编号</th>
+                        <th>姓名</th>
+                        <th>密码</th>
+                        <th>基地</th>
+                        <th>科室</th>
+                        <th>身份</th>
+                        <th>培训年限</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="saveuserItems();" class="btn btn-success">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/批量导入项-->
+
+
 <!--弹框-->
 <div class="modal fade bs-example-modal-sm"  id="selectRole" tabindex="-1" role="dialog" aria-labelledby="selectRoleLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -131,7 +184,6 @@
     </div>
 </div>
 <!--/弹框-->
-
 
 <!--添加弹框-->
 <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addroleLabel">
@@ -197,6 +249,7 @@
 	    var check = $(this).prop("checked");
 	    $(".checkchild").prop("checked", check);
 	});
+
 	var table;
     $(document).ready(function() {
         table = $('#datatable').DataTable( {
@@ -224,7 +277,6 @@
             ajax : function(data, callback, settings) {
                 //封装请求参数
                 var param = getQueryCondition(data);
-
                 $.ajax({
                     type: "GET",
                     url: 'users',
@@ -241,6 +293,7 @@
                         //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                         //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                         callback(returnData);
+
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("查询失败");
@@ -263,13 +316,28 @@
             ]
 
         } );
-
     } );
 
     function search(){
         table.ajax.reload();
     }
-    //封装查询参数
+
+
+
+    var baseList = [];
+        //初始化将测试集包含的用例存在数组里面
+        <#if bases??>
+            <#list bases as item>
+                baseList.push("${item.value}")
+            </#list>
+        </#if>
+
+    var roomList =[];
+    <#if rooms??>
+    <#list rooms as room>
+    roomList.push("${room.value}")
+    </#list>
+    </#if>
     function getQueryCondition(data){
         var param = {};
         //组装排序参数
@@ -284,6 +352,91 @@
         param.draw = data.draw;
         return param;
     }
+
+    //导入考生,js读取excel内容
+    $('#import_useritem_file').change(function (e) {
+        $('#import_useritem_filename').html(this.files[0].name);
+        var files = e.target.files;
+        var fileReader = new FileReader();
+        fileReader.onload = function (ev) {
+            try {
+                var data = ev.target.result,
+                    workbook = XLSX.read(data, {
+                        type: 'binary'
+                    }), // 以二进制流方式读取得到整份excel表格对象
+                    userItems = []; // 存储获取到的数据
+            } catch (e) {
+                console.log('文件类型不正确');
+                console.log(e);
+                return;
+            }
+
+            // 表格的表格范围，可用于判断表头是否数量是否正确
+            // 遍历每张表读取
+            for (var sheet in workbook.Sheets) {
+                if (workbook.Sheets.hasOwnProperty(sheet)) {
+                    userItems = userItems.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                    break; // 如果只取第一张表，就取消注释这行
+                }
+            }
+
+            console.log(userItems);
+            if (userItems != null && userItems.length > 0) {
+                if (userItems[0].loginName == null || userItems[0].real_name == null) {
+                    layer.msg('excel格式不正确！');
+                    return;
+                }
+                var html = '';
+                var flag = true;
+                for (var i in userItems) {
+                    //序号校验
+                    if (userItems[i].loginName == null || userItems[i].loginName == '') {
+                        layer.msg('导入失败，登录名不能为空！');
+                        flag = false;
+                        return;
+                    }
+                    //分值校验
+                    if (userItems[i].real_name == null || userItems[i].real_name == '') {
+                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        flag = false;
+                        return;
+                    }
+                    //分值校验
+                    if (userItems[i].user_pwd == null || userItems[i].user_pwd == '') {
+                        layer.msg('导入失败，第‘+i+’用户密码不能为空！');
+                        flag = false;
+                        return;
+                    }//分值校验
+                    if (userItems[i].baseName == null || userItems[i].baseName == '') {
+                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        flag = false;
+                        return;
+                    }
+                    //分值校验
+                    if (userItems[i].roomName == null || userItems[i].roomName == '') {
+                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        flag = false;
+                        return;
+                    }                    //分值校验
+                    if (userItems[i].identity_id == null || userItems[i].identity_id == '') {
+                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        flag = false;
+                        return;
+                    }
+                    html += '<tr><td>' + userItems[i].序号 + '</td><td>' + userItems[i].一级标题 + '</td><td>' + userItems[i].二级标题 + '</td><td>' + userItems[i].分值 + '</td></tr>';
+                }
+                if (flag) {
+                    $('#userItemTable tbody').empty().append(html);
+                }
+            }
+        };
+
+        // 以二进制方式打开文件
+        fileReader.readAsBinaryString(files[0]);
+    });
+
+
+
 
     //弹出选择角色的框
     function allotRole(){

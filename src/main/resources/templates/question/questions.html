@@ -471,31 +471,6 @@
 
     }
 
-    //      $('#baseName').change(function(){
-    //      	var baseName = $(this).val();
-    //      	var $arrturnRoom = $('#roomName');
-    //      	if(baseName==''){
-    //      		$arrturnRoom.empty();
-    //      		return;
-    //      	}
-    //          $.ajax({
-    //              cache: true,
-    //              type: "POST",
-    //              url:'/bases/listArrturnRuleByBaseName',
-    //              data:{baseName:baseName},
-    //              async: false,
-    //              success: function(result) {
-    //             	 if(result.success){
-    //                  	var arrturnRules = result.data;
-    //                  	var html = '';
-    //                  	for(var i in arrturnRules){
-    //                  		html += '<option value="'+arrturnRules[i].roomName+'">'+arrturnRules[i].roomName+'</option>';
-    //                  	}
-    //                  	$arrturnRoom.html(html);
-    //                  }
-    //              }
-    //          });
-    //      });
 
     $('#easyContainer').easyUpload({
         allowFileTypes: '*.ppt;*.pptx;*.doc;*.docx;',//允许上传文件类型，格式';*.doc;*.pdf'
