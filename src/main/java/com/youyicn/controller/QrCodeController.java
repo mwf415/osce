@@ -92,6 +92,7 @@ public class QrCodeController {
                     examStationRecord.setExamId(Integer.parseInt(examId));
                     examStationRecord.setState(state);
                     examStationRecord.setStationId(stationId);
+
                     /**
                      * 根据这两个信息，查找参加该考站的学生的信息
                      */
@@ -99,7 +100,12 @@ public class QrCodeController {
                     if(examStationRecords.size()>0){
                         for (ExamStationRecord stationRecord : examStationRecords) {
                             if(userId.equals(stationRecord.getUserId())){
-                            	BeanUtils.copyProperties(examStationRecord, stationRecord);
+                                Integer questionId = stationRecord.getQuestionId();
+                                Question question = questionService.selectByKey(questionId);
+                                if(null!= question){
+                                    model.addAttribute("duration", question.getDuration());
+                                }
+                                BeanUtils.copyProperties(examStationRecord, stationRecord);
                                 List<ScoreItem> scoreItems = questionService.listScoreItemByQuestionId(examStationRecord.getQuestionId());
                                 model.addAttribute("examStationRecord", examStationRecord);
                                 model.addAttribute("scoreItems", scoreItems);
