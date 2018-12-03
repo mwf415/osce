@@ -144,6 +144,7 @@
                         <th>基地</th>
                         <th>科室</th>
                         <th>身份</th>
+                        <th>年级</th>
                         <th>培训年限</th>
                     </tr>
                     </thead>
@@ -153,7 +154,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" onclick="saveuserItems();" class="btn btn-success">保存</button>
+                <button type="button" onclick="saveUserItems();" class="btn btn-success">保存</button>
             </div>
         </div>
     </div>
@@ -323,8 +324,6 @@
         table.ajax.reload();
     }
 
-
-
     var baseList = [];
         //初始化将测试集包含的用例存在数组里面
         <#if bases??>
@@ -389,8 +388,8 @@
                 }
                 var html = '';
                 var flag = true;
-                for (var i in userItems) {
-                    //序号校验
+                var num =1;
+                for (var i in userItems) {  //序号校验
                     if (userItems[i].loginName == null || userItems[i].loginName == '') {
                         layer.msg('导入失败，登录名不能为空！');
                         flag = false;
@@ -398,32 +397,34 @@
                     }
                     //分值校验
                     if (userItems[i].real_name == null || userItems[i].real_name == '') {
-                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        layer.msg('导入失败，第'+num+'个用户真实姓名分值不能为空！');
                         flag = false;
                         return;
                     }
                     //分值校验
                     if (userItems[i].user_pwd == null || userItems[i].user_pwd == '') {
-                        layer.msg('导入失败，第‘+i+’用户密码不能为空！');
-                        flag = false;
-                        return;
-                    }//分值校验
-                    if (userItems[i].baseName == null || userItems[i].baseName == '') {
-                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        layer.msg('导入失败，第'+num+'个用户密码不能为空！');
                         flag = false;
                         return;
                     }
-                    //分值校验
-                    if (userItems[i].roomName == null || userItems[i].roomName == '') {
-                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                    if ( userItems[i].baseName == null || userItems[i].baseName == '' ||  !isContains(baseList, userItems[i].baseName )) {
+                        layer.msg('导入失败，第'+num+'个用户基地不在数据库中，请修改！');
                         flag = false;
                         return;
-                    }                    //分值校验
+                    }
                     if (userItems[i].identity_id == null || userItems[i].identity_id == '') {
-                        layer.msg('导入失败，用户真实姓名分值不能为空！');
+                        layer.msg('导入失败，第'+num+'个用户身份类型不能为空，请修改！');
                         flag = false;
                         return;
+                    }else  if ( userItems[i].identity_id ==1 ){
+                        if (userItems[i].roomName == null || userItems[i].roomName == '' || !isContains(roomList,userItems[i].roomName ) ) {
+                            layer.msg('导入失败，第'+num+'个老师的科室名字不存在，请修改 ');
+                            flag = false;
+                            return;
                     }
+
+                    }//分值校验
+
                     html += '<tr><td>' + userItems[i].loginName + '</td><td>' +
                         userItems[i].userNum + '</td><td>' +
                         userItems[i].real_name + '</td><td>' +
@@ -433,6 +434,7 @@
                         userItems[i].identity_id + '</td><td>' +
                         userItems[i].grade + '</td><td>' +
                         userItems[i].trainTime + '</td></tr>';
+                    num=num+1;
                 }
                 if (flag) {
                     $('#userItemTable tbody').empty().append(html);
@@ -445,7 +447,95 @@
     });
 
 
+    //保存
+    function saveUserItems() {
+        var param = {};
+        var loginNames = [];
+        var userNums = [];
+        var real_names = [];
+        var user_pwds = [];
+        var baseNames = [];
+        var roomNames = [];
+        var identity_ids = [];
+        var grades = [];
+        var trainTimes = [];
+        var flag = true;
+        $('#userItemTable tbody tr').each(function () {
+            var loginName = $(this).find('td:eq(0)').text().trim();
+            var userNum = $(this).find('td:eq(1)').text().trim();
+            var real_name = $(this).find('td:eq(2)').text().trim();
+            var user_pwd = $(this).find('td:eq(3)').text().trim();
+            var baseName = $(this).find('td:eq(4)').text().trim();
+            var roomName = $(this).find('td:eq(5)').text().trim();
+            var identity_id = $(this).find('td:eq(6)').text().trim();
+            var grade = $(this).find('td:eq(7)').text().trim();
+            var trainTime = $(this).find('td:eq(8)').text().trim();
+            if (loginName == null || loginName == '') {
+                layer.msg('用户名不能为空！');
+                flag = false;
+                return;
+            }
+            if (real_name == null || real_name == '') {
+                layer.msg('真实名不能为空！');
+                flag = false;
+                return;
+            }
+            if (baseName == null || baseName == '') {
+                layer.msg('基地名不能为空！');
+                flag = false;
+                return;
+            }
+            loginNames.push(loginName);
+            userNums.push(userNum)
+            real_names.push(real_name);
+            user_pwds.push(user_pwd);
+            baseNames.push(baseName);
+            roomNames.push(roomName);
+            identity_ids.push(identity_id);
+            grades.push(grade);
+            trainTimes.push(trainTime);
+        });
+        if (!flag) {
+            return;
+        }
+        param.loginNames = loginNames;
+        param.userNums = userNums;
+        param.real_names = real_names;
+        param.user_pwds = user_pwds;
+        param.baseNames = baseNames;
+        param.roomNames = roomNames;
+        param.identity_ids = identity_ids;
+        param.grades = grades;
+        param.trainTimes = trainTimes;
+        $.ajax({
+            type: "POST",
+            url: '/users/batchSave',
+            data: param,
+            traditional: true,
+            datatType: 'json',
+            success: function (data) {
+                if (data == "success") {
+                    layer.msg('保存成功');
+                    $('#userItemModal').modal('hide');
+                } else {
+                    layer.msg('保存失败');
+                }
+            }
+        });
+    }
 
+
+
+    function isContains(arr, obj) {
+        //while
+        var i = arr.length;
+        while(i--) {
+            if(arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //弹出选择角色的框
     function allotRole(){

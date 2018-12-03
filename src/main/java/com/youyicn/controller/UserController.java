@@ -6,6 +6,7 @@ import com.youyicn.model.UserRole;
 import com.youyicn.service.UserRoleService;
 import com.youyicn.service.UserService;
 import com.youyicn.util.PasswordHelper;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,6 +83,42 @@ public class UserController {
     public String delete(Integer id){
       try{
           userService.delUser(id);
+          return "success";
+      }catch (Exception e){
+          e.printStackTrace();
+          return "fail";
+      }
+    }
+
+    @RequestMapping(value = "/batchSave")
+    public String batchSave( String[] loginNames , String[] userNums, String[] real_names,
+                             String[] user_pwds,
+                             String[] baseNames, String[] roomNames,
+                             Integer[] identity_ids, Integer[] grades, Byte[] trainTimes){
+      try{
+          for (int i = 0; i < loginNames.length; i++) {
+             String loginName = loginNames[i];
+             String userNum = userNums[i];
+             String real_name = real_names[i];
+             String user_pwd = user_pwds[i];
+             String baseName = baseNames[i];
+             String roomName = roomNames[i];
+             Integer identity_id = identity_ids[i];
+             Integer grade = grades[i];
+             byte trainTime = trainTimes[i];
+             User user = new User();
+             user.setLoginName(loginName);
+              user.setUserNum(userNum);
+              user.setRealName(real_name);
+              user.setUserPwd(user_pwd);
+              user.setBaseName(baseName);
+              user.setRoomName(roomName);
+              user.setIdentityId(identity_id);
+              user.setGrade(grade);
+              user.setTraintime(trainTime);
+              userService.save(user);
+          }
+
           return "success";
       }catch (Exception e){
           e.printStackTrace();

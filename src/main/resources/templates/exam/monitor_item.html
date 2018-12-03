@@ -168,7 +168,7 @@ $('#submitBtn').click(function(){
 });
 </script>
 <script type="text/javascript">
-	var duration = "${duration}";
+	var duration = "${duration!}";
     var maxtime = duration * 60; //一个小时，按秒计算，自己调整!
     function CountDown() {
         if (maxtime >= 0) {
