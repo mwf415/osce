@@ -212,7 +212,6 @@ public class ExamController {
 	    result.put("success", success);
 	    result.put("msg", msg);
 	    result.put("data", data);
-	    
         return result;
     }
     

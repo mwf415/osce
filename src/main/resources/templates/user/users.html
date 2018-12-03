@@ -66,18 +66,18 @@
 
 		                        <div class="form-group">
 		                            <label class="control-label">身份:</label>
-		                            <select id="status-search"  class="form-control">
+		                            <select id="identityId-search"  class="form-control">
 		                                <option value="">全部</option>
 		                                <option value="1">老师</option>
 		                                <option value="2">学生</option>
 		                            </select>
 		                        </div>
 		                        <button type="button"  onclick="search();" class="btn btn-primary">查询</button>
-		                        <button type="button"  onclick="$('#userItemModal').modal()" class="btn btn-primary">导入</button>
 
 	                            <@shiro.hasPermission name="/users/saveUserRoles">
 		                        	<button type="button"  onclick="allotRole();" class="btn btn-info" style="float: right; margin-right: 1px;">
                                         分配角色</button>
+                               <button type="button"  onclick="$('#userItemModal').modal()" class="btn btn-primary" style="float: right; margin-right: 1px;" >导入</button>
 							    </@shiro.hasPermission>
 							    <@shiro.hasPermission name="/users/delete">
 		                        	<button type="button"  onclick="delByID();" class="btn btn-info" style="float: right; margin-right: 1px;">删除</button>
@@ -343,7 +343,7 @@
         //组装排序参数
         param.loginName = $("#id-search").val();//查询条件
         param.realName = $("#name-search").val();//查询条件
-        param.enable = $("#status-search").val();//查询条件
+        param.identityId = $("#identityId-search").val();//查询条件
         param.baseName = $("#baseName-search").val();//查询条件
         param.roomName = $("#roomName-search").val();//查询条件
         //组装分页参数
