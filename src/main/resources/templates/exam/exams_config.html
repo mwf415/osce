@@ -40,7 +40,7 @@
 	<!-- begin page-header -->
 	<h1 class="page-header">
 		安排考试
-		<small></small>
+
 	</h1>
 	<!-- end page-header -->
 
@@ -124,20 +124,13 @@
 					</div>
 				<div align="center" class="m-t-20">
 	                <a href="/examsPage" class="btn btn-default">返回</a>
-	                <#if exam.userIds?? && exam.userIds!=''>
-	                <#else>
 	                <a class="btn btn-success" id="submitConfigBtn">提交</a>
-	                </#if>
                 </div>
 				</div>
 			</div>
-			<!-- end panel -->
 		</div>
-		<!-- end col-12 -->
 	</div>
-	<!-- end row -->
 </div>
-<!-- end #content -->
 
 <!--选择考生开始-->
 <div class="modal fade" id="student_select_modal" tabindex="-1" role="dialog" aria-labelledby="configExamLabel">
