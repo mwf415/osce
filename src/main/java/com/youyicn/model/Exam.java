@@ -38,14 +38,14 @@ public class Exam implements Serializable{
     /**
      * 开始时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH")
     @Column(name = "start_time")
     private Date startTime;
 
     /**
      * 结束时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH")
     @Column(name = "end_time")
     private Date endTime;
 

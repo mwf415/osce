@@ -373,11 +373,15 @@
  		$('#addExamLabel').text('修改考试');
  		var $tr = $checkchild.parents("tr[role='row']");
  		var title = $tr.children('td:eq(1)').text();
- 		var startTime = $tr.children('td:eq(2)').text();
- 		var endTime = $tr.children('td:eq(3)').text();
+ 		var baseName = $tr.children('td:eq(2)').text();
+ 		var roomName = $tr.children('td:eq(3)').text();
+ 		var startTime = $tr.children('td:eq(4)').text();
+ 		var endTime = $tr.children('td:eq(5)').text();
 //  		var state = $tr.children('td:eq(4)').text().trim()=='关闭'?0:1;
  		$('#id').val(id);
  		$('#title').val(title);
+ 		$('#baseName').val(baseName);
+ 		$('#roomName').val(roomName);
  		$('#startTime').val(startTime);
  		$('#endTime').val(endTime);
 //  		$('#state').val(state);
