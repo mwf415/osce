@@ -17,14 +17,15 @@
     <script src="/crossbrowserjs/excanvas.min.js"></script>
     <![endif]-->
     <style>
-        .mainDiv{
-            border: 4px solid #A9A9A9;
-            margin:6px;
-        }
-
+        *{margin:10;padding:10}
+        #slide{position:absolute;height:100%;width:100%;color:#FA8E93;overflow:hidden;border:1px solid #ccc}
+        #slide p{height:34px;line-height:34px;overflow:hidden}
+        #slide span{float:right}
     </style>
+
+
 </head>
-<body>
+<body onload="window.scrollTo(0,document.body.scrollHeight)" >
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -34,7 +35,9 @@
         </div>
     </div>
 
-    <#if bigShowRsps?? && bigShowRsps?size gt 0>
+    <div id="slide">
+        <div id="slide1">
+        <#if bigShowRsps?? && bigShowRsps?size gt 0>
         <#list bigShowRsps as bigShowRsp>
 
             <div class="mainDiv">
@@ -153,7 +156,11 @@
         </#list>
     </#if>
 </div>
+        <div id=slide2></div>
+    </div>
 
+
+</div>
 </body>
 
 <script type="text/javascript">
@@ -161,17 +168,31 @@
     var myVar = setInterval(
         function () {
             refrestView()
-        }, 10000
+        }, 30000
     );
 
     function refrestView() {
         window.location.reload();
     }
-
+    setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());", 1000);
 </script>
 
 <script>
-    setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());", 1000);
+    var speed=20;
+    var slide=document.getElementById("slide");
+    var slide2=document.getElementById("slide2");
+    var slide1=document.getElementById("slide1");
+    slide2.innerHTML=slide1.innerHTML;
+    function Marquee(){
+        if(slide2.offsetTop-slide.scrollTop<=0){
+            slide.scrollTop-=slide1.offsetHeight;
+        } else{
+            slide.scrollTop++ ;
+        }
+    }
+    var MyMar=setInterval(Marquee,speed)
+    slide.onmouseover=function(){clearInterval(MyMar)}
+    slide.onmouseout=function(){MyMar=setInterval(Marquee,speed)}
 
 </script>
 </html>
