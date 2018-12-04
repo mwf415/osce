@@ -166,22 +166,6 @@
                     }
                 });
 
-                $('#menu li a').each(function () {
-                    var href =$(this).href;
-                    var baseUri =$(this).baseURI;
-                    var a1 = String(window.location);
-                    var b = this.baseURI ;
-
-                    var c =  $(this).attr('href');
-                    var d =  this.attr('href');
-
-                    if (this.baseURI == String(window.location)) {
-                        $('.sub-menu li').removeClass('active');
-                        $('.has-sub').removeClass('active');
-                        $('#menu li a').removeClass('active');
-                        $(this).parent('li').addClass('active');
-                    }
-                });
             }
         });
     </script>
