@@ -110,12 +110,16 @@ public class UserController {
              user.setLoginName(loginName);
               user.setUserNum(userNum);
               user.setRealName(real_name);
-              user.setUserPwd(user_pwd);
+
+              user.setUserPwd(user_pwd.trim());
               user.setBaseName(baseName);
               user.setRoomName(roomName);
               user.setIdentityId(identity_id);
               user.setGrade(grade);
               user.setTraintime(trainTime);
+              user.setStatus(1+"");
+              PasswordHelper passwordHelper = new PasswordHelper();
+              passwordHelper.encryptPassword(user);
               userService.save(user);
           }
 
