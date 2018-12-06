@@ -148,7 +148,7 @@ $('#submitBtn').click(function(){
 	var examId = clear('${examStationRecord.examId!}');
     var id = clear('${examStationRecord.id!}');
 	params.examId = examId;
-	params.userId = '${examStationRecord.userId!}';
+	params.userId = clear('${examStationRecord.userId!}');
 	params.id =  id;
 	params.examData = JSON.stringify(examData);
 	params.score = score;

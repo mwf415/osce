@@ -257,12 +257,16 @@
         param.realName = $("#realName-search").val();
         param.state = $("#state-search").val();
         param.userType = $("#userType-search").val();
-        param.examId = '${examId}';
+        param.examId = clear('${examId}');
         //组装分页参数
         param.start = data.start;
         param.length = data.length;
         param.draw = data.draw;
         return param;
+    }
+    function clear(str) {
+        str = str.replace(/,/g, "");//取消字符串中出现的所有逗号
+        return str;
     }
 </script>
 
@@ -302,7 +306,7 @@
             }
         ]
     });
-    var examId = '${examId}';
+    var examId = clear('${examId}');
 
     $.ajax({
         async: true,
@@ -328,11 +332,11 @@
             alert("加载失败");
         }
     })
+
 </script>
 
-
 <script type="text/javascript">
-    var examId = '${examId}';
+    var examId = clear('${examId}');
     $.ajax({
         async: true,
         url: '/count/detailStr',

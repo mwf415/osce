@@ -210,8 +210,8 @@ function getQueryCondition(data){
     //组装排序参数
     param.stationId = $("#station-search").val();//查询条件
     param.state = $("#state-search").val();//查询条件
-    param.examId = '${examStationRecord.examId}';
-    param.userId = '${examStationRecord.userId}';
+    param.examId = clear('${examStationRecord.examId}');
+    param.userId = clear('${examStationRecord.userId}');
     //组装分页参数
     param.start = data.start;
     param.length = data.length;
@@ -251,6 +251,10 @@ function deleteStationRecords() {
             }
         });
     });
+}
+function clear(str) {
+    str = str.replace(/,/g, "");//取消字符串中出现的所有逗号
+    return str;
 }
 </script>
 <#include "/common/footer.html"/>

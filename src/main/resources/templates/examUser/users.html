@@ -227,7 +227,7 @@ function getQueryCondition(data){
     param.realName = $("#realName-search").val();
     param.state = $("#state-search").val();
     param.userType = $("#userType-search").val();
-    param.examId = '${examId}';
+    param.examId = clear('${examId}');
     //组装分页参数
     param.start = data.start;
     param.length = data.length;
@@ -244,16 +244,15 @@ function updateUserRecords () {
 }
 
 function downLoadAllQR () {
-    var examId = '${examId}';
+    var examId = clear('${examId}');
     window.location.href="/downLoad/allQR?examId="+examId;
 
 }
 
-function downLoadQR(){
-
-
+function clear(str) {
+    str = str.replace(/,/g, "");//取消字符串中出现的所有逗号
+    return str;
 }
-
 function deleteUserRecords(){
     var userIds = [];
     if ($(".checkchild:checked").length < 1)
@@ -265,7 +264,7 @@ function deleteUserRecords(){
     	userIds.push($(this).val());
     })
     var param = {};
-    param.examId = '${examId}';
+    param.examId = clear('${examId}');
     param.userIds = userIds;
     layer.confirm('您确定要删除考生成绩吗？', {
         btn: ['确认','取消'] //按钮
