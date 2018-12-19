@@ -1,20 +1,18 @@
 package com.youyicn.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.github.pagehelper.PageInfo;
+import com.youyicn.model.Role;
+import com.youyicn.service.RolePermissionService;
+import com.youyicn.service.RoleService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageInfo;
-import com.youyicn.model.Role;
-import com.youyicn.service.RolePermissionService;
-import com.youyicn.service.RoleService;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yangqj on 2017/4/26.

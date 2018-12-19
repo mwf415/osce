@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,20 +80,30 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 	@Override
 	@Cacheable(value="permissions",key="'tree_'+#userId")
 	public List<Permission> loadUserPermissionsTree(Integer userId) {
-		logger.debug("loadUserPermissionsTree userId={}" , userId);
-		Map<String,Object> map = Maps.newHashMap();
+        return getPermissions(userId);
+	}
+
+    @Override
+    @CachePut(value="permissions",key="'tree_'+#userId")
+    public List<Permission> updateUserPermissionsTree(Integer userId) {
+        return getPermissions(userId);
+    }
+
+    private List<Permission> getPermissions(Integer userId) {
+        logger.debug("loadUserPermissionsTree userId={}" , userId);
+        Map<String,Object> map = Maps.newHashMap();
         map.put("type",1);
         map.put("id",userId);
         List<Permission> loadUserPermissions = null;
         if(userId==1){
-        	loadUserPermissions = queryAllMenu();
+            loadUserPermissions = queryAllMenu();
         }else{
-        	loadUserPermissions = loadUserPermissions(map);
+            loadUserPermissions = loadUserPermissions(map);
         }
         List<Permission> list = getChildren(loadUserPermissions, 0);
-		return list;
-	}
-    
+        return list;
+    }
+
     // 取节点的所有children  
     private List<Permission> getChildren(List<Permission> results, Integer rootId) {  
   

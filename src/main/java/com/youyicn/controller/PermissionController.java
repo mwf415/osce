@@ -1,11 +1,10 @@
 package com.youyicn.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.github.pagehelper.PageInfo;
+import com.youyicn.model.Permission;
+import com.youyicn.service.PermissionService;
+import com.youyicn.service.RolePermissionService;
+import com.youyicn.shiro.ShiroService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -13,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageInfo;
-import com.youyicn.model.Permission;
-import com.youyicn.service.PermissionService;
-import com.youyicn.service.RolePermissionService;
-import com.youyicn.shiro.ShiroService;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/permissions")
@@ -51,7 +49,7 @@ public class PermissionController {
     @RequestMapping("/loadMenu")
     public List<Permission> loadMenu(){
         Integer userId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("userSessionId");
-        List<Permission> permissionsList = permissionService.loadUserPermissionsTree(userId);;
+        List<Permission> permissionsList = permissionService.loadUserPermissionsTree(userId);
         return permissionsList;
     }
 

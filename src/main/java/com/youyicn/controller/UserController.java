@@ -46,7 +46,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/saveUserRoles")
-    public String saveUserRoles(Long uid, Long[] rids){
+    public String saveUserRoles(long uid, Long[] rids){
         if(StringUtils.isEmpty(uid))
             return "error";
         try {

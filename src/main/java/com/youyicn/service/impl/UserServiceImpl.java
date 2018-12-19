@@ -39,14 +39,14 @@ public class UserServiceImpl extends BaseService<User> implements UserService{
         int page = start/length+1;
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(user.getIdentityId()+"")){
+        if(null!=user.getIdentityId()){
             criteria.andEqualTo("identityId", user.getIdentityId());
         }
         if(StringUtils.isNotBlank(user.getBaseName())){
         	criteria.andEqualTo("baseName", user.getBaseName());
         }
         if(StringUtils.isNotBlank(user.getLoginName())){
-        	criteria.andEqualTo("loginName", "%"+user.getLoginName()+"%");
+        	criteria.andLike("loginName", "%"+user.getLoginName()+"%");
         }
         if(StringUtils.isNotBlank(user.getRoomName())){
         	criteria.andEqualTo("roomName", user.getRoomName());
