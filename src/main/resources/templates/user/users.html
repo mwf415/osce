@@ -485,6 +485,18 @@
                 flag = false;
                 return;
             }
+
+            if (identity_id == null || identity_id == '') {
+                layer.msg('身份类别不能为空！');
+                flag = false;
+                return;
+            }
+            if (grade == null || grade == '' || grade== 'undefined') {
+                grade = 0;
+            }
+            if (trainTime == null || trainTime == '' || trainTime=='undefined') {
+                trainTime = 0;
+            }
             loginNames.push(loginName);
             userNums.push(userNum)
             real_names.push(real_name);
@@ -517,8 +529,10 @@
                 if (data == "success") {
                     layer.msg('保存成功');
                     $('#userItemModal').modal('hide');
-                } else {
+                } else if(data=="fail")  {
                     layer.msg('保存失败');
+                }else {
+                    layer.msg(data+"人员登录名重复，请修改登录名");
                 }
             }
         });

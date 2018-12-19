@@ -1,12 +1,10 @@
 package com.youyicn.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
+import com.youyicn.model.*;
+import com.youyicn.service.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -16,20 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
-import com.youyicn.model.Base;
-import com.youyicn.model.Exam;
-import com.youyicn.model.ExamCompose;
-import com.youyicn.model.Room;
-import com.youyicn.model.Station;
-import com.youyicn.model.User;
-import com.youyicn.service.CycleBaseService;
-import com.youyicn.service.ExamComposeService;
-import com.youyicn.service.ExamService;
-import com.youyicn.service.RoomService;
-import com.youyicn.service.StationService;
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yangqj on 2017/4/26.
@@ -171,7 +160,7 @@ public class ExamController {
         model.addAttribute("rooms", rooms);
         model.addAttribute("examComposes", examComposes);
 		return "exam/exams_config";
-    	
+
     }
     //考试配置
     @RequestMapping(value = "/saveConfig", method=RequestMethod.POST)

@@ -2,19 +2,17 @@ package com.youyicn.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.youyicn.model.User;
-import com.youyicn.model.UserRole;
 import com.youyicn.service.UserRoleService;
 import com.youyicn.service.UserService;
 import com.youyicn.util.PasswordHelper;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,6 +94,23 @@ public class UserController {
                              String[] baseNames, String[] roomNames,
                              Integer[] identity_ids, Integer[] grades, Byte[] trainTimes){
       try{
+          List<User>userList = userService.selectByLoginNames(loginNames);
+          Map<String,Integer> map = new HashMap<>();
+          for (int i = 0; i < loginNames.length; i++) {
+            map.put(loginNames[i],i);
+          }
+
+          if(userList.size()>0){
+              StringBuilder sb = new StringBuilder();
+              for (User user : userList) {
+                  String loginName = user.getLoginName();
+                  Integer i = map.get(loginName);
+                 String realName = real_names[i];
+                  sb.append(realName+";");
+              }
+              return sb.toString();
+          }
+
           for (int i = 0; i < loginNames.length; i++) {
              String loginName = loginNames[i];
              String userNum = userNums[i];
