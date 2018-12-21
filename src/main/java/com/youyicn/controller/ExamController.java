@@ -37,7 +37,7 @@ public class ExamController {
     private CycleBaseService cycleBaseService;
     
     @Resource
-    private RoomService roomService;
+    private CycleRoomService roomService;
 
     @Resource
     private ExamComposeService examComposeService;
