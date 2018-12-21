@@ -1,11 +1,5 @@
 package com.youyicn.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.youyicn.model.*;
 import com.youyicn.service.*;
 import org.apache.shiro.SecurityUtils;
@@ -18,6 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by yangqj on 2017/4/21.
@@ -32,7 +30,7 @@ public class IndexController {
 	@Resource
 	private CycleBaseService baseService;
     @Resource
-    private RoomService roomService;
+    private CycleRoomService roomService;
 	@Resource
 	private StationService stationService;
     @Resource
@@ -219,7 +217,16 @@ public class IndexController {
     	model.addAttribute("stations", stations);
         return "/base/bases";
     }
-    
+
+    @RequestMapping("/roomsPage")
+    public String roomStationItemsPage(Model model){
+        List<Room> rooms = roomService.selectAll();
+        List<Station> stations = stationService.selectAll();
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("stations", stations);
+        return "/room/rooms";
+    }
+
     @RequestMapping("/403")
     public String forbidden(){
         return "403";
