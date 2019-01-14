@@ -10,12 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.lang.System;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -67,6 +64,8 @@ public class QrCodeController {
          * 第一次扫描，如果能够查询出来信息，说明已经排过序了
          */
         OsceSort osceSort =osceSortService.getByExamIdAndUserId(Integer.parseInt(examId),userId);
+
+
         if(rolesStr.contains("排序管理员")){
             // 如果为空，那么需要给他排序，如果不为空，则显示已安排
             if(null==osceSort || null == osceSort.getExamid()){
@@ -77,7 +76,9 @@ public class QrCodeController {
             }
         }
         ExamStationRecord examStationRecord = new ExamStationRecord();
-
+        if(null==osceSort || null == osceSort.getExamid()){
+            return "/sort/error";
+        }
         /**
          * 查询该老师名下所有的没有打分的学生
          */
