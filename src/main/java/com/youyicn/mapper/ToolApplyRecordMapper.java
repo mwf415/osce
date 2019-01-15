@@ -1,13 +1,11 @@
 package com.youyicn.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.youyicn.model.ToolApplyRecord;
 import com.youyicn.model.ToolApplyRecordVo;
-import com.youyicn.model.ToolGroup;
 import com.youyicn.util.MyMapper;
-import org.springframework.jdbc.support.nativejdbc.OracleJdbc4NativeJdbcExtractor;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ToolApplyRecordMapper extends MyMapper<ToolApplyRecord> {
 	
