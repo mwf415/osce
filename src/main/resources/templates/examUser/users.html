@@ -3,8 +3,7 @@
 <link href="/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 <link
 	href="/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
-<link
-	href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href="/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 <link href="/plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
 <!-- ================== END PAGE LEVEL STYLE ================== -->
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
@@ -190,7 +189,8 @@ $(document).ready(function() {
             		}
             		return content;
             	}
-            },          {
+            },
+			{
                 "data": function( row, data, index ) {
                     var content = '';
                     content += '<a class="btn btn-info" href="/downLoad/userQrcode?userId='+row.userId+'&realName='+row.realName+'&examId='+row.examId+'">';
