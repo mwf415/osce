@@ -63,7 +63,10 @@
                         <button type="button"  onclick="search();" class="btn btn-primary">查询</button>
 					    <@shiro.hasPermission name="/examUsers/deleteStationRecords">  
                         	<button type="button"  onclick="deleteStationRecords();" class="btn btn-danger" style="float: right; margin-right: 1px;">删除</button>
-					    </@shiro.hasPermission>   
+					    </@shiro.hasPermission>
+						<@shiro.hasPermission name="/examUsers/updateItem">
+                        	<button type="button"  onclick="updateStationRecords();" class="btn btn-danger" style="float: right; margin-right: 1px;">修改</button>
+					    </@shiro.hasPermission>
                     </form>
 					<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
 						<thead>
@@ -220,7 +223,7 @@ function getQueryCondition(data){
 }
 
 function deleteStationRecords() {
-	var param = {};
+    var param = {};
     var recordIds = [];
     if ($(".checkchild:checked").length < 1)
     {
@@ -228,7 +231,7 @@ function deleteStationRecords() {
         return;
     }
     $(".checkchild:checked").each(function(){
-    	recordIds.push($(this).val());
+        recordIds.push($(this).val());
     });
     param.recordIds = recordIds;
     layer.confirm('您确定要删除该考试记录吗？', {
@@ -238,6 +241,49 @@ function deleteStationRecords() {
             cache: true,
             type: "POST",
             url:'/examUsers/deleteStationRecords',
+            data:param,
+            async: false,
+            traditional: true,
+            success: function(data) {
+                if(data=="success"){
+                    layer.msg('删除成功');
+                    table.ajax.reload();
+                }else{
+                    layer.msg('删除失败');
+                }
+            }
+        });
+    });
+}
+
+
+
+
+function updateStationRecords() {
+    var param = {};
+    var recordIds = [];
+    if ($(".checkchild:checked").length < 1)
+    {
+        layer.msg('请选择一条数据');
+        return;
+    }
+    $(".checkchild:checked").each(function(){
+        recordIds.push($(this).val());
+    });
+    if(recordIds.length>1){
+        layer.msg('一次只能修改一条数据');
+        return;
+	}
+    param.recordIds = recordIds;
+    param.userId =   ;
+    param.examId =   ;
+    layer.confirm('您确定要删除该考试记录吗？', {
+        btn: ['确认','取消'] //按钮
+    }, function(){
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:'/examUsers/updateItem',
             data:param,
             async: false,
             traditional: true,
