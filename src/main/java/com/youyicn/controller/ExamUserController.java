@@ -3,7 +3,7 @@ package com.youyicn.controller;
 import com.github.pagehelper.PageInfo;
 import com.youyicn.model.*;
 import com.youyicn.service.*;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.InvalidSessionException;
 import org.springframework.stereotype.Controller;

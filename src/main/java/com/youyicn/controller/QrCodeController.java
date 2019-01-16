@@ -113,17 +113,48 @@ public class QrCodeController {
                                 model.addAttribute("user", examUser);
                                 return "/exam/monitor_item";
                             }
-                            
                         }
                     }
                 }
             }
-            
         }
         model.addAttribute("user", examUser);
         return "/exam/monitor_item_error";
-        
     }
+
+
+    /**
+     * 实现打分后修改的功能
+     */
+    @RequestMapping("/updateItem")
+    public String updteItem (Integer examId,String  userId, Integer stationId,Model model){
+        User examUser = userService.selectByLoginName(userId);
+
+        ExamStationRecord examStationRecordTmp  = new ExamStationRecord();
+        examStationRecordTmp.setExamId(examId);
+        examStationRecordTmp.setUserId(userId);
+        examStationRecordTmp.setStationId(stationId);
+        List<ExamStationRecord> stationRecords  = examStationRecordService.getByExamIdAndStationId(examStationRecordTmp);
+        if(stationRecords.size()>0){
+            ExamStationRecord examStationRecord  = stationRecords.get(0);
+
+            Integer questionId = examStationRecord.getQuestionId();
+            Question question = questionService.selectByKey(questionId);
+            if(null!= question){
+                model.addAttribute("duration", question.getDuration());
+            }
+            List<ScoreItem> scoreItems = questionService.listScoreItemByQuestionId(questionId);
+            model.addAttribute("examStationRecordTmp", examStationRecordTmp);
+            model.addAttribute("scoreItems", scoreItems);
+            model.addAttribute("user", examUser);
+
+            return "/exam/monitor_item";
+
+        }
+        model.addAttribute("user", examUser);
+        return "/exam/monitor_item_error";
+    }
+
 
 
 

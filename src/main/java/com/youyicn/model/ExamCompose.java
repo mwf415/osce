@@ -1,9 +1,11 @@
 package com.youyicn.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-import javax.persistence.*;
-
+/**
+ * 考试中老师负责的考站
+ */
 @Table(name = "osce_exam_compose")
 public class ExamCompose implements Serializable{
     @Id
