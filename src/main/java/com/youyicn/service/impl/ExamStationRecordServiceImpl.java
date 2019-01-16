@@ -54,6 +54,11 @@ public class ExamStationRecordServiceImpl extends BaseService<ExamStationRecord>
 		
 	}
 
+    /**
+     * 根据考试Id和stationId ，获取用户所有参考的学生
+     * @param examStationRecord
+     * @return
+     */
 	@Override
     public List<ExamStationRecord> getByExamIdAndStationId(ExamStationRecord examStationRecord){
         Example example = new Example(ExamStationRecord.class);
@@ -69,5 +74,4 @@ public class ExamStationRecordServiceImpl extends BaseService<ExamStationRecord>
         return userList;
     }
 
-    
 }
