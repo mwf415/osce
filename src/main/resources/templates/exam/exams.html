@@ -94,6 +94,7 @@
 								<th>
 									<input type="checkbox" class="checkall" />
 								</th>
+								<th>编号</th>
 								<th>标题</th>
 								<th>基地</th>
 								<th>科室</th>
@@ -253,6 +254,7 @@
                      },
                      "bSortable": false
                  },
+                 { "data": "id" },
                  { "data": "title" },
                  { "data": "baseName" },
                  { "data": "roomName" },
@@ -271,7 +273,7 @@
              'columnDefs': [
               	{"sClass": "text-center", 'targets': '_all'},
                  {
- 					"targets": [4, 5, 6],
+ 					"targets": [5, 6, 7],
  					"render": function ( data, type, full, meta ) {
  						return DateUtil.dateToStr("yyyy-MM-dd HH:mm", new Date(data));
  				    }
