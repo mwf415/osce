@@ -38,7 +38,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.pool.min-idle}")  
     private int minIdl;  
 //    @Value("${spring.redis.database}")  
-//    private int database;  
+//    private int database;
     
     @Bean  
     public RedisConnectionFactory jedisConnectionFactory(){  
@@ -62,7 +62,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     
 	/**
      * redisTemplate 序列化使用的jdkSerializeable, 存储二进制字节码, 所以自定义序列化类
-     * @param redisConnectionFactory
+     * @param
      * @return
      */
     @Bean

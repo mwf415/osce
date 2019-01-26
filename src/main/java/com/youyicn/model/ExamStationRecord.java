@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 学生的考站的很表
+ */
 @Table(name = "osce_exam_station_record")
 public class ExamStationRecord implements Serializable{
     @Id

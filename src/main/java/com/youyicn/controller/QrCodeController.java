@@ -126,7 +126,7 @@ public class QrCodeController {
     /**
      * 实现打分后修改的功能
      */
-    @RequestMapping("/updateItem")
+    @RequestMapping("/examUsers/updateItem")
     public String updteItem (Integer examId,String  userId, Integer stationId,Model model){
         User examUser = userService.selectByLoginName(userId);
 
