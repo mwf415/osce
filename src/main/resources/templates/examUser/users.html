@@ -238,9 +238,14 @@ function getQueryCondition(data){
 function updateUserRecords () {
     var examId ;
     var userId;
+    var stationId;
     /** 跳转到打分页面
 	 *剩下的是打分流程
      */
+
+    window.location.href="/examUsers/updateItem?examId="+examId + "&userId="+ userId + "&stationId="+ stationId ;
+
+
 }
 
 function downLoadAllQR () {

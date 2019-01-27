@@ -895,7 +895,20 @@
 
 	//提交 配置
     $('#submitConfigBtn').click(function(){
-    	var params = {};
+    	// 添加判断，如果已经开考了，就不能修改了
+        var nowDate = new Date();
+        var start="${startTimeStr!}";
+        var dateTime=nowDate.setDate(nowDate.getDate()-1);
+        nowDate=new Date(dateTime);
+
+
+        var startTime = new Date(start.replace(/\-/g, "\/"));
+        if(startTime!="" && startTime < nowDate)  {
+            layer.msg("已经临近考试 不能修改考试");
+            return false;
+        }
+
+        var params = {};
     	//考站
  		var stationIds = [];
  		var stationNames = [];
@@ -939,7 +952,7 @@
  		if(stationIds.length==0){
 				layer.msg("请选择考站！");
 				return;
-		} 
+		}
 		if(!flag){
 			return;
 		}
@@ -953,6 +966,12 @@
  			userIds.push(userId+'-'+userType);
  	 		userNames.push(userName);
 		});
+
+ 		if(userNames.length== 0  ){
+ 		    layer.msg("之前的学生将会被清空，所以学生不能为空，请从新选择所有参考的学生！");
+            return;
+        }
+
 		//考站
  		params.stationIds = stationIds;
  		params.stationNames = stationNames;
