@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.youyicn.model.*;
 import com.youyicn.service.*;
+import com.youyicn.util.DateUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -155,7 +156,9 @@ public class ExamController {
 
         List<Base> bases = cycleBaseService.selectAll();
         List<Room> rooms = roomService.selectAll();
-
+        Date startTime = exam.getStartTime();
+        String startTimeStr = DateUtil.date2Str(startTime, "yyyy-MM-dd");
+        model.addAttribute("startTimeStr", startTimeStr);
         model.addAttribute("bases", bases);
         model.addAttribute("rooms", rooms);
         model.addAttribute("examComposes", examComposes);

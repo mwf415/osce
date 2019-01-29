@@ -129,7 +129,6 @@ public class QrCodeController {
     @RequestMapping("/examUsers/updateItem")
     public String updteItem (Integer examId,String  userId, Integer stationId,Model model){
         User examUser = userService.selectByLoginName(userId);
-
         ExamStationRecord examStationRecordTmp  = new ExamStationRecord();
         examStationRecordTmp.setExamId(examId);
         examStationRecordTmp.setUserId(userId);
@@ -199,6 +198,7 @@ public class QrCodeController {
         osceSort.setSortno(sortno);
         osceSort.setGroupid(groupid);
         osceSort.setStationnum(stationNum);
+        osceSort.setFinished(0);
         int save = osceSortService.save(osceSort);
         if(1==save){
             model.addAttribute("osceSort",osceSort);

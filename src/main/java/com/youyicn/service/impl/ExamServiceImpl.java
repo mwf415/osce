@@ -7,6 +7,7 @@ import com.youyicn.mapper.*;
 import com.youyicn.model.*;
 import com.youyicn.service.ExamService;
 import com.youyicn.service.UserService;
+import com.youyicn.util.MyStringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -60,18 +61,18 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
 
     @Override
     public void configExam(Exam exam, Integer[] stationIds, String[] stationNames, Integer[] questionIds, String[] questionNames, String[] addresses, String[] teacherNames) {
-
+        Integer id = exam.getId();
         //删除原来的考站配置数据
         Example example = new Example(ExamCompose.class);
         example.orderBy("examId").desc();
         Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("examId", exam.getId());
+        criteria.andEqualTo("examId", id);
         examComposeMapper.deleteByExample(example);
         //生成考站配置数据
         List<ExamCompose> examComposes = Lists.newArrayList();
         for (int i = 0; i < stationIds.length; i++) {
             ExamCompose ec = new ExamCompose();
-            ec.setExamId(exam.getId());
+            ec.setExamId(id);
             ec.setExamTitle(exam.getTitle());
             ec.setStationId(stationIds[i]);
             ec.setStationName(stationNames[i]);
@@ -83,7 +84,23 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
         }
         examComposeMapper.insertList(examComposes);
 
-        //生成考生总分记录及考站分数记录，不能再配置试卷
+        /**          生成考生总分记录及考站分数记录，不能再配置试卷
+         *   1\ 删除旧的学生记录，主表和分表
+         */
+        Example exampleUser = new Example(ExamUser.class);
+        exampleUser.orderBy("examId").desc();
+        Criteria criteriaUser = exampleUser.createCriteria();
+        criteriaUser.andEqualTo("examId", id);
+        examUserMapper.deleteByExample(exampleUser);
+
+
+        Example exampleStationRecord = new Example(ExamStationRecord.class);
+        exampleStationRecord.orderBy("examId").desc();
+        Criteria criteriaStationRecord = exampleStationRecord.createCriteria();
+        criteriaStationRecord.andEqualTo("examId", id);
+        examStationScoreMapper.deleteByExample(exampleStationRecord);
+
+
         String userIds = exam.getUserIds();
         String userNames = exam.getUserNames();
         if (StringUtils.isNotBlank(userIds) && ArrayUtils.isNotEmpty(stationIds) && ArrayUtils.isNotEmpty(stationIds)) {
@@ -101,7 +118,7 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
                 String realName = userNamesArr[i].substring(index + 1, userNamesArr[i].length() - 1);
 
                 ExamUser examUser = new ExamUser();
-                examUser.setExamId(exam.getId());
+                examUser.setExamId(id);
                 examUser.setExamTitle(exam.getTitle());
                 examUser.setState(0);
                 examUser.setUserId(userId);
@@ -112,7 +129,7 @@ public class ExamServiceImpl extends BaseService<Exam> implements ExamService {
                 //生成学生考站记录
                 for (int j = 0; j < stationIds.length; j++) {
                     ExamStationRecord esr = new ExamStationRecord();
-                    esr.setExamId(exam.getId());
+                    esr.setExamId(id);
                     esr.setExamTitle(exam.getTitle());
                     esr.setStationId(stationIds[j]);
                     esr.setStationName(stationNames[j]);
