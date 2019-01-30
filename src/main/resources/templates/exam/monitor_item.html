@@ -129,9 +129,10 @@ $('#submitBtn').click(function(){
 		var item = {};
 		var title = $(this).find('td:eq(0)').text();
 		var subtitle = $(this).find('td:eq(1)').text();
-		var score = $(this).find('td:eq(2)').text();
-		var getScore = $(this).find('td:eq(3)').find('input[name="score"]').val();
-		if(getScore>score){
+		var score = parseInt($(this).find('td:eq(2)').text());
+		var getScore = parseInt( $(this).find('td:eq(3)').find('input[name="score"]').val());
+
+		if(getScore >score ){
 			layer.msg("得分不能超过题目总分！");
 			flag = false;
 			return;
