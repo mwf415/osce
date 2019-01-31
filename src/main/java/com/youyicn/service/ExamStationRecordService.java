@@ -11,4 +11,6 @@ public interface ExamStationRecordService extends IService<ExamStationRecord> {
 	List<ExamStationRecord> getByExamIdAndStationId(ExamStationRecord examStationRecord);
 	
 	void deleteStationRecords(Integer[] recordIds);
+
+
 }

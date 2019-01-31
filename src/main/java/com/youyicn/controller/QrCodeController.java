@@ -127,31 +127,21 @@ public class QrCodeController {
      * 实现打分后修改的功能
      */
     @RequestMapping("/examUsers/updateItem")
-    public String updteItem (Integer examId,String  userId, Integer stationId,Model model){
+    public String updteItem (Integer stationRecordId, Model model){
+        ExamStationRecord examStationRecord = examStationRecordService.selectByKey(stationRecordId);
+        String userId = examStationRecord.getUserId();
         User examUser = userService.selectByLoginName(userId);
-        ExamStationRecord examStationRecordTmp  = new ExamStationRecord();
-        examStationRecordTmp.setExamId(examId);
-        examStationRecordTmp.setUserId(userId);
-        examStationRecordTmp.setStationId(stationId);
-        List<ExamStationRecord> stationRecords  = examStationRecordService.getByExamIdAndStationId(examStationRecordTmp);
-        if(stationRecords.size()>0){
-            ExamStationRecord examStationRecord  = stationRecords.get(0);
-
-            Integer questionId = examStationRecord.getQuestionId();
+        Integer questionId = examStationRecord.getQuestionId();
             Question question = questionService.selectByKey(questionId);
             if(null!= question){
                 model.addAttribute("duration", question.getDuration());
             }
             List<ScoreItem> scoreItems = questionService.listScoreItemByQuestionId(questionId);
-            model.addAttribute("examStationRecordTmp", examStationRecordTmp);
+            model.addAttribute("examStationRecord", examStationRecord);
             model.addAttribute("scoreItems", scoreItems);
             model.addAttribute("user", examUser);
 
             return "/exam/monitor_item";
-
-        }
-        model.addAttribute("user", examUser);
-        return "/exam/monitor_item_error";
     }
 
 

@@ -69,11 +69,9 @@
 					    <@shiro.hasPermission name="/examUsers/deleteUserRecords">  
                         	<button type="button"  onclick="deleteUserRecords();" class="btn btn-danger" style="float: right; margin-right: 1px;">删除</button>
 					    </@shiro.hasPermission>
-					<@shiro.hasPermission name="/examUsers/updateUserRecords">
-					<button type="button"  onclick="updateUserRecords();" class="btn btn-danger" style="float: right; margin-right: 1px;">更新分数</button>
-				</@shiro.hasPermission>
+
 				<@shiro.hasPermission name="/downLoad/allQR">
-				<button type="button"  onclick="downLoadAllQR();" class="btn btn-info" style="float: right; margin-right: 1px;">批量下载二维码</button>
+					<button type="button"  onclick="downLoadAllQR();" class="btn btn-info" style="float: right; margin-right: 1px;">批量下载二维码</button>
 				</@shiro.hasPermission>
 
 				</form>
@@ -235,18 +233,7 @@ function getQueryCondition(data){
     return param;
 }
 
-function updateUserRecords () {
-    var examId ;
-    var userId;
-    var stationId;
-    /** 跳转到打分页面
-	 *剩下的是打分流程
-     */
 
-    window.location.href="/examUsers/updateItem?examId="+examId + "&userId="+ userId + "&stationId="+ stationId ;
-
-
-}
 
 function downLoadAllQR () {
     var examId = clear('${examId}');
