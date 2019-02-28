@@ -117,6 +117,9 @@
             <div class="modal-body">
                 <form id="questionsForm">
                     <input type="hidden" class="form-control" name="id" id="id"/>
+                    <input type="hidden" class="form-control" name="questionType"  value="${questionType!}"/>
+
+
                     <div class="form-group">
                         <label class="control-label">标题:</label>
                         <input type="text" class="form-control" name="title" id="title" placeholder="请输入名称"/>
@@ -219,6 +222,8 @@
 <!--/查看评分项-->
 
 <script type="text/javascript">
+
+    var questionType ="${questionType!}"
     $(".checkall").click(function () {
         var check = $(this).prop("checked");
         $(".checkchild").prop("checked", check);
@@ -254,7 +259,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: 'questions',
+                    url: '/questions',
                     cache : false,  //禁用缓存
                     data: param,    //传入已封装的参数
                     dataType: "json",
@@ -327,6 +332,7 @@
 
     function getQueryCondition(data) {
         var param = {};
+        param.questionType = questionType;
         //组装排序参数
         param.baseName = $("#baseName-search").val();//查询条件
         param.roomName = $("#roomName-search").val();//查询条件
@@ -344,11 +350,13 @@
         if ($('#id').val() != '') {
             url = 'questions/update';
         }
+
         var title = $("#title").val();
         var score = $("#score").val();
         var filePath = $("#filePath").val();
         var baseName = $("#baseName").val();
         var roomName = $("#roomName").val();
+
         if (title == "" || title == undefined || title == null) {
             return layer.msg('标题不能为空！', function () {
                 //关闭后的操作

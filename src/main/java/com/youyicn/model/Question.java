@@ -1,5 +1,7 @@
 package com.youyicn.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 
 @Table(name = "osce_question")
@@ -19,6 +21,11 @@ public class Question {
      * 考试时长
      */
     private Integer duration;
+    /**
+     * 题目类型 1 案例分析，2 技能操作，3 辅助检查
+     */
+    @Column(name = "question_type")
+    private String questionType;
 
     /**
      * 分值
@@ -169,5 +176,12 @@ public class Question {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-    
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
 }

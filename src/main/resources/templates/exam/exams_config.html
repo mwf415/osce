@@ -276,7 +276,7 @@
 				<form class="form-inline" id="questionSearchForm">
 					<div class="form-group">
 						<label class="control-label">专业基地:</label>
-						<select id="questionBase-search" class="arrturnBase form-control">
+						<select id="questionBasePZ-search" class="arrturnBase form-control">
 							<option value='' selected>全部</option>
 							<#if bases?? && bases?size gt 0> <#list bases as base>
 							<option value='${base.value}'>${base.value}</option>
@@ -285,7 +285,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">科室:</label>
-						<select id="questionRoom-search" class="arrturnRoom form-control">
+						<select id="questionRoomPZ-search" class="arrturnRoom form-control">
 							<option value='' selected>全部</option>
 							<#if rooms?? && rooms?size gt 0> 
 								<#list rooms as room>
@@ -294,9 +294,21 @@
 							 </#if>
 						</select>
 					</div>
+
 					<div class="form-group">
 						<label class="control-label">题目:</label>
 						<input type="text" class="form-control" id="questionTitle-search" />
+					</div>
+
+
+					<div class="form-group">
+						<label class="control-label">题目类型:</label>
+						<select id="questionType-search" class="arrturnRoom form-control">
+							<option value='' selected>全部</option>
+									<option value='1'>案例分析</option>
+									<option value='2'>技能操作</option>
+									<option value='3'>辅助检查</option>
+							</select>
 					</div>
 					<button type="button" onclick="questionSearch();" class="btn btn-info">查询</button>
 				</form>
@@ -379,7 +391,7 @@
 				<form class="form-inline" id="teacherSearchForm">
 					<div class="form-group">
 						<label class="control-label">专业基地:</label>
-						<select id="baseName-search" class="arrturnBase form-control">
+						<select id="baseNameT-search" class="arrturnBase form-control">
 							<option value=''>全部</option>
 							<#if bases?? && bases?size gt 0> 
 								<#list bases as base>
@@ -390,7 +402,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">科室:</label>
-						<select id="questionRoom-search" class="arrturnRoom form-control">
+						<select id="questionRoomT-search" class="arrturnRoom form-control">
 							<option value='' selected>全部</option>
 							<#if rooms?? && rooms?size gt 0> 
 								<#list rooms as room>
@@ -833,10 +845,11 @@
 	function getQuestionQueryCondition(data){
 		var param = {};
 		//组装排序参数
-		param.baseName = $("#questionBase-search").val();
-		param.roomName = $("#questionRoom-search").val();
+		param.baseName = $("#questionBasePZ-search").val();
+		param.roomName = $("#questionRoomPZ-search").val();
 		param.title = $("#questionTitle-search").val();
-		
+		param.questionType = $("#questionType-search").val();
+
 		//组装分页参数WWW
 		param.start = data.start;
 		param.length = data.length;

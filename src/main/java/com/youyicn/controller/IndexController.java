@@ -10,11 +10,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -168,11 +170,13 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/questionsPage")
-    public String questionsPage(Model model){
-    	List<Base> bases = baseService.selectAll();
+    @RequestMapping(value = "/questionsPage/{type}",method = RequestMethod.GET)
+    public String questionsPage(Model model , @PathVariable @Valid Integer type , HttpServletRequest request){
+
+        List<Base> bases = baseService.selectAll();
     	List<Room> rooms = roomService.selectAll();
     	model.addAttribute("bases", bases);
+    	model.addAttribute("questionType", type);
     	model.addAttribute("rooms", rooms);
         return "/question/questions";
     }
