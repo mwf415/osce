@@ -179,7 +179,11 @@ public class ExamController {
             return "fail";
         }
     }
-    
+
+    /**
+     * 评分页面
+     * @return
+     */
     @RequestMapping(value="/monitorPage")
     public String monitorPage(){
 		return "/exam/monitor_stations";
