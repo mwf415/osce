@@ -43,6 +43,10 @@
                 <h4><strong  id="minScort"></strong>
                 </h4>
             </div>
+            <div class="alert alert-info alert-dismissable">
+                <h4><strong  id="osceOffenders"></strong>
+                </h4>
+            </div>
         </div>
     </div>
     <div class="row clearfix">
@@ -67,6 +71,18 @@
                 </div>
                 <div class="panel-body" >
                     <div id="unFinishedUser"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 column">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        违纪学生
+                    </h3>
+                </div>
+                <div class="panel-body" >
+                    <div id="osceOffendersName"></div>
                 </div>
             </div>
         </div>
@@ -347,11 +363,21 @@
             var unFinishedUser = responseText.unFinishedUser;
             $("#finishedUser").html(finishedUser);
             $("#unFinishedUser").html(unFinishedUser);
+            var maxScort = responseText.maxScort ;
+            if(maxScort==undefined){
+                maxScort = "没有最高分";
+            }
+            var  minScort = responseText.minScort;
+            if(minScort==undefined){
+                minScort = "没有最低分";
+            }
 
-            $("#maxScort").html("最高分 :"+responseText.maxScort);
-            $("#minScort").html("最低分 :"+responseText.minScort);
+            $("#maxScort").html("最高分 :"+maxScort);
+            $("#minScort").html("最低分 :"+minScort);
             $("#finishedUserCount").html("参加考试人数 :"+responseText.finishedUserCount);
             $("#unFinishedUserCount").html("未参加考试人数 :"+responseText.unFinishedUserCount);
+            $("#osceOffenders").html("违纪人数 :"+responseText.osceOffendersSize);
+            $("#osceOffendersName").html(responseText.osceOffendersName);
 
         },
         error: function () {

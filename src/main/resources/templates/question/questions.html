@@ -346,9 +346,9 @@
 
     //添加考题
     function addQuestions() {
-        var url = 'questions/add';
+        var url = '/questions/add';
         if ($('#id').val() != '') {
-            url = 'questions/update';
+            url = '/questions/update';
         }
 
         var title = $("#title").val();
