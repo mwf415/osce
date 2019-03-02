@@ -18,7 +18,7 @@ public class OsceOffender {
      * 用户ID
      */
     @Column(name = "user_id")
-    private Integer userId;
+    private String userId;
 
     @Column(name = "user_name")
     private String userName;
@@ -66,21 +66,11 @@ public class OsceOffender {
         this.examUserId = examUserId;
     }
 
-    /**
-     * 获取用户ID
-     *
-     * @return user_id - 用户ID
-     */
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    /**
-     * 设置用户ID
-     *
-     * @param userId 用户ID
-     */
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

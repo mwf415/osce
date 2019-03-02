@@ -4,8 +4,10 @@ import com.github.abel533.echarts.json.GsonOption;
 import com.github.pagehelper.PageInfo;
 import com.youyicn.model.Exam;
 import com.youyicn.model.ExamUser;
+import com.youyicn.model.OsceOffender;
 import com.youyicn.service.ExamService;
 import com.youyicn.service.ExamUserService;
+import com.youyicn.service.OsceOffenderService;
 import com.youyicn.util.EchartUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Controller
@@ -158,13 +157,26 @@ public class AcountController {
             resultMap.put("maxScort", scores.get(max));
             resultMap.put("minScort", scores.get(min));
         }
+        /**
+         * 添加违纪学生名单
+         */
+        Map<String,OsceOffender> map = osceOffenderService.getByExamId(examId);
+        StringBuilder osceOffendersName = new StringBuilder();
+        for (String s : map.keySet()) {
+            OsceOffender osceOffender = map.get(s);
+            osceOffendersName.append(osceOffender.getUserName()+":");
+        }
+        resultMap.put("osceOffendersName",osceOffendersName);
+        resultMap.put("osceOffendersSize" ,map.size());
         resultMap.put("finishedUserCount", finishedUserCount);
         resultMap.put("unFinishedUserCount", unFinishedUserCount);
-
         resultMap.put("finishedUser", finishedUser);
         resultMap.put("unFinishedUser", unFinishedUser);
         return resultMap;
     }
+
+    @Autowired
+    private OsceOffenderService osceOffenderService;
 
 
 }

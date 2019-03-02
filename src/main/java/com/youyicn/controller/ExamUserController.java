@@ -265,17 +265,24 @@ public class ExamUserController {
      * @return
      */
 
-    @RequestMapping(value = "/addOffender")
+    @RequestMapping(value = "/saveOffender")
+    @ResponseBody
     public String addOffender(OsceOffender offender) {
 
-//        ExamUser example = new ExamUser();
-//        example.setUserId(offender.getUserId() + "");
-//        example.setExamId(offender.getExamId());
-//        List<ExamUser> examUsers = examUserService.selectByPage(example, 0, 1).getList();
-
-        osceOffenderMapper.insert(offender);
-
-        return "/exam/monitor_detail";
+        ExamUser example = new ExamUser();
+        example.setUserId(offender.getUserId() + "");
+        example.setExamId(offender.getExamId());
+        List<ExamUser> examUsers = examUserService.selectByPage(example, 0, 1).getList();
+        if(examUsers.size()>0){
+            ExamUser examUser = examUsers.get(0);
+            offender.setExamId(examUser.getExamId());
+            offender.setUserId(examUser.getUserId());
+            offender.setExamUserId(examUser.getId());
+            offender.setUserName(examUser.getRealName());
+            osceOffenderMapper.insert(offender);
+            return "success";
+        }
+        return "false";
 
     }
 
