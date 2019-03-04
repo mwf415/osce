@@ -178,6 +178,17 @@ public class IndexController {
     	model.addAttribute("bases", bases);
     	model.addAttribute("questionType", type);
     	model.addAttribute("rooms", rooms);
+    	switch (type){
+            case 1:
+                model.addAttribute("typeName","案例分析");
+                break;
+            case 2:
+                model.addAttribute("typeName","技能操作");
+                break;
+            case 3:
+                model.addAttribute("typeName","辅助检查");
+                break;
+        }
         return "/question/questions";
     }
 

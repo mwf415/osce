@@ -35,7 +35,7 @@
         <!--</table>-->
 
         <!-- 相关表的配置 -->
-        <table tableName="d_transfer_order" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+        <table tableName="osce_offender" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

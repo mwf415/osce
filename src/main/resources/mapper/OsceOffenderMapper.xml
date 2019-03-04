@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyicn.mapper.OsceOffenderMapper">
+  <resultMap id="BaseResultMap" type="com.youyicn.model.OsceOffender">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="offender_id" jdbcType="INTEGER" property="offenderId" />
+    <result column="exam_user_id" jdbcType="INTEGER" property="examUserId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>
