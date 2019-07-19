@@ -188,6 +188,9 @@ public class IndexController {
             case 3:
                 model.addAttribute("typeName","辅助检查");
                 break;
+            case 0:
+                model.addAttribute("typeName","常规题目");
+                break;
         }
         return "/question/questions";
     }

@@ -8,7 +8,6 @@ import com.youyicn.model.OsceOffender;
 import com.youyicn.service.ExamService;
 import com.youyicn.service.ExamUserService;
 import com.youyicn.service.OsceOffenderService;
-import com.youyicn.util.EchartUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.IntStream;
+import cn.onlov.utils.EchartUtils ;
 
 @Controller
 @RequestMapping("/count")

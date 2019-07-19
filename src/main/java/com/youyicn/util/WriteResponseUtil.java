@@ -1,11 +1,11 @@
 package com.youyicn.util;
 
+import cn.onlov.utils.ZipUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class WriteResponseUtil {
@@ -18,7 +18,7 @@ public class WriteResponseUtil {
 	 */
 	public static String encodeFileName(HttpServletRequest request, String fileName){
 		try {
-			if (request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > -1) {  
+			if (request.getHeader("OnlovUser-Agent").toUpperCase().indexOf("MSIE") > -1) {
 			 fileName = URLEncoder.encode(fileName, "UTF-8");
 			} else {  
 				fileName = new String(fileName.getBytes("UTF-8"), "ISO8859-1");  

@@ -607,4 +607,47 @@ public class User implements Serializable {
     public void setIsat(Integer isat) {
         this.isat = isat;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userNum='" + userNum + '\'' +
+                ", hospitalId='" + hospitalId + '\'' +
+                ", loginName='" + loginName + '\'' +
+                ", realName='" + realName + '\'' +
+                ", userPwd='" + userPwd + '\'' +
+                ", identityId=" + identityId +
+                ", sex='" + sex + '\'' +
+                ", qualificationId=" + qualificationId +
+                ", dept='" + dept + '\'' +
+                ", nation=" + nation +
+                ", cardNo='" + cardNo + '\'' +
+                ", birthTime=" + birthTime +
+                ", education=" + education +
+                ", image='" + image + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", userTypeId=" + userTypeId +
+                ", isLogin=" + isLogin +
+                ", loginIp='" + loginIp + '\'' +
+                ", departmentId=" + departmentId +
+                ", usbKey=" + usbKey +
+                ", moduleManager='" + moduleManager + '\'' +
+                ", status='" + status + '\'' +
+                ", baseName='" + baseName + '\'' +
+                ", roomName='" + roomName + '\'' +
+                ", address='" + address + '\'' +
+                ", gradschool='" + gradschool + '\'' +
+                ", major='" + major + '\'' +
+                ", degree='" + degree + '\'' +
+                ", xuewei='" + xuewei + '\'' +
+                ", certificationnum='" + certificationnum + '\'' +
+                ", cellphone='" + cellphone + '\'' +
+                ", staff='" + staff + '\'' +
+                ", traintime=" + traintime +
+                ", email='" + email + '\'' +
+                ", grade=" + grade +
+                ", isat=" + isat +
+                '}';
+    }
 }

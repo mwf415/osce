@@ -1,10 +1,10 @@
 package com.youyicn.controller;
 
+import com.youyicn.util.PasswordHelper;
 import com.github.pagehelper.PageInfo;
 import com.youyicn.model.User;
 import com.youyicn.service.UserRoleService;
 import com.youyicn.service.UserService;
-import com.youyicn.util.PasswordHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

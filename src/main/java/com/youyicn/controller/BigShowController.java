@@ -1,20 +1,18 @@
 package com.youyicn.controller;
 
-import java.util.*;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.youyicn.model.*;
+import cn.onlov.utils.DateUtil;
+import com.youyicn.model.BigShowEntity;
+import com.youyicn.model.BigShowRsp;
+import com.youyicn.model.Exam;
+import com.youyicn.model.UserParm;
 import com.youyicn.service.ExamService;
-import com.youyicn.util.DateUtil;
+import com.youyicn.service.OsceSortService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.youyicn.service.OsceSortService;
+import java.util.*;
 
 /**
  * 大屏显示功能
@@ -37,7 +35,7 @@ public class BigShowController {
         Date endDate = DateUtil.getEndTimeOfDay(date);
 
         List<Exam> examList = examService.listTodayExam(startDate, endDate);
-        Map<String ,BigShowEntity> result = new HashMap<>();
+        Map<String , BigShowEntity> result = new HashMap<>();
         List<BigShowRsp>bigShowRsps = new ArrayList<>();
         if (examList.size()>0) {
             for (Exam exam : examList) {

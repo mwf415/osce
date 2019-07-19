@@ -1,18 +1,16 @@
 package com.youyicn.controller;
 
+import com.youyicn.util.QrCodeUtil;
+import com.youyicn.util.WriteResponseUtil;
 import com.youyicn.model.Exam;
 import com.youyicn.model.ExamUser;
 import com.youyicn.service.ExamService;
 import com.youyicn.service.ExamUserService;
-import com.youyicn.util.QrCodeUtil;
-import com.youyicn.util.WriteResponseUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

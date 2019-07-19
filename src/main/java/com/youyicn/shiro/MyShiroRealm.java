@@ -40,7 +40,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user= (User) SecurityUtils.getSubject().getPrincipal();//User{id=1, username='admin', password='3ef7164d1f6167cb9f2658c07d3c2f0a', enable=1}
+        User user= (User) SecurityUtils.getSubject().getPrincipal();//User{id=1, username='evaluate', password='3ef7164d1f6167cb9f2658c07d3c2f0a', enable=1}
         Integer userId = user.getId();
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("id",userId);

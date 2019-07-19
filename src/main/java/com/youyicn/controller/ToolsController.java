@@ -1,12 +1,11 @@
 package com.youyicn.controller;
 
+import com.youyicn.util.QrCodeUtil;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import com.youyicn.model.Tool;
 import com.youyicn.model.ToolGroup;
 import com.youyicn.service.ToolGroupService;
 import com.youyicn.service.ToolService;
-import com.youyicn.util.QrCodeUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

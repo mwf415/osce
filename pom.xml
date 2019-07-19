@@ -18,6 +18,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -25,7 +27,27 @@
     </properties>
 
     <dependencies>
+
+
+        <dependency>
+            <groupId>cn.onlov</groupId>
+            <artifactId>on_common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Spring Boot Freemarker 依赖 -->
+
+        <!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>5.1.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -116,12 +138,7 @@
             <version>1.16.18.0</version>
             <type>pom</type>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>20.0</version>
-        </dependency>
+
         <!-- freemarker + shiro（标签） begin -->
         <dependency>
             <groupId>net.mingsoft</groupId>
@@ -135,52 +152,10 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <!-- 二维码 -->
-        <!-- zxing -->
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.sourceforge.javacsv/javacsv -->
-        <dependency>
-            <groupId>net.sourceforge.javacsv</groupId>
-            <artifactId>javacsv</artifactId>
-            <version>2.0</version>
-        </dependency>
 
 
-        <dependency>
-            <groupId>com.github.abel533</groupId>
-            <artifactId>ECharts</artifactId>
-            <version>2.2.7</version>
-        </dependency>
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.5</version>
-        </dependency>
+
     </dependencies>
 
     <build>
