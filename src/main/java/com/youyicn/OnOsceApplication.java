@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @MapperScan(basePackages = "com.youyicn.mapper")
 @EnableScheduling
-public class SpringbootShiroApplication {
+public class OnOsceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootShiroApplication.class, args);
+		SpringApplication.run(OnOsceApplication.class, args);
 	}
 }

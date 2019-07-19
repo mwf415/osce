@@ -3,7 +3,6 @@ package com.youyicn.util;
 
 import com.youyicn.model.User;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
 
 public class PasswordHelper {
 	private String algorithmName = "md5";
