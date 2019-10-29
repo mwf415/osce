@@ -26,7 +26,7 @@ import java.util.*;
 @RequestMapping("/downLoad")
 public class BuilderQrCodeController {
 
-    @Value("${server.port}")
+    @Value("${serverport}")
     private String servicePort;
     private static QrCodeUtil qrCodeUtil = QrCodeUtil.getInstance(); // 生成二维码的方法
 

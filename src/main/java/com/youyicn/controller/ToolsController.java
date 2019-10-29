@@ -28,7 +28,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/tools")
 public class ToolsController {
-    @Value("${server.port}")
+    @Value("${serverport}")
     private String servicePort;
     @Resource
     private ToolService toolService;
