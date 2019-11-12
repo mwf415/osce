@@ -22,7 +22,7 @@
 	<!-- begin page-header -->
 	<h1 class="page-header">角色管理</h1>
 	<!-- end page-header -->
-	
+
 	<!-- begin row -->
 	<div class="row">
 	    <!-- begin col-12 -->
@@ -34,13 +34,13 @@
                         </div>
                         <div class="panel-body">
                            <form class="form-inline">
-                           		<@shiro.hasPermission name="/roles/saveRolePermissions">  
+                           		<@shiro.hasPermission name="/roles/saveRolePermissions">
 		                        <button type="button" onclick="allotResources();" class="btn btn-info" style="float: right; margin-right: 1px;">分配权限</button>
 							    </@shiro.hasPermission>
-							    <@shiro.hasPermission name="/roles/delete">  
+							    <@shiro.hasPermission name="/roles/delete">
 		                        <button type="button" onclick="delById();" class="btn btn-info" style="float: right; margin-right: 1px;">删除</button>
 							    </@shiro.hasPermission>
-							    <@shiro.hasPermission name="/roles/add">  
+							    <@shiro.hasPermission name="/roles/add">
 		                        <button type="button" onclick="$('#addRole').modal();" class="btn btn-info" style="float: right; margin-right: 1px;">新增</button>
 							    </@shiro.hasPermission>
 		                    </form>
@@ -79,8 +79,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" onclick="saveRoleResources();" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="saveRoleResources();" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>
@@ -105,8 +105,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" onclick="addRole();" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="addRole();" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
                     "previous": "上一页",
                     "next": "下一页",
                     "last": "末页"
-                } 
+                }
              },
             "ajax": 'roles',
             "columns": [

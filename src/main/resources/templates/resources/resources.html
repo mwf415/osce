@@ -22,7 +22,7 @@
 	<!-- begin page-header -->
 	<h1 class="page-header">资源管理</h1>
 	<!-- end page-header -->
-	
+
 	<!-- begin row -->
 	<div class="row">
 	    <!-- begin col-12 -->
@@ -34,13 +34,13 @@
                         </div>
                         <div class="panel-body">
                         <form class="form-inline">
-                        <@shiro.hasPermission name="/permissions/delete">  
+                        <@shiro.hasPermission name="/permissions/delete">
                         	<button type="button" onclick="delById();" class="btn btn-info" style="float: right; margin-right: 1px;">删除</button>
 					    </@shiro.hasPermission>
-					    <@shiro.hasPermission name="/permissions/update">  
+					    <@shiro.hasPermission name="/permissions/update">
                         	<button type="button" onclick="update();" class="btn btn-info" style="float: right; margin-right: 1px;">修改</button>
 					    </@shiro.hasPermission>
-                        <@shiro.hasPermission name="/permissions/add">  
+                        <@shiro.hasPermission name="/permissions/add">
                         	<button type="button" onclick="add();" class="btn btn-info" style="float: right; margin-right: 1px;">新增</button>
 					    </@shiro.hasPermission>
                         </form>
@@ -83,8 +83,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" onclick="saveRoleResources();" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="saveRoleResources();" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>
@@ -137,8 +137,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" onclick="addResources();" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="addResources();" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>
@@ -172,7 +172,7 @@
                     "previous": "上一页",
                     "next": "下一页",
                     "last": "末页"
-                } 
+                }
              },
              "ajax": 'permissions',
              "columns": [
@@ -279,7 +279,7 @@
  		$('#id').val('');
  		$('#permissionsModal').modal();
  	}
- 	
+
      function update(){
      	var $checkchild = $(".checkchild:checked");
      	var id = $checkchild.val();
@@ -312,9 +312,9 @@
  		$('#type').val(type);
  		$('#sort').val(sort);
  		$('#permissionsModal').modal();
- 		
+
      }
-     
+
      function delById() {
          if ($(".checkchild:checked").length < 1)
          {

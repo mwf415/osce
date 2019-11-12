@@ -19,7 +19,7 @@
 	<!-- begin page-header -->
 	<h1 class="page-header">考站结构</h1>
 	<!-- end page-header -->
-	
+
 	<!-- begin row -->
 	<div class="row">
 	    <!-- begin col-12 -->
@@ -36,13 +36,13 @@
 	                            <input type="text" class="form-control" id="name-search" placeholder="名称"/>
 	                        </div>
 	                        <button type="button"  onclick="search();" class="btn btn-primary">查询</button>
-                        	<@shiro.hasPermission name="/stations/delete">  
+                        	<@shiro.hasPermission name="/stations/delete">
 	                        <button type="button"  onclick="delByID();" class="btn btn-danger" style="float: right; margin-right: 1px;">删除</button>
 						    </@shiro.hasPermission>
-						    <@shiro.hasPermission name="/stations/update">  
+						    <@shiro.hasPermission name="/stations/update">
 	                        <button type="button"  onclick="update();" class="btn btn-warning" style="float: right; margin-right: 1px;">修改</button>
 						    </@shiro.hasPermission>
-						    <@shiro.hasPermission name="/stations/add">  
+						    <@shiro.hasPermission name="/stations/add">
 	                        <button type="button"  onclick="$('#addStation').modal();" class="btn btn-success" style="float: right; margin-right: 1px;">新增</button>
 						    </@shiro.hasPermission>
 	                    </form>
@@ -83,8 +83,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" onclick="addStation();" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="addStation();" class="btn btn-primary">保存</button>
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
                     "previous": "上一页",
                     "next": "下一页",
                     "last": "末页"
-                } 
+                }
              },
              ajax : function(data, callback, settings) {
                  //封装请求参数
@@ -233,9 +233,9 @@
  		$('#id').val(id);
  		$('#name').val(name);
  		$('#addStation').modal();
- 		
+
      }
-     
+
      function delByID() {
          var id = $(".checkchild:checked").val();
          if ($(".checkchild:checked").length < 1)
