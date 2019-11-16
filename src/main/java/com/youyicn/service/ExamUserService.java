@@ -6,8 +6,9 @@ import com.youyicn.model.ExamUser;
 import java.util.List;
 
 public interface ExamUserService extends IService<ExamUser>{
-	
+
 	PageInfo<ExamUser> selectByPage(ExamUser examUser, int start, int length);
+	PageInfo<ExamUser> selectAll(ExamUser examUser );
 	//删除学生考试记录
 	void deleteUserRecords(Integer examId, String[] userIds);
 

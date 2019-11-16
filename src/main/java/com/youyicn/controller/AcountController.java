@@ -1,10 +1,13 @@
 package com.youyicn.controller;
 
+import cn.onlov.utils.EchartUtils;
+import cn.onlov.utils.ExcelUtils;
 import com.github.abel533.echarts.json.GsonOption;
 import com.github.pagehelper.PageInfo;
 import com.youyicn.model.Exam;
 import com.youyicn.model.ExamUser;
 import com.youyicn.model.OsceOffender;
+import cn.onlov.utils.module.vo.ScoreVo;
 import com.youyicn.service.ExamService;
 import com.youyicn.service.ExamUserService;
 import com.youyicn.service.OsceOffenderService;
@@ -13,13 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
-import cn.onlov.utils.EchartUtils ;
 
 @Controller
 @RequestMapping("/count")
@@ -53,6 +63,67 @@ public class AcountController {
     }
 
 
+    /**
+     * 到出excel
+     *
+     * @param examId
+     * @return
+     */
+    @RequestMapping(value = "/exportScore", method = RequestMethod.GET)
+    public void download(@Param("examId")Integer examId,   HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IllegalAccessException, UnsupportedEncodingException {
+        ExamUser examUser = new ExamUser();
+        examUser.setId(examId);
+        PageInfo<ExamUser> pageInfo = examUserService.selectAll(examUser);
+        List<ExamUser> list = pageInfo.getList();
+        String filename = "";
+        if (list.size() > 0) {
+            filename = list.get(0).getExamTitle();
+        }
+        List<ScoreVo> scoreVos = new ArrayList<>();
+
+        for (ExamUser user : list) {
+            ScoreVo vo = new ScoreVo();
+            vo.setExamId(user.getExamId());
+            vo.setExamTitle(user.getExamTitle());
+            vo.setJoinTime(user.getJoinTime());
+            vo.setScore(user.getScore());
+            vo.setState(user.getState());
+            vo.setRealName(user.getRealName());
+            vo.setUserId(user.getUserId());
+            scoreVos.add(vo);
+        }
+
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        String fileNameS = new String(filename.getBytes(), "ISO-8859-1");
+        response.addHeader("Content-Disposition", "attachment;fileName=" +fileNameS+".xlsx" );// 设置文件名
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+            OutputStream os = response.getOutputStream();
+            ExcelUtils.exportExcel(scoreVos, filename, scoreVos.size(), response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
     @RequestMapping("/getPie")
     @ResponseBody
     public String detail(Integer examId) {
@@ -72,7 +143,7 @@ public class AcountController {
         return pieString;
     }
 
-    private int[]  getDatas(int[] datas, ExamUser examUser) {
+    private int[] getDatas(int[] datas, ExamUser examUser) {
         Integer score = examUser.getScore();
         if (null == score) {
             return datas;
@@ -160,14 +231,14 @@ public class AcountController {
         /**
          * 添加违纪学生名单
          */
-        Map<String,OsceOffender> map = osceOffenderService.getByExamId(examId);
+        Map<String, OsceOffender> map = osceOffenderService.getByExamId(examId);
         StringBuilder osceOffendersName = new StringBuilder();
         for (String s : map.keySet()) {
             OsceOffender osceOffender = map.get(s);
-            osceOffendersName.append(osceOffender.getUserName()+":");
+            osceOffendersName.append(osceOffender.getUserName() + ":");
         }
-        resultMap.put("osceOffendersName",osceOffendersName);
-        resultMap.put("osceOffendersSize" ,map.size());
+        resultMap.put("osceOffendersName", osceOffendersName);
+        resultMap.put("osceOffendersSize", map.size());
         resultMap.put("finishedUserCount", finishedUserCount);
         resultMap.put("unFinishedUserCount", unFinishedUserCount);
         resultMap.put("finishedUser", finishedUser);

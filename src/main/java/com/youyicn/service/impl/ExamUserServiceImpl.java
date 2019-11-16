@@ -53,6 +53,23 @@ public class ExamUserServiceImpl extends BaseService<ExamUser> implements ExamUs
     }
 
     @Override
+    public PageInfo<ExamUser> selectAll(ExamUser examUser) {
+        Example example = new Example(ExamUser.class);
+        example.orderBy("createTime desc");
+        Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("examId", examUser.getExamId());
+        if (StringUtils.isNotBlank(examUser.getUserId()))
+            criteria.andEqualTo("userId", examUser.getUserId());
+        if (StringUtils.isNotBlank(examUser.getRealName()))
+            criteria.andLike("realName", "%"+examUser.getRealName()+"%");
+        criteria.andEqualTo("userType", examUser.getUserType());
+        criteria.andEqualTo("state", examUser.getState());
+
+        //分页查询
+        List<ExamUser> examUserList = selectByExample(example);
+        return new PageInfo<>(examUserList);
+    }
+    @Override
     public void deleteUserRecords(Integer examId, String[] userIds) {
         //删除考生考试记录
         Example example = new Example(ExamUser.class);

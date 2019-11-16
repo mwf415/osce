@@ -124,6 +124,7 @@
                             </select>
                         </div>
                         <button type="button" onclick="search();" class="btn btn-primary">查询</button>
+                        <a class="btn btn-info" href="/count/exportScore?examId=${examId}" >导出成绩</a>
                     </form>
                     <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="datatable">
                         <thead>
@@ -263,6 +264,13 @@
 
     function search() {
         table.ajax.reload();
+    }
+
+    function exportScore() {
+
+        var examId = clear('${examId}');
+
+
     }
 
     //封装查询参数
