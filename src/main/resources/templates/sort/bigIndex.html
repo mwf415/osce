@@ -66,13 +66,14 @@
                     </div>
                     </#if>
 
-                    <#if bigShowRsp.inUserList?? && bigShowRsp.inUserList?size gt 0>
+
                         <div class="col-md-12 column">
                             <div class="page-header">
                                 <h3>
                                     正在考试的学生
                                 </h3>
                             </div>
+                            <#if bigShowRsp.inUserList?? && bigShowRsp.inUserList?size gt 0>
                             <table class="table table-striped table-bordered" style="font-size:17px;" cellspacing="0"
                                    width="100%">
                                 <thead>
@@ -113,8 +114,8 @@
                                 </tbody>
 
                             </table>
-                        </div>
-                    </#if>
+                        </#if>
+            </div>
                     <#if bigShowRsp.toInUser?? && bigShowRsp.toInUser?size gt 0>
                         <div class="col-md-12 column">
                             <div class="alert alert-warning alert-dismissable">
