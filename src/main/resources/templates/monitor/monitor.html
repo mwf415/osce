@@ -63,13 +63,14 @@
                 </div>
             </div>
 
-            <#if inUserList?? && inUserList?size gt 0>
+
             <div class="col-md-12 column">
                 <div class="page-header">
                     <h3>
                         正在考试的学生
                     </h3>
                 </div>
+                <#if inUserList?? && inUserList?size gt 0>
                 <table class="table table-striped table-bordered" style="font-size:17px;" cellspacing="0"
                        width="100%">
                     <thead>
@@ -107,15 +108,17 @@
                         </#list>
                     </tbody>
                 </table>
-            </div>
             </#if>
+            </div>
 
-            <#if toInUser?? && toInUser?size gt 0>
+
             <div class="col-md-12 column">
                 <div class="alert alert-warning alert-dismissable">
                     <h3>
                         <strong>候考的学生</strong>
                     </h3>
+
+                    <#if toInUser?? && toInUser?size gt 0>
                     <table class="table table-striped table-bordered" style="font-size:17px;" cellspacing="0"
                            width="100%">
                         <thead>
@@ -139,9 +142,10 @@
 
                         </tbody>
                     </table>
+                </#if>
                 </div>
             </div>
-            </#if>
+
 
             <div class="col-md-12 column">
                 <div class="alert alert-danger alert-dismissable">
