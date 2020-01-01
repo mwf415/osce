@@ -67,7 +67,6 @@ public class UserController {
 //            user.setEnable(1);
             PasswordHelper passwordHelper = new PasswordHelper();
             passwordHelper.encryptPassword(user);
-            user.setIdentityId(1);
             user.setStatus(1+"");
             userService.save(user);
             return "success";

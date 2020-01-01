@@ -55,17 +55,17 @@
                             </h2>
                         </div>
                     </div>
-                    <#if bigShowRsp.finishedUser??>
+
                     <div class="col-md-12 column">
                         <div class="alert alert-info alert-dismissable">
                             <h3>
                                 <strong> 已经考完的学生</strong>
                             </h3>
+                            <#if bigShowRsp.finishedUser??>
                             <h4>${bigShowRsp.finishedUser!}</h4>
+                        </#if>
                         </div>
                     </div>
-                    </#if>
-
 
                         <div class="col-md-12 column">
                             <div class="page-header">
