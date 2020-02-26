@@ -15,6 +15,11 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter{
         super.addResourceHandlers(registry);
     }
 
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new ResponseResultInterceptor());
+//    }
+
+
     public static void main(String[] args) {
 
         String fileName ="atext";

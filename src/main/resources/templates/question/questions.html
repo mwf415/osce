@@ -551,7 +551,7 @@
             var subtitle = $(this).find('td:eq(2)').text().trim();
             var score = $(this).find('td:eq(3)').text().trim();
             if (subtitle == null || subtitle == '') {
-                layer.msg('评分项二级标题不能为空！');
+                layer.msg('评分项操作内容不能为空！');
                 flag = false;
                 return;
             }
@@ -652,7 +652,11 @@
                         flag = false;
                         return;
                     }
-                    html += '<tr><td>' + scoreItems[i].序号 + '</td><td>' + scoreItems[i].一级标题 + '</td><td>' + scoreItems[i].二级标题 + '</td><td>' + scoreItems[i].分值 + '</td></tr>';
+                    var  myNo =scoreItems[i].序号 ;
+                    var mypro =  scoreItems[i].操作项目;
+                    var myItem = scoreItems[i].操作内容;
+                    var mySc = scoreItems[i].分值;
+                    html += '<tr><td>' + scoreItems[i].序号 + '</td><td>' + scoreItems[i].操作项目 + '</td><td>' + scoreItems[i].操作内容 + '</td><td>' + scoreItems[i].分值 + '</td></tr>';
                 }
                 if (flag) {
                     $('#scoreItemTable tbody').empty().append(html);
