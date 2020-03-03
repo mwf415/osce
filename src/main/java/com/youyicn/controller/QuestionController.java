@@ -1,12 +1,17 @@
 package com.youyicn.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.youyicn.mapper.ScoreItemMapper;
+import com.youyicn.model.ScoreItem;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +22,7 @@ import com.youyicn.model.Question;
 import com.youyicn.model.Station;
 import com.youyicn.service.QuestionService;
 import com.youyicn.shiro.ShiroService;
+import tk.mybatis.mapper.entity.Example;
 
 @RestController
 @RequestMapping("/questions")
@@ -24,6 +30,9 @@ public class QuestionController {
 
     @Resource
     private QuestionService questionService;
+
+    @Resource
+    private ScoreItemMapper scoreItemMapper;
 
     @RequestMapping
     public Map<String,Object> getAll(Question questions, String draw,
@@ -51,14 +60,14 @@ public class QuestionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    
+
 	    result.put("success", success);
 	    result.put("msg", msg);
 	    result.put("data", data);
-	    
+
         return result;
     }
-    
+
     @RequestMapping("/listQuestionByExamId")
     public Map<String, Object> listQuestionByExamId(Integer examId){
     	Map<String, Object> result = Maps.newHashMap();
@@ -72,14 +81,14 @@ public class QuestionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    
+
 	    result.put("success", success);
 	    result.put("msg", msg);
 	    result.put("data", data);
-	    
+
         return result;
     }
-    
+
     @RequestMapping(value = "/add")
     public String add(Question question){
         try{
@@ -91,7 +100,7 @@ public class QuestionController {
             return "fail";
         }
     }
-    
+
     @RequestMapping(value = "/delete")
     public String delete(Integer id){
         try{
@@ -103,7 +112,47 @@ public class QuestionController {
             return "fail";
         }
     }
-    
+    @RequestMapping(value = "/copy")
+    @Transactional
+    public String copy(Integer id){
+        try{
+            /**
+             * 获取对应的题目
+             */
+            Question question = questionService.selectByKey(id);
+            Question newQuestion = new Question();
+            BeanUtils.copyProperties(newQuestion,question);
+            newQuestion.setId(null);
+            newQuestion.setFilePath(null);
+            newQuestion.setAnswer(null);
+            questionService.save(newQuestion);
+
+            /**
+             * 获取对应的评分项
+             */
+            Example example = new Example(ScoreItem.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("questionId", id);
+            List<ScoreItem> scoreItems = scoreItemMapper.selectByExample(example);
+            List<ScoreItem> newItems = new ArrayList<>();
+            if(null != scoreItems && scoreItems.size()>0){
+                for (ScoreItem scoreItem : scoreItems) {
+                    ScoreItem scoreItem1 = new ScoreItem();
+                    BeanUtils.copyProperties(scoreItem1,scoreItem);
+                    scoreItem1.setId(null);
+                    scoreItem1.setQuestionId(newQuestion.getId());
+                    newItems.add(scoreItem1);
+                }
+                scoreItemMapper.insertList(newItems);
+            }
+            //更新权限
+            return "success";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+
     @RequestMapping(value = "/update")
     public String update(Question question) {
         try {
@@ -114,7 +163,7 @@ public class QuestionController {
             return "fail";
         }
     }
-    
+
     @RequestMapping(value = "/saveScoreItems")
     public String saveScoreItems(@RequestParam Integer questionId, String[] titles, String[] subtitles, Double[] scores, Integer[] sorts) {
         try {
@@ -125,7 +174,7 @@ public class QuestionController {
             return "fail";
         }
     }
-    
+
     @RequestMapping("/getQuestionById")
     public Map<String, Object> getQuestionById(Integer id){
     	Map<String, Object> result = Maps.newHashMap();
@@ -139,12 +188,12 @@ public class QuestionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    
+
 	    result.put("success", success);
 	    result.put("msg", msg);
 	    result.put("data", data);
-	    
+
         return result;
     }
-    
+
 }

@@ -96,6 +96,7 @@
                         <th>考生版</th>
                         <th>考官版</th>
                         <th>评分表</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                 </table>
@@ -320,6 +321,12 @@
                     "render": function (data, type, full, meta) {
                         return '<a class="btn btn-inverse" onclick=showScoreItem(' + data + ')>评分表</a>';
                     }
+                }, {
+                    "sClass": "text-center",
+                    "data": "id",
+                    "render": function (data, type, full, meta) {
+                        return '<a class="btn btn-inverse" onclick=copyQuest(' + data + ')>复制</a>';
+                    }
                 }
             ]
         });
@@ -512,6 +519,28 @@
         }//删除文件回调函数
     });
 
+    function copyQuest(questionId) {
+        layer.confirm('您确定要复制该考题吗？', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: '/questions/copy',
+                data: {id: questionId},
+                async: false,
+                success: function (data) {
+                    if (data == "success") {
+                        layer.msg('删除成功');
+                        table.ajax.reload();
+                    } else {
+                        layer.msg('删除失败');
+                    }
+                }
+            });
+        });
+    }
+
     function showScoreItem(questionId) {
         $('#questionId').val(questionId);
         $.ajax({
@@ -537,6 +566,7 @@
             }
         });
     }
+
 
     //保存
     function saveScoreItems() {
